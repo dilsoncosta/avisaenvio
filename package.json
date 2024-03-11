@@ -1,0 +1,62 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.23.0",
+        "@babel/plugin-transform-class-properties": "^7.22.5",
+        "@vue/cli-plugin-babel": "^5.0.8",
+        "@vue/cli-plugin-router": "^5.0.8",
+        "@vue/cli-plugin-vuex": "^5.0.8",
+        "@vue/cli-service": "^5.0.8",
+        "@vue/compiler-sfc": "^3.0.0",
+        "axios": "^1.1.2",
+        "eslint": "^8.50.0",
+        "eslint-plugin-vue": "^9.17.0",
+        "install": "^0.13.0",
+        "laravel-vite-plugin": "^0.7.0",
+        "lodash": "^4.17.19",
+        "npm": "^10.1.0",
+        "postcss": "^8.1.14",
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "@vitejs/plugin-vue": "^4.5.0",
+        "@vueform/multiselect": "^2.5.8",
+        "@vueup/vue-quill": "^1.2.0",
+        "axios": "^1.2.1",
+        "consolidate": "^1.0.1",
+        "core-js": "^3.6.5",
+        "glob-parent": "^6.0.2",
+        "json5": "^2.2.3",
+        "node-forge": "^1.3.1",
+        "nth-check": "^2.1.1",
+        "secure-ls": "^1.2.6",
+        "shvl": "^3.0.0",
+        "socket.io-client": "^4.7.2",
+        "sweetalert2": "^11.6.13",
+        "v-money3": "^3.24.1",
+        "vue": "^3.0.0",
+        "vue-final-modal": "^3.4.11",
+        "vue-router": "^4.0.0-0",
+        "vue-simple-acl": "^2.0.2",
+        "vue-sweetalert2": "^5.0.5",
+        "vue3-smooth-dnd": "^0.0.6",
+        "vuex": "^4.0.0-0",
+        "vuex-persist": "^3.1.3",
+        "vuex-persistedstate": "^4.1.0",
+        "yup": "^1.3.1"
+    },
+    "overrides": {
+        "glob-parent": "$glob-parent",
+        "node-forge": "$node-forge",
+        "nth-check": "$nth-check",
+        "json5": "$json5",
+        "sweetalert2": "$sweetalert2",
+        "shvl": "$shvl",
+        "consolidate": "$consolidate",
+        "vue-final-modal": "$vue-final-modal"
+    }
+}
