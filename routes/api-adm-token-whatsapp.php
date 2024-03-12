@@ -6,4 +6,4 @@ Route::post('/token-whatsappweb/create', [App\Http\Controllers\AdminTokenWhatsAp
 Route::post('/token-whatsappweb/show', [App\Http\Controllers\AdminTokenWhatsAppWebController::class, 'show']);
 Route::post('/token-whatsappweb/edit', [App\Http\Controllers\AdminTokenWhatsAppWebController::class, 'edit']);
 Route::post('/token-whatsappweb/update', [App\Http\Controllers\AdminTokenWhatsAppWebController::class, 'update']);
-Route::post('/token-whatsappweb/destroy', [App\Http\Controllers\AdminTokenWhatsAppWebController::class, 'destroy']);
+Route::post('/token-whatsappweb/destroy', [App\Http\Controllers\AdminTokenWhatsAppWebController::class, 'destroy']); 
