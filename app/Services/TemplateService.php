@@ -8,7 +8,7 @@ use App\Models\{
 	Template
 };
 use App\Jobs\{
-	CrmSendWhatsAppNowJob
+	SendNotificationTrackingWhatsAppJob
 };
 
 class TemplateService
@@ -254,31 +254,6 @@ class TemplateService
 		}
 		
 		Helpers::deleteFile($file);
-	}
-	
-	public function sendWhatsAppTemplate($template)
-	{
-		$obj_data = (object) array(
-			'tenant_id'                => $template->tenant_id,
-			'ind_integration_whatsapp' => 0,
-			'business_id'              => $template->crm_business_id,
-			'contact_id'               => 0,
-			'name'                     => ucfirst(strtolower(auth()->user()->name)) . ' ' . ucfirst(strtolower(auth()->user()->surname)),
-			'email'                    => auth()->user()->email,
-			'phone'                    => Helpers::formata_telefone(auth()->user()->phone),
-			'whatsapp'                 => auth()->user()->whatsapp ? auth()->user()->whatsapp : auth()->user()->phone,
-			'whatsapp_format'          => Helpers::formata_telefone(auth()->user()->whatsapp),
-			'template_id'              => $template->id,
-			'message'                  => $template->message,
-			'file_1'                   => $template->file_1,
-			'filename_1'               => $template->filename_1,
-			'file_2'                   => $template->file_2,
-			'filename_2'               => $template->filename_2,
-			'file_3'                   => $template->file_3,
-			'filename_3'               => $template->filename_3,
-			'send_to'                  => 'Sistema',
-		);
-		CrmSendWhatsAppNowJob::dispatch($obj_data);
 	}
 	
 	public function getTemplateById($id)

@@ -38,10 +38,22 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('show-help', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
+	setRule('show-tracking', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-template', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
 	setRule('show-validated-access', () => {
 		return user.value.access == 'A';
 	});
-
+	setRule('show-config-integration-whatsapp', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-config-import', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	
 	// Start List Permissions
 	
 	// Module Franchise
@@ -104,6 +116,11 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.permissions.find(permission => permission.name === 'access_config_integration_whatsapp');
 	});
 	
+	// Module Config Import
+	setRule('access_config_import', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'access_config_import');
+	});
 	// End List Permissions
 });
 

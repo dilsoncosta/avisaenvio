@@ -79,7 +79,6 @@ class CollaboratorService
 		]);
 		
 		$datacollaborator = [
-     'collaborator_type' => $request->collaborator_type,
      'user_id' => $userData->id,
 		];
 		
@@ -111,12 +110,6 @@ class CollaboratorService
 					'phone'     => $request->phone, 
 					'whatsapp'  => $request->whatsapp,
 					'situation' => $request->situation
-				]);
-		
-		$this->collaborator
-				->where('user_id', $request->user_id)
-				->update([
-					'collaborator_type' => $request->collaborator_type,
 				]);
 		
 		$this->permissionCollaborator->where('collaborator_id', $collaborator->id)->delete();

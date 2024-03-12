@@ -1,10 +1,21 @@
 <template>
 	<div>
 		<ul class="accordion-menu">
-			<li :class="menu.open ? {'link' :'link', 'active': 'active'} : ''" v-for="(menu, i) in menus" :key="i" @click.prevent="toggleMenu(i)" v-can="menu.can">
-				<router-link :to="menu.href" v-if="menu.type == 0" >
+			<li :class="menu.open ? {'link' :'link', 'active': 'active'} : ''" v-for="(menu, i) in menus" :key="i" @click.prevent="toggleMenu(i)" v-can="menu.can[0]">
+				<router-link :to="menu.href" v-if="menu.type == 0 && (user_category == 'CL' || user_category == 'MT' || $can(menu.can[1]))" >
 					<div class="dropdown" 
-						:style="[itemMenuHover === i ? user_category != 'FR' && user_category != 'FRCLB' ? 'background-color:#05314A;color:#fff;': 'background-color:'+colorGeneral+';color:#fff;' : '']"
+						:style="[itemMenuHover === i ?  'background-color:#05314A;color:#fff;' : '']"
+						@mouseover="itemMenuHover = i"
+						@mouseleave="itemMenuHover = null"
+						>
+						<i :class="menu.icon"></i>
+						{{ menu.title }}
+						<i class="fas fa-chevron-down" v-if="menu.type == 1"></i>
+					</div>
+				</router-link>
+				<router-link :to="menu.href" v-if="menu.type == 0 && !$can(menu.can[1])" >
+					<div class="dropdown" 
+						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': 'color: #c8c8c8; cursor: pointer;']"
 						@mouseover="itemMenuHover = i"
 						@mouseleave="itemMenuHover = null"
 						>
@@ -14,7 +25,7 @@
 					</div>
 				</router-link>
 				<div class="dropdown" v-if="menu.type == 1"
-					:style="[itemMenuHover === i ? user_category != 'FR' && user_category != 'FRCLB' ? 'background-color:#05314A;color:#fff;': 'background-color:'+colorGeneral+';color:#fff;' : '']"
+					:style="[itemMenuHover === i ? 'background-color:#05314A;color:#fff;': '']"
 					@mouseover="itemMenuHover = i"
 					@mouseleave="itemMenuHover = null"
 				>
@@ -25,8 +36,8 @@
 				<ul class="submenuItems" v-if="menu.type == 1">
 					<li v-for="(submenu, index) in menu.submenus" :key="index" :class="submenu.open ? {'link' :'link', 'active': 'active'} : ''">
 						<router-link :to="submenu.href"
-						v-if="user_category == 'CL' || user_category == 'MT' || user_category == 'FR' || $can(submenu.can[0])"
-						:style="[itemSubmenuHover === index ? user_category != 'FR' && user_category != 'FRCLB' ? 'background-color:#05314A;color:#fff;': 'background-color:'+colorGeneral+';color:#fff;' : '']"
+						v-if="user_category == 'CL' || user_category == 'MT' || $can(submenu.can[1])"
+						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': '']"
 						@mouseover="itemSubmenuHover = index"
 						@mouseleave="itemSubmenuHover = null"
 						>
@@ -41,7 +52,7 @@
 						</router-link>
 						<router-link :to="submenu.href"
 						v-else
-						:style="[itemSubmenuHover === index ? user_category != 'FR' && user_category != 'FRCLB' ? 'background-color:#05314A;color:#fff;': 'background-color:'+colorGeneral+';color:#fff;' : 'color: #c8c8c8; cursor: not-allowed;']"
+						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': 'color: #c8c8c8; cursor: not-allowed;']"
 						@mouseover="itemSubmenuHover = index"
 						@mouseleave="itemSubmenuHover = null"
 						> {{ submenu.title}} </router-link>
@@ -49,7 +60,7 @@
 						<ul class="subSubmenuItems" v-if="submenu.type == 1 && submenu.open">
 							<li v-for="(subSubmenu, index) in submenu.submenus" :key="index" >
 								<router-link :to="subSubmenu.href"
-								:style="[itemSubSubmenuHover === index ? user_category != 'FR' && user_category != 'FRCLB' ? 'background-color:#05314A;color:#fff;': 'background-color:'+colorGeneral+';color:#fff;' : '']"
+								:style="[itemSubSubmenuHover === index ? 'background-color:#05314A;color:#fff;': '']"
 								@mouseover="itemSubSubmenuHover = index"
 								@mouseleave="itemSubSubmenuHover = null"
 								>{{ subSubmenu.title }}</router-link>
@@ -162,7 +173,6 @@ import { useStore } from 'vuex';
 
 /* Ref or Reactive */
 const store            = useStore();
-const colorGeneral     = computed(() => store.state.auth.me.color_general ? store.state.auth.me.color_general : '#2957a7');
 const user_category    = computed(() => store.state.auth.me.category);
 const itemMenuHover    = ref(null);
 const itemSubmenuHover = ref(null);
@@ -174,7 +184,7 @@ let menus = ref([
 		title: 'Dashboard',
 		open: false,
 		href: '/',
-		can: ['show-home'],
+		can: ['show-home', 'show-home'],
 		submenus : []
 	},
 	{
@@ -183,7 +193,7 @@ let menus = ref([
 		title: 'Rastreio',
 		open: false,
 		href: '/tracking',
-		can: ['show-home'],
+		can: ['show-tracking', 'access_tracking'],
 		submenus : []
 	},
 	{
@@ -192,7 +202,7 @@ let menus = ref([
 		title: 'Template',
 		open: false,
 		href: '/template',
-		can: ['access_template'],
+		can: ['show-template', 'access_template'],
 		submenus : []
 	},
 	{
@@ -205,17 +215,17 @@ let menus = ref([
 			{
 				title: 'Colaborador',
 				href: '/collaborator',
-				can: ['access_config_collaborator', 'show-collaborator'],
+				can: ['show-collaborator', 'access_config_collaborator'],
 			},
 			{
 				title: 'Integração WhatsApp',
 				href: '/config/integration_whatsapp',
-				can: ['access_config_integration_whatsapp'],
+				can: ['show-config-integration-whatsapp', 'access_config_integration_whatsapp'],
 			},
 			{
 				title: 'Importação',
 				href: '/config/import_lead',
-				can: ['access_config_import_contact'],
+				can: ['show-config-import', 'access_config_import'],
 			}
 		]
 	},
@@ -252,7 +262,7 @@ let menus = ref([
 		title: 'Acesso',
 		open: false,
 		href: '/admin/access',
-		can: ['show-admin'],
+		can: ['show-admin', 'show-admin'],
 		submenus : []
 	},
 	{
@@ -261,12 +271,10 @@ let menus = ref([
 		title: 'Token WhatsApp Web',
 		open: false,
 		href: '/admin/token-whatsappweb',
-		can: ['show-admin'],
+		can: ['show-admin', 'show-admin'],
 		submenus : []
 	},
 ]);
-const ind_mod_portal = computed(() => store.state.auth.me.ind_mod_portal);
-const ind_mod_crm = computed(() => store.state.auth.me.ind_mod_crm);
 
 /* Events */
 onMounted(() => {
@@ -286,51 +294,22 @@ onMounted(() => {
 			for (let subIndex = menu.submenus.length - 1; subIndex >= 0; subIndex--)
 			{
 				const submenu = menu.submenus[subIndex];
+				console.log(submenu);
 				switch (submenu.href)
 				{
-					case '/portal/franchise':
-					case '/portal/collaborator-of-franchise':
-					case '/portal/segmentation':
-					case '/portal/checklist':
-					case '/portal/informative':
-					case '/portal/material-category':
-					case '/portal/material':
-					case '/portal/training':
-					case '/portal/module-training':
-					case '/portal/lesson-training':
-					case '/portal/evalution-training':
-					case '/portal/training-previous':
-					case '/portal/business':
-					case '/config/account':
-						if ((user_category.value == 'CLB' || user_category.value == 'CL') && ind_mod_portal.value == 0)
-						{
-							menu.submenus.splice(subIndex, 1);
-						}
-						break;
-					case '/crm/implantation':
-					case '/crm/pipeline':
-					case '/crm/contact':
-					case '/crm/business':
-					case '/crm/funnel':
-					case '/crm/step':
-					case '/crm/seller':
+					case '/tracking':
 					case '/template':
-					case '/crm/message':
-					case '/crm/task':
-					case '/crm/event':
-					case '/crm/bot':
-					case '/crm/segmentation':
+					case '/collaborator':
 					case '/config/integration_whatsapp':
 					case '/config/import_lead':
-						if ((user_category.value == 'CLB' || user_category.value == 'CL') && ind_mod_crm.value == 0)
-						{
-							menu.submenus.splice(subIndex, 1);
-						}
+						menu.submenus.splice(index, 1);
 						break;
 					default:
 							break;
 					}
 			}
+
+			console.log(menu);
 		}
 	});
 });

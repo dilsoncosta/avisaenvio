@@ -22,17 +22,18 @@ class DownloadTrackingEventsCommand extends Command
 	public function handle()
 	{
 		$trackings = Tracking::select(
-								'trackings.tenant_id as tenant_id',
-								'trackings.destination as destination',
-								'trackings.id as id',
-								'trackings.whatsapp as whatsapp',
-								'trackings.object as object',
-								'trackings.situation as situation',
-								'integration_whatsapp.id as integration_whatsapp_id'
+							'trackings.tenant_id as tenant_id',
+							'trackings.destination as destination',
+							'trackings.id as id',
+							'trackings.whatsapp as whatsapp',
+							'trackings.object as object',
+							'trackings.situation as situation',
+							'integration_whatsapp.id as integration_whatsapp_id'
 						)
 						->join('integration_whatsapp', 'integration_whatsapp.tenant_id', '=', 'trackings.tenant_id')
 						->where('trackings.situation', '0')
 						->orWhere('trackings.situation', '1')
+						->limit(1)
 						->get();
 		
 		if ($trackings->isEmpty())
@@ -47,6 +48,8 @@ class DownloadTrackingEventsCommand extends Command
 			$tmp = $response->object();
 			
 			if($response->status() != 200){ continue; }
+			
+			$tmp->eventos = array_reverse($tmp->eventos);
 			
 			// Posted and delivered, send template delivreed e concluded tracking
 			$posted = 0;

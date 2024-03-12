@@ -335,8 +335,6 @@ const props = defineProps({
 		Type: Object,
 		required: true
 	},
-	optionsFunnels: Object,
-	optionsBusiness: Object
 });
 
 /* Computed */

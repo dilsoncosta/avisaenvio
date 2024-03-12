@@ -48,42 +48,6 @@
 							<input type="date" name="date_end" v-model="date_end">
 						</div>
 						<div class="form_group" v-if="showInput">
-							<label>Módulo Portal:</label>
-							<select name="ind_mod_portal" v-model="ind_mod_portal">
-								<option></option>
-								<option value="1">Sim</option>
-								<option value="0">Não</option>
-							</select>
-						</div>
-						<div class="form_group" v-if="showInput">
-							<label>Módulo CRM:</label>
-							<select name="ind_mod_crm" v-model="ind_mod_crm">
-								<option></option>
-								<option value="1">Sim</option>
-								<option value="0">Não</option>
-							</select>
-						</div>
-						<div class="form_group" v-if="showInput">
-							<label>Módulo Loja:</label>
-							<select name="ind_mod_store" v-model="ind_mod_store">
-								<option></option>
-								<option value="1">Sim</option>
-								<option value="0">Não</option>
-							</select>
-						</div>
-						<div class="form_group" v-if="showInput">
-							<label>Quantidade de Contatos:</label>
-							<input type="text" name="qtd_contact" v-model="qtd_contact">
-						</div>
-						<div class="form_group" v-if="showInput">
-							<label>Quantidade de Franqueados:</label>
-							<input type="text" name="qtd_franchise" v-model="qtd_franchise">
-						</div>
-						<div class="form_group" v-if="showInput">
-							<label>Quantidade de Colaboradores do Franqueado:</label>
-							<input type="text" name="qtd_franchise_collaborator" v-model="qtd_franchise_collaborator">
-						</div>
-						<div class="form_group" v-if="showInput">
 							<label>Situação:</label>
 							<select name="situation" v-model="situation">
 								<option></option>
@@ -256,12 +220,6 @@ const period      = ref('');
 const type        = ref('');
 const date_end    = ref('');
 const date_start  = ref('');
-const ind_mod_portal = ref('0');
-const ind_mod_crm    = ref('0');
-const ind_mod_store  = ref('0');
-const qtd_franchise              = ref('0');
-const qtd_franchise_collaborator = ref('0');
-const qtd_contact                = ref('0');
 const situation   = ref('');
 const showInput   = ref(false);
 
@@ -312,12 +270,6 @@ const handleClient = async (value) => {
 		date_start.value  = access.data.date_start;
 		date_end.value    = access.data.date_end;
 		situation.value   = access.data.situation;
-		ind_mod_portal.value             = access.data.ind_mod_portal;
-		ind_mod_crm.value                = access.data.ind_mod_crm;
-		ind_mod_store.value              = access.data.ind_mod_store;
-		qtd_contact.value                = access.data.qtd_contact;
-		qtd_franchise.value              = access.data.qtd_franchise;
-		qtd_franchise_collaborator.value = access.data.qtd_franchise_collaborator;
 
 		showInput.value   = true;
 	}
@@ -350,30 +302,6 @@ const handleSave = async () => {
 	{
 		return show_msgbox('O Campo DATA FIM é obrigatório!', 'warning');
 	}
-	if(empty(ind_mod_portal.value))
-	{
-		return show_msgbox('O Campo MÓDULO PORTAL é obrigatório!', 'warning');
-	}
-	if(empty(ind_mod_crm.value))
-	{
-		return show_msgbox('O Campo MÓDULO CRM é obrigatório!', 'warning');
-	}
-	if(empty(ind_mod_store.value))
-	{
-		return show_msgbox('O Campo MÓDULO LOJA é obrigatório!', 'warning');
-	}
-	if(empty(qtd_contact.value))
-	{
-		return show_msgbox('O Campo QUANTIDADE DE CONTATOS é obrigatório!', 'warning');
-	}
-	if(empty(qtd_franchise.value))
-	{
-		return show_msgbox('O Campo QUANTIDADE DE FRANQUEADOS é obrigatório!', 'warning');
-	}
-	if(empty(qtd_franchise_collaborator.value))
-	{
-		return show_msgbox('O Campo QUANTIDADE DE COLABORADORES DO FRANQUEADO é obrigatório!', 'warning');
-	}
 	if(empty(situation.value))
 	{
 		return show_msgbox('O Campo SITUAÇÃO é obrigatório!', 'warning');
@@ -388,12 +316,6 @@ const handleSave = async () => {
 			type : type.value,
 			date_start : date_start.value,
 			date_end: date_end.value,
-			ind_mod_portal : ind_mod_portal.value,
-			ind_mod_crm : ind_mod_crm.value,
-			ind_mod_store : ind_mod_store.value,
-			qtd_contact : qtd_contact.value,
-			qtd_franchise : qtd_franchise.value,
-			qtd_franchise_collaborator : qtd_franchise_collaborator.value,
 			situation: situation.value
 		});
 		return show_msgbox(response, 'success');

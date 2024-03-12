@@ -30,6 +30,6 @@ const store = useStore();
 const toggleSidebar = computed(() => store.state.toggleSidebar);
 
 onBeforeMount(() => {
-	document.title = 'Controlei';
+	document.title = 'Avisa Envio';
 });
 </script>

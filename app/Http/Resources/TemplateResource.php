@@ -15,7 +15,7 @@ class TemplateResource extends JsonResource
 			'id'                    => $this->id,
 			'type'                  => $this->type,
 			'title'                 => $this->title,
-			'message'               => $this->message,
+			'message'               => str_replace("<br/>", "\n", $this->message),
 			'situation'             => $this->situation,
 			'filename_1'            => $this->filename_1,
 			'file_1'                => $this->file_1,

@@ -88,7 +88,7 @@ const routes = [
 				component: Tracking,
 				meta: { 
 					auth: true,
-					can: ['show-validated-access', 'access_tracking']
+					can: ['show-tracking', 'show-validated-access', 'access_tracking']
 				}
 			},
 			// Configuration
@@ -107,7 +107,7 @@ const routes = [
 				component: ConfigIntegrationWhatsApp,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'show-module-crm', 'access_config_integration_whatsapp']
+					can: ['show-collaborator', 'show-validated-access', 'access_config_integration_whatsapp']
 				}
 			},
 			{
@@ -116,7 +116,7 @@ const routes = [
 				component: ConfigImport,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'show-module-crm', 'access_config_import_contact']
+					can: ['show-collaborator', 'show-validated-access', 'access_config_import']
 				}
 			},
 			// End Configuration

@@ -43,31 +43,31 @@
 						<tr>
 							<th colspan="2">
 								<div>
-									<table>
+									<table class="table_event">
 										<tbody v-if="data.tracking_events && data.tracking_events.length > 0">
-											<tr v-for="(item_event, index_event) in data.tracking_events" :key="index_annotation">
+											<tr v-for="(item_event, index_event) in data.tracking_events" :key="index_annotation" class="table_event_tr">
 												<th colspan="2" class="event-info">
 													<br/>
-													<table class="table_event">
+													<table class="table_event_internal">
 														<tbody>
 															<tr>
 																<th><b>Data</b>:</th>
-																<td class="event-title">{{ formatDateTime(item_event.date_event) }}</td>
+																<td class="td_format">{{ formatDateTime(item_event.date_event) }}</td>
 															</tr>
 															<tr>
 																<th><b>Status</b>:</th>
-																<td class="event-title">{{ item_event.msg_event }}</td>
+																<td class="td_format">{{ item_event.msg_event }}</td>
 															</tr>
 															<tr>
 																<th><b>Template</b>:</th>
-																<td class="event-title">{{ item_event.template && item_event.template.title }}</td>
+																<td class="td_format">{{ item_event.template && item_event.template.title }}</td>
 															</tr>
 															<tr>
 																<th><b>Situação</b>:</th>
-																<td class="communication-situation">
-																	<p v-if="item_event.status_send == 1" class="status-send">Enviado</p>
-																	<p v-else-if="item_event.status_send == 0" class="status-scheduled">Pendente</p>
-																	<p v-else class="td-situation">Falha: <br><i class="fas fa-exclamation-triangle"></i> {{ item_event.failure_reason }}</p>
+																<td>
+																	<p v-if="item_event.status_send == 1" class="status-send td_format">Enviado</p>
+																	<p v-else-if="item_event.status_send == 0" class="status-scheduled td_format">Pendente</p>
+																	<p v-else class="td-situation td_format">Falha: <br><i class="fas fa-exclamation-triangle"></i> {{ item_event.failure_reason }}</p>
 																</td>
 															</tr>
 														</tbody>
@@ -77,7 +77,7 @@
 										</tbody>
 										<tbody v-else>
 											<tr>
-												<th colspan="2" class="center-text">Nenhuma evento encontrado.</th>
+												<th colspan="2" class="center-text">Nenhum evento encontrado.</th>
 											</tr>
 										</tbody>
 									</table>
@@ -166,6 +166,9 @@
 .inactive {
 	color:#ff0000;
 }
+.center-text {
+	text-align: center;
+}
 .td_format {
 	font-size: 10.5px !important;
 }
@@ -182,7 +185,7 @@
 	margin-top: 5px;
 	text-align: center;
 }
-.table_event {
+.table_event_internal {
 	text-align: lef !important;
 	vertical-align: top;
 	padding: 2px;
@@ -190,6 +193,9 @@
 	white-space: nowrap;
 	width: 12%;
 	font-size: 12px;
+}
+.table_event tbody .table_event_tr {
+	background: #eee;
 }
 </style>
 <script setup>

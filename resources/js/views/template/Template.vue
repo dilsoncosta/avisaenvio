@@ -12,7 +12,7 @@
 					<div>
 						<a href="#" class="f_show_register" @click="showModalCreate" v-if="$can('edit_template')"><i class="fas fa-lg fa-plus"></i></a>
 						<a href="#" class="f_show_register_disabled" v-else><i class="fas fa-lg fa-plus"></i></a>
-						<a href="#" class="f_show_delete" @click="destroyCrmTemplate" v-if="$can('delete_template')"><i class="fas fa-lg fa-trash-alt"></i></a>
+						<a href="#" class="f_show_delete" @click="destroyTemplate" v-if="$can('delete_template')"><i class="fas fa-lg fa-trash-alt"></i></a>
 						<a href="#" class="f_show_delete_disabled" v-else><i class="fas fa-lg fa-trash-alt"></i></a>
 					</div>
 				</div>
@@ -53,9 +53,9 @@
 								</td>
 								<td>
 									<div class="options">
-										<a v-if="$can('edit_template')"><i class="fas fa-pen-square fa-lg fa-fw" @click.prevent="btnRecordTemplate(item)"></i></a>
+										<a v-if="$can('edit_template')"><i class="fas fa-pen-square fa-lg fa-fw" @click.prevent="btnEditTemplate(item)"></i></a>
 										<a v-else><i class="fas fa-pen-square fa-lg fa-fw btn_color_disabled"></i></a>
-										<a v-if="$can('view_template')"><i class="fas fa-file-alt fa-lg fa-fw" @click.prevent="btnRecordCrmTemplate(item)"></i></a>
+										<a v-if="$can('view_template')"><i class="fas fa-file-alt fa-lg fa-fw" @click.prevent="btnRecordTemplate(item)"></i></a>
 										<a v-else><i class="fas fa-file-alt fa-lg fa-fw btn_color_disabled"></i></a>
 									</div>
 								</td>
@@ -91,7 +91,7 @@
 			transition="vfm"
 			overlay-transition="vfm"
 		>
-			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :optionsBusiness="optionsBusiness" :update="update" :titleModal="titleModal" :optionsFunnels="optionsFunnels"/>
+			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :optionsBusiness="optionsBusiness" :update="update" :titleModal="titleModal"/>
 		</vue-final-modal>
 		<!-- End Modal Create e Update -->
 		<!--Modal View -->
@@ -393,8 +393,7 @@ import Record from './partials/Record.vue';
 import CreateUpdate from './partials/CreateUpdate.vue';
 import { useStore } from 'vuex';
 import Pagination from '@/components/Pagination.vue';
-import { show_msgbox, confirm_alert, convertToUpperCase } from '@/helpers/Helpers';
-import Swal from 'sweetalert2';
+import { show_msgbox, confirm_alert } from '@/helpers/Helpers';
 
 /* Ref or Reactive */
 const statusModalCreateUpdate = ref(false);
@@ -413,32 +412,11 @@ const formRecord = ref({});
 const titleModal = ref('');
 const update    = ref(false);
 const items     = ref([]);
-const optionsFunnels = ref([]);
-const optionsBusiness = ref([]);
 
 /* Events */
 watch(() => store.state.template.data,
 			() => {
 				items.value = store.state.template.data;
-});
-
-/* Events */
-onMounted( async () => {
-	// Search Business
-	try {
-		const response = await store.dispatch('generateOptionsTemplateBusiness');
-		
-		response.forEach(item => {
-			optionsBusiness.value.push({ value: item.id, label: `${convertToUpperCase(item.name)}` });
-		});
-	}
-	catch(error)
-	{
-		if(error.status != 404)
-		{
-			return show_msgbox(error.data.message, 'warning');
-		}
-	}
 });
 
 /* Functions */
@@ -504,15 +482,16 @@ const changePage = async (value) => {
 	refreshTableOfDatas(value);
 };
 
-const btnRecordTemplate = async (item) => {
+const btnEditTemplate = async (item) => {
 	form.value = item;
 	update.value = true;
 	statusModalCreateUpdate.value = true;
 	titleModal.value = 'Editar Template';
 }
 
-const btnRecordCrmTemplate = async (item) => {
+const btnRecordTemplate = async (item) => {
 	formRecord.value = item;
+	update.value = true;
 	statusModalRecord.value = true;
 	titleModal.value = 'Visualizar Template';
 }
@@ -534,7 +513,7 @@ const handleCheckboxAll = () => {
 	});
 }
 
-const destroyCrmTemplate = async () => {
+const destroyTemplate = async () => {
 	if(checkboxIds.value.length == 0)
 	{
 		return show_msgbox('Nenhum registro selecionado!', 'warning');

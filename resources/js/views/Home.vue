@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<div class="page-content">
-			<div :class="user.category == 'FR' || user.category == 'FRCLB'  ? {'container_1' :'container_1'} : {'container' :'container'}" >
+			<div class="container" >
 				<div class="header">
 					<div>
 						<ol class="page-content-title">
@@ -13,60 +13,10 @@
 				</div>
 				<br/>
 				<div class="content">
-					<div v-if="($can('show-portal')|| $can('show-portal')) && $can('show-module-portal')">
-						<p class="title"><b>Portal / Franqueado:</b></p>
-						<div class="total">{{ portal_total_franchise }}</div>
-						<router-link :to="{name : 'portal.franchise'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="($can('show-page-informative') || $can('show-portal') && $can('show-module-portal'))">
-						<p class="title"><b>Portal / Informativo:</b></p>
-						<div class="total">{{ portal_total_informative }}</div>
-						<router-link :to="{name : 'portal.informative'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="($can('show-page-checklist') || $can('show-portal')) && $can('show-module-portal')">
-						<p class="title"><b>Portal / Checklist:</b></p>
-						<div class="total">{{ portal_total_checklist }}</div>
-						<router-link :to="{name : 'portal.checklist'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="($can('show-page-training') || $can('show-portal')) && $can('show-module-portal')">
-						<p class="title"><b>Portal / Treinamento:</b></p>
-						<div class="total">{{ portal_total_training }}</div>
-						<router-link :to="{name : 'portal.training'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="($can('show-page-marketing') || $can('show-portal')) && $can('show-module-portal')">
-						<p class="title"><b>Portal / Marketing:</b></p>
-						<div class="total">{{ portal_total_marketing }}</div>
-						<router-link :to="{name : 'portal.material'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="($can('show-page-manual') || $can('show-portal')) && $can('show-module-portal')">
-						<p class="title"><b>Portal / Manual:</b></p>
-						<div class="total">{{ portal_total_manual }}</div>
-						<router-link :to="{name : 'portal.material'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="$can('show-crm') && $can('show-module-crm')">
-						<p class="title"><b>Crm / Contato:</b></p>
-						<div class="total">{{ crm_total_contact }}</div>
-						<router-link :to="{name : 'crm.contact'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="$can('show-crm') && $can('show-module-crm') && user.category == 'CL'">
-						<p class="title"><b>Crm / Vendedores:</b></p>
-						<div class="total">{{ crm_total_seller }}</div>
-						<router-link :to="{name : 'crm.seller'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="$can('show-crm') && $can('show-module-crm')">
-						<p class="title"><b>Crm / Mensagem:</b></p>
-						<div class="total">{{ crm_total_message }}</div>
-						<router-link :to="{name : 'crm.message'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="$can('show-crm') && $can('show-module-crm')">
-						<p class="title"><b>Crm / Tarefa:</b></p>
-						<div class="total">{{ crm_total_task }}</div>
-						<router-link :to="{name : 'crm.task'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
-					</div>
-					<div v-if="$can('show-crm') && $can('show-module-crm')">
-						<p class="title"><b>Crm / Evento:</b></p>
-						<div class="total">{{ crm_total_event }}</div>
-						<router-link :to="{name : 'crm.event'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
+					<div v-if="user.category == 'CL' || user.category == 'CLB'">
+						<p class="title"><b>Rastreio:</b></p>
+						<div class="total">{{ tracking }}</div>
+						<router-link :to="{name : 'tracking'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
 					</div>
 					<div v-if="user.category == 'CL' || user.category == 'CLB'">
 						<p class="title"><b>Configuração / Colaborador:</b></p>
@@ -81,31 +31,6 @@
 						<div class="total access expiration" v-if="access == 'E'">Expirado</div>
 						<div class="total access canceled" v-if="access == 'C'">Cancelado</div>
 						<a href="#"><p class="see_details"><b>+ Detalhes</b></p></a>
-					</div>
-				</div>
-				<div class="box-data">
-					<div class="box-data-internal" v-if="$can('show-page-informative')">
-						<h5>Últimos Informativos</h5>
-						<ul v-if="portal_last_informative.length > 0">
-							<li v-for="(item, index) in portal_last_informative" :key="index">
-								<div>
-									<p>{{ convertToUpperCase(item.name) }}</p>
-								</div>
-							</li>
-						</ul>
-						<p v-else><i>Nenhum informativo cadastrado!</i></p>
-					</div>
-					<div class="box-data-internal" v-if="$can('show-page-training')">
-						<h5>Últimos Treinamentos</h5>
-						<ul v-if="portal_last_training.length > 0">
-							<li v-for="(item, index) in portal_last_training" :key="index">
-								<div>
-									<p>{{ convertToUpperCase(item.name) }}</p>
-									<router-link :to="{name: 'portal.page.training.preview', params: {uuid: item.uuid}}" style="color:#0000ff;cursor:pointer;"><i class="fas fa-eye"></i></router-link>
-								</div>
-							</li>
-						</ul>
-						<p v-else><i>Nenhum treinamento cadastrado!</i></p>
 					</div>
 				</div>
 			</div>
@@ -177,7 +102,7 @@ main {
 }
 .content {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 10px;
 	margin-top: 13px;
 }
@@ -256,56 +181,23 @@ main {
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { show_msgbox, convertToUpperCase } from '@/helpers/Helpers';
+import { show_msgbox } from '@/helpers/Helpers';
 
 /* Ref or Reactive */
-const store              = useStore();
-const portal_total_informative  = ref(0);
-const portal_total_checklist    = ref(0);
-const portal_total_training     = ref(0);
-const portal_total_marketing    = ref(0);
-const portal_total_manual       = ref(0);
-const portal_total_franchise    = ref(0);
-
-const portal_last_informative   = ref([]);
-const portal_last_training      = ref([]);
-
-const crm_total_event    = ref(0);
-const crm_total_task     = ref(0);
-const crm_total_seller   = ref(0);
-const crm_total_contact  = ref(0);
-const crm_total_message  = ref(0);
-
+const store    = useStore();
+const tracking = ref(0);
 const config_total_collaborator = ref(0);
-
-const access             = store.state.auth.me.access;
-const user               = store.state.auth.me;
+const access   = store.state.auth.me.access;
+const user     = store.state.auth.me;
 
 /* Events */
 onMounted( async () => {
 	store.commit('CHANGE_LOADING', true);
 
 	try {
-		const response = await store.dispatch('getDatasDashbboard', {
-			flow: 0,
-			segmentation : store.state.auth.me.segmentations_frachise
-		});
-		
-		portal_total_informative.value = response.portal_total_informative;
-		portal_total_checklist.value   = response.portal_total_checklist;
-		portal_total_training.value    = response.portal_total_training;
-		portal_total_marketing.value   = response.portal_total_marketing;
-		portal_total_manual.value      = response.portal_total_manual;
-		portal_total_franchise.value   = response.portal_total_franchise;
-		portal_last_training.value     = response.portal_last_training.data;
-		portal_last_informative.value  = response.portal_last_informative.data;
+		const response = await store.dispatch('getDatasDashbboard');
 
-		crm_total_event.value    = response.crm_total_event;
-		crm_total_task.value     = response.crm_total_task;
-		crm_total_seller.value   = response.crm_total_seller;
-		crm_total_contact.value  = response.crm_total_contact;
-		crm_total_message.value  = response.crm_total_message;
-		
+		tracking.value = response.tracking;
 		config_total_collaborator.value = response.config_total_collaborator;
 	}
 	catch(error) {

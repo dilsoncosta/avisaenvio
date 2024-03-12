@@ -21,7 +21,7 @@
 						</tr>
 						<tr>
 							<th><b>Mensagem:</b></th>
-							<td class="td_format"><a @click.prevent="handleSendModelWhatsApp()" class="send_whatsapp" role="button"><b>Enviar Modelo</b></a></td>
+							<td class="td_format" v-html="data.message ? data.message.split('\r\n').join('<br>') : ''"></td>
 						</tr>
 						<tr>
 							<th><b>Arquivo #1:</b></th>
@@ -168,47 +168,5 @@ const emit = defineEmits(['hideModalRecord']);
 /* Functions */
 const hideModal = () => {
 	emit('hideModalRecord', false);
-}
-
-const handleSendModelEmail = async () => {
-	if(await confirm_alert('Tem certeza que deseja enviar o modelo de template. Você receberá o modelo no email cadastrado na sua conta. Confirma?') == true)
-	{
-		store.commit('CHANGE_LOADING', true);
-		
-		try {
-			const response = await store.dispatch('sendModelEmailCrmTemplate', {
-				id: props.data.id
-			});
-			
-			return show_msgbox(response, 'success');
-		}
-		catch(error) {
-			return show_msgbox(error.data.message, 'warning');
-		}
-		finally {
-			store.commit('CHANGE_LOADING', false);
-		}
-	}
-}
-
-const handleSendModelWhatsApp = async () => {
-	if(await confirm_alert('Tem certeza que deseja enviar o modelo de template. Você receberá o modelo no whatsapp cadastrado na sua conta. Confirma?') == true)
-	{
-		store.commit('CHANGE_LOADING', true);
-		
-		try {
-			const response = await store.dispatch('sendModelWhatsAppCrmTemplate', {
-				id: props.data.id
-			});
-			
-			return show_msgbox(response, 'success');
-		}
-		catch(error) {
-			return show_msgbox(error.data.message, 'warning');
-		}
-		finally {
-			store.commit('CHANGE_LOADING', false);
-		}
-	}
 }
 </script>

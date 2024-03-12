@@ -14,7 +14,7 @@ export default {
 	actions: {
 		async getDatasDashbboard(context, params) {
 			try {
-				const response = await Api.apiPost('/portal/page/dashboard', params);
+				const response = await Api.apiPost('/dashboard', params);
 				return Promise.resolve(response.data.data);
 			}
 			catch(error) {
