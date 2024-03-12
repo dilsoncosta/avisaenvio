@@ -6,7 +6,7 @@
 					<div>
 						<ol class="page-content-title">
 							<li><a>Configuração</a></li>
-							<li class="active">Colaborador</li>
+							<li class="active">Colaborador </li>
 						</ol>
 					</div>
 					<div>
