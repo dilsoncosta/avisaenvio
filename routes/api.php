@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([], base_path("routes/api-not-auth.php"));
-Route::group([], base_path("routes/api-webhook.php"));
 
 Route::middleware('auth:sanctum')->group(function (){
 	
