@@ -59,7 +59,7 @@
 								<td class="td_format">{{ item.object }}</td>
 								<td v-if="item.situation == 0" class="td_format"><b class="pendent">Pendente</b></td>
 								<td v-else-if="item.situation == 1" class="td_format"><b class="in_progress">Em Andamento</b></td>
-								<td v-else><b class="concluded">Concluido</b></td>
+								<td v-else class="td_format"><b class="concluded">Concluido</b></td>
 							</tr>
 						</tbody>
 					</table>

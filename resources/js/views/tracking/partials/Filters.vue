@@ -13,9 +13,9 @@
 				<label>Filtro - Situação:</label>
 				<select name="srch_situation" @input='emitValue("srch_situation", $event.target.value)'>
 					<option></option>
-					<option value="1">Pendente</option>
-					<option value="2">Em Andamento</option>
-					<option value="3">Concluido</option>
+					<option value="0">Pendente</option>
+					<option value="1">Em Andamento</option>
+					<option value="2">Concluido</option>
 				</select>
 			</div>
 		</div>
