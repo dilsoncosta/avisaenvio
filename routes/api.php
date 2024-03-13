@@ -15,7 +15,7 @@ Route::middleware('auth:sanctum')->group(function (){
 	Route::group([], base_path("routes/api-collaborator.php"));
 	Route::group([], base_path("routes/api-config-import.php"));
 	Route::group([], base_path("routes/api-generate-options.php"));
-	Route::group([], base_path("routes/api-tracking.php"));
+	Route::group([], base_path("routes/api-tracking.php")); 
 	
 	Route::group([], base_path("routes/api-cfg-integration-whatsapp.php"));
 	Route::group([], base_path("routes/api-config-import.php"));
