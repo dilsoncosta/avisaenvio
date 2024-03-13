@@ -131,7 +131,16 @@ class DownloadTrackingEventsCommand extends Command
 				else if(stripos($item->status, 'encaminhado') !== false)
 				{
 					$status_event = '2';
-					$msg_event    = $item->status.' - '.$item->subStatus[1];
+					$msg_event    = $item->status;
+					
+					if(isset($item->subStatus[1]))
+					{
+						$msg_event .= ' - '.$item->subStatus[1];
+					}
+					else
+					{
+						$msg_event .= ' - '.$item->local;
+					}
 				}
 				else if(stripos($item->status, 'entrega') !== false)
 				{
