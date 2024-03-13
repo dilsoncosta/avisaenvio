@@ -45,8 +45,6 @@ class DownloadTrackingEventsCommand extends Command
 		{
 			$response = Http::get('https://api.linketrack.com/track/json?user='.config('app.api_link_track_user').'&token='.config('app.api_link_track_secret_key').'&codigo='.$tracking->object.'');
 			
-			Log::info($response);
-			
 			$tmp = $response->object();
 			
 			if($response->status() != 200){ continue; }
