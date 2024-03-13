@@ -22,8 +22,8 @@
 						</tr>
 						<tr>
 							<th><b>Situação:</b></th>
-							<td v-if="data.situation == 1" class="td_format"><b class="pendent">Pendente</b></td>
-							<td v-else-if="data.situation == 2" class="td_format"><b class="in_progress">Em Andamento</b></td>
+							<td v-if="data.situation == 0" class="td_format"><b class="pendent">Pendente</b></td>
+							<td v-else-if="data.situation == 1" class="td_format"><b class="in_progress">Em Andamento</b></td>
 							<td v-else><b class="concluded">Concluido</b></td>
 						</tr>
 						<tr>

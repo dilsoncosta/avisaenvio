@@ -240,17 +240,17 @@ let menus = ref([
 			{
 				title: 'Suporte',
 				href: '/',
-				can: ['show-home'],
+				can: ['show-home', 'show-home'],
 			},
 			{
 				title: 'Tutoriais',
 				href: '/',
-				can: ['show-home'],
+				can: ['show-home', 'show-home'],
 			},
 			{
 				title: 'O que há de novo?',
 				href: '/',
-				can: ['show-home'],
+				can: ['show-home', 'show-home'],
 			}
 		]
 	},
