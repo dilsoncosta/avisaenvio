@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationTrackingWhatsAppJob;
+use Illuminate\Support\Facades\Log;
 
 class DownloadTrackingEventsCommand extends Command
 {
@@ -43,6 +44,8 @@ class DownloadTrackingEventsCommand extends Command
 		foreach ($trackings as $key => $tracking)
 		{
 			$response = Http::get('https://api.linketrack.com/track/json?user='.config('app.api_link_track_user').'&token='.config('app.api_link_track_secret_key').'&codigo='.$tracking->object.'');
+			
+			Log::info($response);
 			
 			$tmp = $response->object();
 			
