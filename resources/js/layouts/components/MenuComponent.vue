@@ -294,7 +294,7 @@ onMounted(() => {
 			for (let subIndex = menu.submenus.length - 1; subIndex >= 0; subIndex--)
 			{
 				const submenu = menu.submenus[subIndex];
-				console.log(submenu);
+				
 				switch (submenu.href)
 				{
 					case '/tracking':
@@ -308,8 +308,6 @@ onMounted(() => {
 							break;
 					}
 			}
-
-			console.log(menu);
 		}
 	});
 });

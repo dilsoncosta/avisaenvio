@@ -33,7 +33,6 @@ class DownloadTrackingEventsCommand extends Command
 						->join('integration_whatsapp', 'integration_whatsapp.tenant_id', '=', 'trackings.tenant_id')
 						->where('trackings.situation', '0')
 						->orWhere('trackings.situation', '1')
-						->limit(1)
 						->get();
 		
 		if ($trackings->isEmpty())

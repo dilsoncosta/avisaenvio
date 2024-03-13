@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\TrackingResource;
-use App\Services\trackingService;
+use App\Services\TrackingService;
 
 class TrackingController extends Controller
 {
