@@ -49,7 +49,11 @@ class DownloadTrackingEventsCommand extends Command
 			
 			$tmp = $response->object();
 			
-			if($response->status() != 200){ continue; }
+			if($response->status() != 200)
+			{ 
+				sleep(2);
+				continue; 
+			}
 			
 			$tmp->eventos = array_reverse($tmp->eventos);
 			
@@ -72,7 +76,7 @@ class DownloadTrackingEventsCommand extends Command
 			
 			if($posted == 1 && $delivered == 1)
 			{
-				if(TrackingEvent::where('date_event', $date_hour_event)->where('tracking_id', $tracking->id)->exists()){ continue; }
+				if(TrackingEvent::where('date_event', $date_hour_event)->where('tracking_id', $tracking->id)->exists()){ sleep(2);continue; }
 				
 				$template = $this->getTemplateByStatus($tracking->tenant_id, 4);
 				
@@ -117,6 +121,7 @@ class DownloadTrackingEventsCommand extends Command
 				);
 				
 				SendNotificationTrackingWhatsAppJob::dispatch($obj_data);
+				sleep(2);
 				continue;
 			}
 			
