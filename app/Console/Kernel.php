@@ -9,7 +9,7 @@ class Kernel extends ConsoleKernel
 {
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('send:download_tracking_events')->everyTenMinutes()->withoutOverlapping();
+		$schedule->command('send:download_tracking_events')->everyThreeMinutes()->withoutOverlapping();
 	}
 	
 	protected function commands()
