@@ -109,8 +109,8 @@ class SendNotificationTrackingWhatsAppJob implements ShouldQueue
 		if(!empty($this->data->message))
 		{
 			$template = str_replace('[NOME]',  ucwords(strtolower($this->data->destination)), $this->data->message);
-			$template = str_replace('[STATUS] ', $this->data->msg_event, $template);
-			$template = str_replace('[DATA] ', Carbon::createFromFormat('Y-m-d H:i:s', $this->data->date_event)->format('d/m/Y H:i:s'), $template);
+			$template = str_replace('[STATUS]', $this->data->msg_event, $template);
+			$template = str_replace('[DATA]', Carbon::createFromFormat('Y-m-d H:i:s', $this->data->date_event)->format('d/m/Y H:i:s'), $template);
 			$template = str_replace('[WHATSAPP]', Helpers::formata_telefone($this->data->whatsapp), $template);
 			$template = str_replace('[OBJETO]',  $this->data->object, $template);
 			
