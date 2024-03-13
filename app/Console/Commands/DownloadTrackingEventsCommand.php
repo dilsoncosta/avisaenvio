@@ -212,7 +212,7 @@ class DownloadTrackingEventsCommand extends Command
 				SendNotificationTrackingWhatsAppJob::dispatch($obj_data);
 			}
 			
-			sleep(1);
+			sleep(2);
 		}
 	}
 
