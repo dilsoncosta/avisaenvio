@@ -67,7 +67,7 @@
 																<td>
 																	<p v-if="item_event.status_send == 1" class="status-send td_format">Enviado</p>
 																	<p v-else-if="item_event.status_send == 0" class="status-scheduled td_format">Pendente</p>
-																	<p v-else class="td-situation td_format">Falha: <br><i class="fas fa-exclamation-triangle"></i> {{ item_event.failure_reason }}</p>
+																	<p v-else class="status-failed td_format"><i class="fas fa-exclamation-triangle"></i> {{ item_event.msg_send }}</p>
 																</td>
 															</tr>
 														</tbody>
@@ -196,6 +196,9 @@
 }
 .table_event tbody .table_event_tr {
 	background: #eee;
+}
+.status-failed {
+	color: #ff0000;
 }
 </style>
 <script setup>
