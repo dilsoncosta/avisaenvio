@@ -25,7 +25,7 @@
 				</div>
 				<div class="form_group">
 					<label><span class="input_required">*</span> Transportadora:</label>
-					<select name="type" v-model="integration">
+					<select name="type" v-model="shipping_company">
 						<option value="0">Correios</option>
 						<option value="1">Jadlog</option>
 					</select>
@@ -183,7 +183,7 @@ const code             = ref('');
 const destination      = ref('');
 const whatsapp         = ref('');
 const object           = ref('');
-const integration = ref('0');
+const shipping_company = ref('0');
 
 /* Events */
 watch(() => props.form, (value) => {
@@ -200,7 +200,7 @@ watch(() => props.form, (value) => {
 		destination.value      = data.destination;
 		whatsapp.value         = data.whatsapp;
 		object.value           = data.object;
-		integration.value = data.integration;
+		shipping_company.value = data.shipping_company;
 	}
 });
 
@@ -234,9 +234,9 @@ const submit = async () => {
 	{
 		return show_msgbox('O Campo OBJETO é obrigatório!', 'warning');
 	}
-	if(empty(integration.value))
+	if(empty(shipping_company.value))
 	{
-		return show_msgbox('O Campo INTEGRAÇÃO é obrigatório!', 'warning');
+		return show_msgbox('O Campo TRANSPORTADORA é obrigatório!', 'warning');
 	}
 	
 	store.commit('CHANGE_LOADING', true);
@@ -249,7 +249,7 @@ const submit = async () => {
 		formData.append('destination', destination.value);
 		formData.append('whatsapp', whatsapp.value);
 		formData.append('object', object.value);
-		formData.append('integration', integration.value);
+		formData.append('shipping_company', shipping_company.value);
 		
 		if(props.update == false)
 		{
@@ -289,7 +289,7 @@ const clearInputs = () => {
 	destination.value      = '';
 	whatsapp.value         = '';
 	object.value           = '';
-	integration.value = '0';
+	shipping_company.value = '0';
 }
 
 const CODEOnlyNumbers = () => {

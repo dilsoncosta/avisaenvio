@@ -14,6 +14,20 @@
 			</div>
 			<br/>
 			<div class="container">
+				<div class="instructions">
+					<ol>
+						<li>Acesse o Melhor Envio;</li>
+						<li>Navegue até o menu "Integrações/Permissões de Acesso";</li>
+						<li>Clique no botão "Gerar Novo Token";</li>
+						<li>Marque a opção "Li e concordo com as condições descritas acima" e clique em "AVANÇAR";</li>
+						<li>Adicione o nome do token, por exemplo: "Avisa Envio";</li>
+						<li>Clique em "Selecionar Todos";</li>
+						<li>Em seguida, clique no botão "Gerar Token";</li>
+						<li>Agora, clique em "Copiar Token";</li>
+						<li>Cole no campo Token;</li>
+						<li>Por fim, ative a integração;</li>
+					</ol>
+				</div>
 				<table class="info_table_integration_best_shipping">
 					<tbody>
 						<tr>
@@ -209,7 +223,12 @@ img{
 .td_token {
 	vertical-align: top !important;
 }
+.instructions{
+	margin: 4px 18px 18px;
+	font-size: 14px;
+}
 /* End Content */
+
 </style>
 <script setup>
 import { onMounted, ref} from 'vue';

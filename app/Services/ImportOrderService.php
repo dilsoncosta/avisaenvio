@@ -65,7 +65,7 @@ class ImportOrderService
 					'destination'      => $item[0],
 					'whatsapp'         => $item[1],
 					'object'           => $item[3],
-					'integration'      => 2,
+					'integration'      => 1,
 					'shipping_company' => $request->shipping_company,
 					'situation'        => '0', 
 				]);

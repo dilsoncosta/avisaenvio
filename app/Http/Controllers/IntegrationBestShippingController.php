@@ -49,6 +49,11 @@ class IntegrationBestShippingController extends Controller
 	public function getStatusIntegrationBestShipping(Request $request)
 	{
 		$integration_best_shipping = $this->integrationBestShippingService->getIntegrationBestShipping($request);
+
+		if(!$integration_best_shipping)
+		{
+			return response()->json(array("status" => "1", "message" => "Integração inexistente!"), 404);
+		}
 		
 		return response()->json(array("status" => "1", "message" => "", "data" => new IntegrationBestShippingResource($integration_best_shipping)));
 	}

@@ -35,8 +35,14 @@
 						</tr>
 						<tr>
 							<th><b>Integração:</b></th>
-							<td v-if="data.integration == 0" class="td_format">Correios</td>
-							<td v-else class="td_format">JadLog</td>
+							<td v-if="data.integration == 0" class="td_format">Melhor Envio</td>
+							<td v-else-if="data.integration == 1" class="td_format">Importação Planilha</td>
+							<td v-else class="td_format">Cadastro Manual</td>
+						</tr>
+						<tr>
+							<th><b>Transportadora:</b></th>
+							<td v-if="data.shipping_company == 0" class="td_format">Correios</td>
+							<td v-else class="td_format">Jadlog</td>
 						</tr>
 						<tr>
 							<th><b>Criado em:</b></th>
@@ -181,7 +187,7 @@
 	color:#ff0000;
 }
 .center-text {
-	text-align: center;
+	text-align: center !important;
 }
 .td_format {
 	font-size: 10.5px !important;

@@ -63,8 +63,8 @@
 									</div>
 								</td>
 								<td class="td_format">{{ item.destination }}</td>
-								<td v-if="item.integration == 0" class="td_format">Correios</td>
-								<td v-else="item.integration == 1" class="td_format">JadLog</td>
+								<td v-if="item.shipping_company == 0" class="td_format">Correios</td>
+								<td v-else class="td_format">JadLog</td>
 								<td class="td_format">{{ item.code }}</td>
 								<td class="td_format">{{ item.object }}</td>
 								<td v-if="item.last_situation == 0" class="td_format"><b class="pending">Pendente</b></td>

@@ -62,11 +62,8 @@
 								<td class="td_format">{{ item.title }}</td>
 								<td v-if="item.type == 1" class="td_format">Pedido postado</td>
 								<td v-else-if="item.type == 2" class="td_format">Em trânsito</td>
-								<td v-else-if="item.type == 3" class="td_format">Em processo</td>
-								<td v-else-if="item.type == 4" class="td_format">Saiu entrega</td>
-								<td v-else-if="item.type == 5" class="td_format">Entregue</td>
-								<td v-else-if="item.type == 6" class="td_format">Em alerta</td>
-								<td v-else class="td_format">Com problemas</td>
+								<td v-else-if="item.type == 3" class="td_format">Saiu entrega</td>
+								<td v-else class="td_format">Entregue</td>
 								<td v-if="item.situation == 1" class="td_format"><b class="active">Ativo</b></td>
 								<td v-else class="td_format"><b class="inactive">Inativo</b></td>
 							</tr>

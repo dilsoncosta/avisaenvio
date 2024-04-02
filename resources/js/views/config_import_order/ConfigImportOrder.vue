@@ -32,11 +32,11 @@
 						</ol>
 				</div>
 				<div class="form_group">
-					<label><span class="input_required">*</span> Integração:</label>
-					<select name="type" v-model="type_integration">
+					<label><span class="input_required">*</span> Transportadora:</label>
+					<select name="type" v-model="shipping_company">
 						<option></option>
 						<option value="0">Correios</option>
-						<option value="1">Melhor Envio</option>
+						<option value="1">Jadlog</option>
 					</select>
 				</div>
 				<br/>
@@ -206,7 +206,7 @@ const path_import_tpl = import.meta.env.VITE_APP_PATH_IMPORT_TPL;
 const store = useStore();
 const fileList  = ref([]);
 const fileItems = ref([]);
-const type_integration = ref('');
+const shipping_company = ref('');
 
 /* Functions */
 const handleUploadFile = () => {
@@ -239,9 +239,9 @@ const removeFile = async (index, item) => {
 }
 
 const submit = async () => {
-	if(empty(type_integration.value))
+	if(empty(shipping_company.value))
 	{
-		return show_msgbox('O Campo INTEGRAÇÃO é obrigatório!', 'warning');
+		return show_msgbox('O Campo TRANSPORTADORA é obrigatório!', 'warning');
 	}
 	if(fileItems.value.length == 0)
 	{
@@ -274,7 +274,7 @@ const submit = async () => {
 	try {
 		let response = '';
 		let data = {
-			type_integration: type_integration.value,
+			shipping_company: shipping_company.value,
 			file: fileList.value[0]
 		};
 		
@@ -291,7 +291,7 @@ const submit = async () => {
 }
 
 const clearInputs = async () => {
-	type_integration.value = '';
+	shipping_company.value = '';
 	fileList.value = [];
 	fileItems.value = [];
 }

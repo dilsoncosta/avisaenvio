@@ -14,6 +14,7 @@ class OrderEvent extends Model
 	protected $fillable = [
 		'tenant_id',
 		'uuid',
+		'id',
 		'order_id',
 		'template_id',
 		'date_event',

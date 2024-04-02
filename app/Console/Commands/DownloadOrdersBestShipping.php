@@ -68,7 +68,8 @@ class DownloadOrdersBestShipping extends Command
 					'destination'      => $item->to->name,
 					'whatsapp'         => '55'.$item->to->phone,
 					'object'           => $item->tracking,
-					'type_integration' => $this->shippingCompany[$item->service->company->name],
+					'integration'      => 0,
+					'shipping_company' => $this->shippingCompany[$item->service->company->name],
 					'last_situation'   => 0,
 				]);
 			}
