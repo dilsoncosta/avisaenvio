@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule)
 	{
 		$schedule->command('send:download_order_best_shipping')->everyTenMinutes()->withoutOverlapping();
-		$schedule->command('send:download_events_order')->everyMinute()->withoutOverlapping();
+		$schedule->command('send:download_events_order')->everyTenMinutes()->withoutOverlapping();
 		//$schedule->command('send:download_order_best_shipping')->hourly()->withoutOverlapping();
 		//$schedule->command('send:download_events_order')->cron('0 1,8,13,18,23 * * *')->withoutOverlapping();
 	}
