@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{
-	Tracking,
+	Order,
 	Collaborator
 };
 
 class HomeController extends Controller
 {
-	private $tracking;
+	private $order;
 	private $collaborator;
 	
 	public function __construct(
-		Tracking $tracking,
+		Order $order,
 		Collaborator $collaborator
 	)
 	{
-		$this->tracking = $tracking;
+		$this->order = $order;
 		$this->collaborator = $collaborator;
 	}
 
@@ -32,16 +32,16 @@ class HomeController extends Controller
 	private function getData()
 	{
 		$data = [
-			'tracking'                  => $this->getTotalTracking(),
+			'order'                     => $this->getTotalOrder(),
 			'config_total_collaborator' => $this->getConfigTotalCollaborators(),
 		];
 		
 		return $data;
 	}
 	
-	private function getTotalTracking()
+	private function getTotalOrder()
 	{
-		return $this->tracking->count();
+		return $this->order->count();
 	}
 
 	private function getConfigTotalCollaborators()

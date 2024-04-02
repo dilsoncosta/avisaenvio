@@ -7,11 +7,12 @@ import helpers from './modules/helpers';
 import generate_options from './modules/generate_options';
 
 import template from './modules/template';
-import tracking from './modules/tracking';
+import order from './modules/order';
 
 /* Configuration */
 import conf_integration_whatsapp from './modules/conf_integration_whatsapp';
-import config_import from './modules/config_import';
+import config_import_order from './modules/config_import_order';
+import conf_integration_best_shipping from './modules/conf_integration_best_shipping';
 
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
@@ -58,8 +59,9 @@ export default createStore({
 		admin_resource,
 		template,
 		conf_integration_whatsapp,
-		config_import,
-		tracking
+		config_import_order,
+		order,
+		conf_integration_best_shipping
 	},
 	plugins: [
     createPersistedState({

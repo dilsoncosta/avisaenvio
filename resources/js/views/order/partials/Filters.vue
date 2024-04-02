@@ -2,25 +2,26 @@
 	<div class="container_filters">
 		<div class="filters_form_container">
 			<div class="form_group">
-				<label>Filtro - Titulo:</label>
-				<input type="text" name="srch_title" @input='emitValue("srch_title", $event.target.value)'>
+				<label>Filtro - Código Pedido:</label>
+				<input type="text" name="srch_code" @input='emitValue("srch_code", $event.target.value)'>
 			</div>
 			<div class="form_group">
-				<label>Filtro - Tipo:</label>
-				<select name="srch_type" @input='emitValue("srch_type", $event.target.value)'>
+				<label>Filtro - Destinatário:</label>
+				<input type="text" name="srch_destination" @input='emitValue("srch_destination", $event.target.value)'>
+			</div>
+			<div class="form_group">
+				<label>Filtro - Objeto:</label>
+				<input type="text" name="srch_object" @input='emitValue("srch_object", $event.target.value)'>
+			</div>
+			<div class="form_group">
+				<label>Filtro - Última Situação:</label>
+				<select name="srch_situation" @input='emitValue("srch_situation", $event.target.value)'>
 					<option></option>
+					<option value="0">Pendente</option>
 					<option value="1">Pedido postado</option>
 					<option value="2">Em trânsito</option>
 					<option value="3">Saiu entrega</option>
 					<option value="4">Entregue</option>
-				</select>
-			</div>
-			<div class="form_group">
-				<label>Filtro - Situação:</label>
-				<select name="srch_situation" @input='emitValue("srch_situation", $event.target.value)'>
-					<option></option>
-					<option value="1">Ativo</option>
-					<option value="0">Inativo</option>
 				</select>
 			</div>
 		</div>
@@ -29,7 +30,7 @@
 <style scoped>
 .filters_form_container {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 10px;
 	margin-top: 18px;
 }
@@ -59,22 +60,19 @@ input:disabled {
 .container_filters {
 	margin: 10px 0px;
 }
-.multiselect {
-	margin-top:5px;
-}
 </style>
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 
 /* Props */
-const props = defineProps({
-	srch_type: String,
-	srch_title: String,
-	srch_situation: String
+defineProps({
+	srch_destination: String,
+	srch_object: String,
+	srch_situation: String,
+	srch_code: String
 });
 
 /* Emits */
-const emit = defineEmits(['update:srch_title', 'update:srch_situation', 'update:srch_type',]);
+const emit = defineEmits(['update:srch_code', 'update:srch_destination', 'update:srch_object', 'update:srch_situation']);
 
 /* Functions */
 const emitValue =  (propName, value) => {

@@ -9,11 +9,12 @@ import Profile from '../views/profile/Profile.vue';
 
 
 import Template from '../views/template/Template.vue';
-import Tracking from '../views/tracking/Tracking.vue';
+import Order from '../views/order/Order.vue';
 
 // Configs
 import ConfigIntegrationWhatsApp from '../views/config_integration_whatsapp/ConfigIntegrationWhatsApp.vue';
-import ConfigImport from '../views/config_import/ConfigImport.vue';
+import ConfigImportOrder from '../views/config_import_order/ConfigImportOrder.vue';
+import ConfigIntegrationBestShipping from '../views/config_integration_best_shipping/ConfigIntegrationBestShipping.vue';
 
 // Configuration
 import Collaborator from '../views/collaborator/Collaborator.vue';
@@ -83,12 +84,12 @@ const routes = [
 				}
 			},
 			{
-				path: '/tracking',
-				name: 'tracking',
-				component: Tracking,
+				path: '/order',
+				name: 'order',
+				component: Order,
 				meta: { 
 					auth: true,
-					can: ['show-tracking', 'show-validated-access', 'access_tracking']
+					can: ['show-order', 'show-validated-access', 'access_order']
 				}
 			},
 			// Configuration
@@ -111,12 +112,21 @@ const routes = [
 				}
 			},
 			{
-				path: '/config/import_lead',
-				name: 'config.import_lead',
-				component: ConfigImport,
+				path: '/config/integration_best_shipping',
+				name: 'config.integration_best_shipping',
+				component: ConfigIntegrationBestShipping,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'access_config_import']
+					can: ['show-collaborator', 'show-validated-access', 'access_config_integration_best_billing']
+				}
+			},
+			{
+				path: '/config/import_order',
+				name: 'config.import_order',
+				component: ConfigImportOrder,
+				meta: { 
+					auth: true,
+					can: ['show-collaborator', 'show-validated-access', 'access_config_import_order']
 				}
 			},
 			// End Configuration

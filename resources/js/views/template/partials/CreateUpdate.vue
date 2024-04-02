@@ -9,11 +9,12 @@
 			<div class="form_container">
 				<div class="form_group">
 					<label><span class="input_required">*</span> Tipo:</label>
-					<select name="type" v-model="type">
-						<option value="1">Objeto Postado</option>
-						<option value="2">Objeto Encaminhado</option>
-						<option value="3">Objeto Saiu para Entrega</option>
-						<option value="4">Objeto Entregue</option>
+					<select name="type" v-model="type" @change="handleTemplateSituation()">
+						<option></option>
+						<option value="1">Pedido postado</option>
+						<option value="2">Em trânsito</option>
+						<option value="3">Saiu entrega</option>
+						<option value="4">Entregue</option>
 					</select>
 				</div>
 				<div class="form_group">
@@ -39,15 +40,19 @@
 					</div>
 					<textarea id="custom-textarea" class="custom-textarea form-control" rows="8" v-model="message"></textarea>
 					<b class="title_tags">Tags:</b>
-					<a @click.prevent="handleEmojiClick($event, '[NOME]')" class="tags" role="button"><b>[NOME]</b></a>
+					<a @click.prevent="handleEmojiClick($event, '[DESTINATARIO]')" class="tags" role="button"><b>[DESTINATARIO]</b></a>
 					&nbsp;&nbsp; 
 					<a @click.prevent="handleEmojiClick($event, '[WHATSAPP]')" class="tags" role="button"><b>[WHATSAPP]</b></a>
 					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[DATA]')" class="tags" role="button"><b>[DATA EVENTO]</b></a>
+					<a @click.prevent="handleEmojiClick($event, '[DATA EVENTO]')" class="tags" role="button"><b>[DATA EVENTO]</b></a>
 					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[STATUS]')" class="tags" role="button"><b>[STATUS]</b></a>
+					<a @click.prevent="handleEmojiClick($event, '[NUMERO PEDIDO]')" class="tags" role="button"><b>[NUMERO PEDIDO]</b></a>
 					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[OBJETO]')" class="tags" role="button"><b>[OBJETO]</b></a>
+					<a @click.prevent="handleEmojiClick($event, '[SITUACAO EVENTO]')" class="tags" role="button"><b>[SITUACAO EVENTO]</b></a>
+					&nbsp;&nbsp; 
+					<a @click.prevent="handleEmojiClick($event, '[TRANSPORTADORA]')" class="tags" role="button"><b>[TRANSPORTADORA]</b></a>
+					&nbsp;&nbsp;
+					<a @click.prevent="handleEmojiClick($event, '[CODIGO RASTREIO]')" class="tags" role="button"><b>[CODIGO RASTREIO]</b></a>
 					&nbsp;&nbsp;
 				</div>
 				<div class="form_group">
@@ -349,10 +354,10 @@ const emit = defineEmits(['hideModalCreateUpdate', 'emoji_click']);
 const store                = useStore();
 const statusImojis         = ref(false);
 const id                   = ref('');
-const type                 = ref('1');
+const type                 = ref('');
 const type_tmp             = ref('');
 const title                = ref('');
-const message              = ref('');
+const message              = ref('Olá, [DESTINATARIO],\n\nseu pedido *[NUMERO PEDIDO]* já foi enviado! 😍🙌\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*');
 const situation   = ref('1');
 const fileList_1  = ref([]);
 const fileItems_1 = ref([]);
@@ -771,7 +776,6 @@ const removeFile_3 = async (index, item, type) => {
 const clearInputs = (flow) => {
 	if(flow == 0){ type.value = '1'; }
 	title.value                = '';
-	message.value              = '';
 	if(document.getElementsByClassName("ql-editor")[0] &&
 		document.getElementsByClassName("ql-editor")[1])
 	{
@@ -785,5 +789,35 @@ const clearInputs = (flow) => {
 	fileItems_2.value = [];
 	fileList_3.value  = [];
 	fileItems_3.value = [];
+}
+
+const handleTemplateSituation = () => {
+	switch(type.value)
+	{
+		case '1':
+		message.value  = "Olá, [DESTINATARIO],\n\nseu pedido *[NUMERO PEDIDO]* já foi enviado! 😍🙌\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
+			break;
+		case '2':
+		message.value = "🔔 Olá, [DESTINATARIO]!\n\nO pedido *[NUMERO PEDIDO]* está a caminho 🚛\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
+			break;
+		case '3':
+		message.value = "Olá, [DESTINATARIO] , tudo bem? 😉\n\nSeu pedido *[NUMERO PEDIDO]*, está em processo de envio. Em breve avisarei mais detalhes.\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
+			break;
+		case '4':
+		message.value = "Olá [DESTINATARIO], tenho uma ótima notícia! 😍\n\nSeu pedido *[NUMERO PEDIDO]* saiu para ser entregue ✔️";
+			break;
+		case '5':
+			message.value = "Olá, [DESTINATARIO] , tudo bem?\n\nUuuuhh, seu pedido *[NUMERO PEDIDO]* foi entregue ✔️🙌\n\nAh, não se esqueça de tirar uma foto e marcar a gente nas redes sociais 📸";
+			break;
+		case '6':
+			message.value = "⚠️ Olá, [DESTINATARIO] , tudo bem?,\n\nseu pedido *[NUMERO PEDIDO]* está em alerta ❌\n\nVeja todos os detalhes abaixo, *recomendamos que aguarde novas atualizações*. Qualquer dúvida nos chame lá em nosso site *(Adicione o site da sua loja)*\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
+			break;
+		case '7':
+			message.value = "🚨 Olá, [DESTINATARIO] , tudo bem?,\n\nhouve um problema com seu pedido n° *{numero_pedido}* ❌\n\nVeja todos detalhes abaixo, *se for necessário* nos chame em nosso site *(Adicione o site da sua loja)*.\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
+			break;
+		default:
+			message.value = "";
+			break;
+	}
 }
 </script>

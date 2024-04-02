@@ -38,7 +38,7 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('show-help', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
-	setRule('show-tracking', () => {
+	setRule('show-order', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-template', () => {
@@ -48,6 +48,9 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.access == 'A';
 	});
 	setRule('show-config-integration-whatsapp', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-config-integration-best-shipping', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-config-import', () => {
@@ -74,22 +77,22 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.permissions.find(permission => permission.name === 'delete_template');
 	});
 
-	// Module Tracking
-	setRule('access_tracking', () => {
+	// Module Order
+	setRule('access_order', () => {
 		if(user.value.category == 'CL'){ return true; }
-		return user.value.permissions.find(permission => permission.name === 'access_tracking');
+		return user.value.permissions.find(permission => permission.name === 'access_order');
 	});
-	setRule('view_tracking', () => {
+	setRule('view_order', () => {
 		if(user.value.category == 'CL'){ return true; }
-		return user.value.permissions.find(permission => permission.name === 'view_tracking');
+		return user.value.permissions.find(permission => permission.name === 'view_order');
 	});
-	setRule('edit_tracking', () => {
+	setRule('edit_order', () => {
 		if(user.value.category == 'CL'){ return true; }
-		return user.value.permissions.find(permission => permission.name === 'edit_tracking');
+		return user.value.permissions.find(permission => permission.name === 'edit_order');
 	});
-	setRule('delete_tracking', () => {
+	setRule('delete_order', () => {
 		if(user.value.category == 'CL'){ return true; }
-		return user.value.permissions.find(permission => permission.name === 'delete_tracking');
+		return user.value.permissions.find(permission => permission.name === 'delete_order');
 	});
 	
 	// Module Config Collaborator
@@ -116,10 +119,16 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.permissions.find(permission => permission.name === 'access_config_integration_whatsapp');
 	});
 	
-	// Module Config Import
-	setRule('access_config_import', () => {
+	// Module Config Import Order
+	setRule('access_config_import_order', () => {
 		if(user.value.category == 'CL'){ return true; }
-		return user.value.permissions.find(permission => permission.name === 'access_config_import');
+		return user.value.permissions.find(permission => permission.name === 'access_config_import_order');
+	});
+	
+	// Module Config Integration Best Billing
+	setRule('access_config_integration_best_shipping', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'access_config_integration_best_shipping');
 	});
 	// End List Permissions
 });

@@ -13,12 +13,12 @@ Route::middleware('auth:sanctum')->group(function (){
 	Route::group([], base_path("routes/api-account.php"));
 	Route::group([], base_path("routes/api-template.php"));
 	Route::group([], base_path("routes/api-collaborator.php"));
-	Route::group([], base_path("routes/api-config-import.php"));
 	Route::group([], base_path("routes/api-generate-options.php"));
-	Route::group([], base_path("routes/api-tracking.php")); 
+	Route::group([], base_path("routes/api-order.php"));
 	
 	Route::group([], base_path("routes/api-cfg-integration-whatsapp.php"));
-	Route::group([], base_path("routes/api-config-import.php"));
+	Route::group([], base_path("routes/api-cfg-import-order.php"));
+	Route::group([], base_path("routes/api-cfg-integration-best-shipping.php")); 
 	
 	// Administrator
 	Route::group(['prefix'=>'admin'], function(){

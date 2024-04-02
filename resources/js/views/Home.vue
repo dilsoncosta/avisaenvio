@@ -14,9 +14,9 @@
 				<br/>
 				<div class="content">
 					<div v-if="user.category == 'CL' || user.category == 'CLB'">
-						<p class="title"><b>Rastreio:</b></p>
-						<div class="total">{{ tracking }}</div>
-						<router-link :to="{name : 'tracking'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
+						<p class="title"><b>Pedido:</b></p>
+						<div class="total">{{ order }}</div>
+						<router-link :to="{name : 'order'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
 					</div>
 					<div v-if="user.category == 'CL' || user.category == 'CLB'">
 						<p class="title"><b>Configuração / Colaborador:</b></p>
@@ -185,7 +185,7 @@ import { show_msgbox } from '@/helpers/Helpers';
 
 /* Ref or Reactive */
 const store    = useStore();
-const tracking = ref(0);
+const order = ref(0);
 const config_total_collaborator = ref(0);
 const access   = store.state.auth.me.access;
 const user     = store.state.auth.me;
@@ -197,7 +197,7 @@ onMounted( async () => {
 	try {
 		const response = await store.dispatch('getDatasDashbboard');
 
-		tracking.value = response.tracking;
+		order.value = response.order;
 		config_total_collaborator.value = response.config_total_collaborator;
 	}
 	catch(error) {

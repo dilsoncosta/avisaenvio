@@ -6,19 +6,20 @@
 					<div>
 						<ol class="page-content-title">
 							<li><router-link to="/"><i class="fas fa-home-lg"></i></router-link></li>
-							<li class="active">Template</li>
+							<li class="active">Pedido</li>
 						</ol>
 					</div>
 					<div>
-						<a href="#" class="f_show_register" @click="showModalCreate" v-if="$can('edit_template')"><i class="fas fa-lg fa-plus"></i></a>
+						<a href="#" class="f_show_register" @click="showModalCreate" v-if="$can('edit_order')"><i class="fas fa-lg fa-plus"></i></a>
 						<a href="#" class="f_show_register_disabled" v-else><i class="fas fa-lg fa-plus"></i></a>
-						<a href="#" class="f_show_delete" @click="destroyTemplate" v-if="$can('delete_template')"><i class="fas fa-lg fa-trash-alt"></i></a>
+						<a href="#" class="f_show_delete" @click="destroyOrder" v-if="$can('delete_order')"><i class="fas fa-lg fa-trash-alt"></i></a>
 						<a href="#" class="f_show_delete_disabled" v-else><i class="fas fa-lg fa-trash-alt"></i></a>
 					</div>
 				</div>
 				<Filters 
-					v-model:srch_type="filters.srch_type" 
-					v-model:srch_title="filters.srch_title" 
+					v-model:srch_code="filters.srch_code"
+					v-model:srch_destination="filters.srch_destination" 
+					v-model:srch_object="filters.srch_object" 
 					v-model:srch_situation="filters.srch_situation"
 				/>
 				<div class="container_btn_search">
@@ -34,14 +35,16 @@
 								<th>
 									<i class="fas fa-chevron-down"></i>
 								</th>
-								<th>Titulo</th>
-								<th>Tipo</th>
-								<th>Situação</th>
+								<th>Destinatário</th>
+								<th>Transportadora</th>
+								<th>Código Pedido</th>
+								<th>Objeto</th>
+								<th>Última Situação</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr v-if="!items.data">
-								<td colspan="6" class="table_empty ">
+								<td colspan="7" class="table_empty ">
 									Nenhum registro encontrado
 								</td>
 							</tr>
@@ -53,22 +56,23 @@
 								</td>
 								<td>
 									<div class="options">
-										<a v-if="$can('edit_template')"><i class="fas fa-pen-square fa-lg fa-fw" @click.prevent="btnEditTemplate(item)"></i></a>
+										<a v-if="$can('edit_order')"><i class="fas fa-pen-square fa-lg fa-fw" @click.prevent="btnEditOrder(item)"></i></a>
 										<a v-else><i class="fas fa-pen-square fa-lg fa-fw btn_color_disabled"></i></a>
-										<a v-if="$can('view_template')"><i class="fas fa-file-alt fa-lg fa-fw" @click.prevent="btnRecordTemplate(item)"></i></a>
+										<a v-if="$can('view_order')"><i class="fas fa-file-alt fa-lg fa-fw" @click.prevent="btnRecordOrder(item)"></i></a>
 										<a v-else><i class="fas fa-file-alt fa-lg fa-fw btn_color_disabled"></i></a>
 									</div>
 								</td>
-								<td class="td_format">{{ item.title }}</td>
-								<td v-if="item.type == 1" class="td_format">Pedido postado</td>
-								<td v-else-if="item.type == 2" class="td_format">Em trânsito</td>
-								<td v-else-if="item.type == 3" class="td_format">Em processo</td>
-								<td v-else-if="item.type == 4" class="td_format">Saiu entrega</td>
-								<td v-else-if="item.type == 5" class="td_format">Entregue</td>
-								<td v-else-if="item.type == 6" class="td_format">Em alerta</td>
-								<td v-else class="td_format">Com problemas</td>
-								<td v-if="item.situation == 1" class="td_format"><b class="active">Ativo</b></td>
-								<td v-else class="td_format"><b class="inactive">Inativo</b></td>
+								<td class="td_format">{{ item.destination }}</td>
+								<td v-if="item.integration == 0" class="td_format">Correios</td>
+								<td v-else="item.integration == 1" class="td_format">JadLog</td>
+								<td class="td_format">{{ item.code }}</td>
+								<td class="td_format">{{ item.object }}</td>
+								<td v-if="item.last_situation == 0" class="td_format"><b class="pending">Pendente</b></td>
+								<td v-else-if="item.last_situation == 1" class="td_format"><b class="post_request">Pedido postado</b></td>
+								<td v-else-if="item.last_situation == 2" class="td_format"><b class="in_transit">Em trânsito</b></td>
+								<td v-else-if="item.last_situation == 3" class="td_format"><b class="in_process">Saiu entrega</b></td>
+								<td v-else-if="item.last_situation == 4" class="td_format"><b class="out_for_delivery">Entregue</b></td>
+								<td v-else class="td_format"><b class="issue">Com problemas</b></td>
 							</tr>
 						</tbody>
 					</table>
@@ -81,22 +85,6 @@
 				</div>
 			</div>
 		</div>
-		<!--Modal Create e Update -->
-		<vue-final-modal 
-			v-model="statusModalCreateUpdate" 
-			classes="modal-container" 
-			content-class="modal-content" 
-			:lock-scroll="true"
-			:hide-overlay="false"
-			:click-to-close="false"
-			:esc-to-close="true"
-			:prevent-click="true"
-			transition="vfm"
-			overlay-transition="vfm"
-		>
-			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :optionsBusiness="optionsBusiness" :update="update" :titleModal="titleModal"/>
-		</vue-final-modal>
-		<!-- End Modal Create e Update -->
 		<!--Modal View -->
 		<vue-final-modal 
 			v-model="statusModalRecord" 
@@ -113,6 +101,22 @@
 			<Record :data="formRecord" @hideModalRecord="hideModalRecord" :titleModal="titleModal"/>
 		</vue-final-modal>
 		<!-- End Modal View -->
+		<!--Modal Create e Update -->
+		<vue-final-modal 
+			v-model="statusModalCreateUpdate" 
+			classes="modal-container" 
+			content-class="modal-content" 
+			:lock-scroll="true"
+			:hide-overlay="false"
+			:click-to-close="false"
+			:esc-to-close="true"
+			:prevent-click="true"
+			transition="vfm"
+			overlay-transition="vfm"
+		>
+			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :update="update" :titleModal="titleModal"/>
+		</vue-final-modal>
+		<!-- End Modal Create e Update -->
 	</main>
 </template>
 <style scoped>
@@ -186,23 +190,32 @@ td button:nth-child(2) {
 	text-align: center;
 }
 .table_section thead tr th:nth-child(3) {
-	width: 30%;
+	width: 40%;
 	margin: 0 auto;
 	text-align: left;
 }
 .table_section thead tr th:nth-child(4) {
-	width: 5%;
+	width: 12%;
 	margin: 0 auto;
 	text-align: left;
 }
 .table_section thead tr th:nth-child(5) {
-	width: 4%;
+	width: 10%;
+	margin: 0 auto;
+	text-align: left;
+}
+.table_section thead tr th:nth-child(6) {
+	width: 8%;
+	margin: 0 auto;
+	text-align: left;
+}
+.table_section thead tr th:nth-child(7) {
+	width: 12%;
 	margin: 0 auto;
 	text-align: left;
 }
 tr td {
 	display: table-cell;
-	font-size:12px;
 }
 .container_checkbox {
 	display: flex;
@@ -218,6 +231,10 @@ tr td {
 	justify-content: center;
 	align-items: center;
 	color:#5a728e;
+	font-size: 12px;
+}
+.fa-home-lg {
+	color:#fff;
 }
 .options a:hover{
 	opacity: 0.9;
@@ -238,7 +255,7 @@ thead th {
 	font-size: 15px;
 }
 tr {
-	font-size: 14px;
+	font-size: 13px;
 }
 tbody tr:nth-child(even) {background: #f9f9f9}
 th,td {
@@ -344,9 +361,6 @@ th,td {
 	border-bottom-right-radius: 5px;
 	color: #000;
 }
-.fa-home-lg {
-	color:#fff;
-}
 /* End Table Header */
 
 /* Modal */
@@ -374,14 +388,32 @@ th,td {
 /* End Modal */
 
 /* Aux */
-.active {
-	color:#008000;
+.pending {
+	color: #ff0000;;
 }
-.inactive {
-	color:#ff0000;
+.post_request {
+	color: #0000ff;
+}
+.in_transit {
+	color: #008000;
+}
+.in_process {
+	color: #ffa500;
+}
+.out_for_delivery {
+	color: #800080;
+}
+.delivered {
+	color: #000000;
+}
+.alert {
+	color: #ffff00;
+}
+.issue {
+	color: #a52a2a;
 }
 .td_format {
-	font-size:10px;
+	font-size:10.1px !important;
 }
 .btn_color_disabled {
 	color:#C8C8C8;
@@ -390,7 +422,7 @@ th,td {
 
 </style>
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import Filters from './partials/Filters.vue';
 import Record from './partials/Record.vue';
 import CreateUpdate from './partials/CreateUpdate.vue';
@@ -399,43 +431,31 @@ import Pagination from '@/components/Pagination.vue';
 import { show_msgbox, confirm_alert } from '@/helpers/Helpers';
 
 /* Ref or Reactive */
-const statusModalCreateUpdate = ref(false);
 const statusModalRecord = ref(false);
+const statusModalCreateUpdate = ref(false);
 const store = useStore();
 const checkboxIds = ref([]);
 const checkbox = ref(false);
 const checkboxAll = ref(false);
 const filters = ref({
-	srch_type: '',
-	srch_title: '',
+	srch_destination: '',
+	srch_object: '',
 	srch_situation: '',
+	srch_code: '',
 });
-const form   = ref({});
-const formRecord = ref({});
-const titleModal = ref('');
-const update    = ref(false);
-const items     = ref([]);
+const form        = ref({});
+const formRecord  = ref({});
+const titleModal  = ref('');
+const items       = ref([]);
+const update      = ref(false);
 
 /* Events */
-watch(() => store.state.template.data,
+watch(() => store.state.order.data,
 			() => {
-				items.value = store.state.template.data;
+				items.value = store.state.order.data;
 });
 
 /* Functions */
-const showModalCreate = () => {
-	form.value = {};
-	statusModalCreateUpdate.value = true;
-	statusModalRecord.value = false;
-	update.value  = false;
-	titleModal.value = 'Adicionar Template';
-}
-
-const hideModalCreateUpdate = () => {
-	statusModalCreateUpdate.value = false;
-	statusModalRecord.value = false;
-}
-
 const hideModalRecord = () => {
 	statusModalRecord.value = false;
 }
@@ -444,9 +464,10 @@ const btnSearch = async () => {
 	store.commit('CHANGE_LOADING', true);
 	
 	try {
-		await store.dispatch('getTemplate', {
-			srch_type : filters.value.srch_type,
-			srch_title : filters.value.srch_title,
+		await store.dispatch('getOrder', {
+			srch_code : filters.value.srch_code,
+			srch_destination : filters.value.srch_destination,
+			srch_object : filters.value.srch_object,
 			srch_situation: filters.value.srch_situation,
 		});
 		
@@ -464,9 +485,10 @@ const refreshTableOfDatas = async (value = '') => {
 	store.commit('CHANGE_LOADING', true);
 	
 	try {
-		await store.dispatch('getTemplate', {
-			srch_type : filters.value.srch_type,
-			srch_title : filters.value.srch_title,
+		await store.dispatch('getOrder', {
+			srch_code : filters.value.srch_code,
+			srch_destination : filters.value.srch_destination,
+			srch_object : filters.value.srch_object,
 			srch_situation: filters.value.srch_situation,
 			page: value
 		});
@@ -485,18 +507,30 @@ const changePage = async (value) => {
 	refreshTableOfDatas(value);
 };
 
-const btnEditTemplate = async (item) => {
+const showModalCreate = () => {
+	form.value = {};
+	statusModalCreateUpdate.value = true;
+	statusModalRecord.value = false;
+	update.value  = false;
+	titleModal.value = 'Adicionar Template';
+}
+
+const hideModalCreateUpdate = () => {
+	statusModalCreateUpdate.value = false;
+	statusModalRecord.value = false;
+}
+
+const btnEditOrder = async (item) => {
 	form.value = item;
 	update.value = true;
 	statusModalCreateUpdate.value = true;
-	titleModal.value = 'Editar Template';
+	titleModal.value = 'Editar Pedido';
 }
 
-const btnRecordTemplate = async (item) => {
+const btnRecordOrder = async (item) => {
 	formRecord.value = item;
-	update.value = true;
 	statusModalRecord.value = true;
-	titleModal.value = 'Visualizar Template';
+	titleModal.value = 'Visualizar Pedido';
 }
 
 const handleCheckboxAll = () => {
@@ -516,7 +550,7 @@ const handleCheckboxAll = () => {
 	});
 }
 
-const destroyTemplate = async () => {
+const destroyOrder = async () => {
 	if(checkboxIds.value.length == 0)
 	{
 		return show_msgbox('Nenhum registro selecionado!', 'warning');
@@ -535,7 +569,7 @@ const destroyTemplate = async () => {
 			ids += cap+item;
 		});
 		
-		store.dispatch('destroyTemplate', {
+		store.dispatch('destroyOrder', {
 			ids : ids
 		})
 		.then((response) => {

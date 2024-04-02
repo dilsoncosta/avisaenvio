@@ -74,12 +74,12 @@ class PermissionsTableSeeder extends Seeder
 		}
 		
 		####
-		# Module Rastreio
+		# Module Order
 		{
 			Resource::create(
 				[
 								'id'   => 2,
-								'name' => "Rastreio",
+								'name' => "Pedido",
 								'uuid' => str::uuid(),
 							 'order' => 2,
 					 'situation' => 1,
@@ -91,7 +91,7 @@ class PermissionsTableSeeder extends Seeder
 				[
 									'id' => 5,
 				 'resource_id' => 2,
-								'name' => "access_tracking",
+								'name' => "access_order",
 								'uuid' => str::uuid(),
 							 'order' => 1,
 				]
@@ -101,7 +101,7 @@ class PermissionsTableSeeder extends Seeder
 				[
 									'id' => 6,
 				 'resource_id' => 2,
-								'name' => "view_tracking",
+								'name' => "view_order",
 								'uuid' => str::uuid(),
 							 'order' => 2,
 				]
@@ -111,7 +111,7 @@ class PermissionsTableSeeder extends Seeder
 				[
 									'id' => 8,
 				 'resource_id' => 2,
-								'name' => "delete_tracking",
+								'name' => "delete_order",
 								'uuid' => str::uuid(),
 							 'order' => 4,
 				]
@@ -217,6 +217,31 @@ class PermissionsTableSeeder extends Seeder
 									'id' => 14,
 				 'resource_id' => 5,
 								'name' => "access_config_import",
+								'uuid' => str::uuid(),
+							 'order' => 1,
+				]
+			);
+		}
+		
+		####
+		# Module Integration Best Billing
+		{
+			Resource::create(
+				[
+								'id'   => 6,
+								'name' => "Integração Melhor Envio",
+								'uuid' => str::uuid(),
+							 'order' => 6,
+					 'situation' => 1,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 15,
+				 'resource_id' => 6,
+								'name' => "access_config_integration_best_shipping",
 								'uuid' => str::uuid(),
 							 'order' => 1,
 				]

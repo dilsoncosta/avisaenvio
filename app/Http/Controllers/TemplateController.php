@@ -95,18 +95,4 @@ class TemplateController extends Controller
 		
 		return response()->json(array("status" => "1", "message" => "Arquivo deletado com sucesso!"));
 	}
-	
-	public function sendModelWhatsApp(Request $request)
-	{
-		$template = $this->templateService->getTemplateById($request->id);
-		
-		if (!$template)
-		{
-			return response()->json(["status" => "0", "message" => "Incapaz de realizar a listagem. Registro inexistente!"], 404);
-		}
-		
-		$this->templateService->sendWhatsAppTemplate($template);
-		
-		return response()->json(['status' => 1, 'message' => 'Mensagem agendada com sucesso!']);
-	}
 }

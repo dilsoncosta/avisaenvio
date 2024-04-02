@@ -10,10 +10,10 @@
 					<tbody>
 						<tr>
 							<th><b>Tipo:</b></th>
-							<td v-if="data.type == 1" class="td_format">Objeto Postado</td>
-							<td v-else-if="data.type == 2" class="td_format">Objeto Encaminhado</td>
-							<td v-else-if="data.type == 3" class="td_format">Objeto Saiu para Entrega</td>
-							<td v-else class="td_format">Objeto Entregue</td>
+							<td v-if="data.type == 1" class="td_format">Pedido Postado</td>
+							<td v-else-if="data.type == 2" class="td_format">Em Trânsito</td>
+							<td v-else-if="data.type == 3" class="td_format">Saiu Entrega</td>
+							<td v-else class="td_format">Entregue</td>
 						</tr>
 						<tr>
 							<th><b>Titulo:</b></th>

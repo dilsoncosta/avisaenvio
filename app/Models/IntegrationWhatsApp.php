@@ -27,9 +27,4 @@ class IntegrationWhatsApp extends Model
 	{
 		return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
 	}
-
-	public function busienss()
-	{
-		return $this->belongsTo(CrmBusiness::class, 'crm_business_id', 'id');
-	}
 }

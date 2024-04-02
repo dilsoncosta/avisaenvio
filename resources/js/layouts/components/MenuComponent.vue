@@ -188,16 +188,16 @@ let menus = ref([
 		submenus : []
 	},
 	{
-		icon: 'fas fa-truck-moving',
+		icon: 'fas fa-align-left',
 		type: 0,
-		title: 'Rastreio',
+		title: 'Pedido',
 		open: false,
-		href: '/tracking',
-		can: ['show-tracking', 'access_tracking'],
+		href: '/order',
+		can: ['show-order', 'access_order'],
 		submenus : []
 	},
 	{
-		icon: 'fas fa-file-alt fa-lg',
+		icon: 'fas fa-comment fa-lg',
 		type: 0,
 		title: 'Template',
 		open: false,
@@ -223,9 +223,14 @@ let menus = ref([
 				can: ['show-config-integration-whatsapp', 'access_config_integration_whatsapp'],
 			},
 			{
+				title: 'Integração Melhor Envio',
+				href: '/config/integration_best_shipping',
+				can: ['show-config-integration-best-shipping', 'access_config_integration_best_shipping'],
+			},
+			{
 				title: 'Importação',
-				href: '/config/import_lead',
-				can: ['show-config-import', 'access_config_import'],
+				href: '/config/import_order',
+				can: ['show-config-import', 'access_config_import_order'],
 			}
 		]
 	},
@@ -285,29 +290,6 @@ onMounted(() => {
 			menu.open = true;
 		} else {
 			menu.open = false;
-		}
-	});
-	
-	menus.value.forEach((menu, index) => {
-		if(menu.submenus.length > 0)
-		{
-			for (let subIndex = menu.submenus.length - 1; subIndex >= 0; subIndex--)
-			{
-				const submenu = menu.submenus[subIndex];
-				
-				switch (submenu.href)
-				{
-					case '/tracking':
-					case '/template':
-					case '/collaborator':
-					case '/config/integration_whatsapp':
-					case '/config/import_lead':
-						menu.submenus.splice(index, 1);
-						break;
-					default:
-							break;
-					}
-			}
 		}
 	});
 });
