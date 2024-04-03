@@ -12,28 +12,13 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\DomCrawler\Crawler;
 
 class DownloadEventsOrderCommand extends Command
 {
 	protected $signature = 'send:download_events_order';
-	private $url   = 'https://www.rastreadordepacotes.com.br/rastreio';
+	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
+	private $token = '74|GLA8yU71mvJDTtDPVwbmrAMoFQYweYpzm1y7Mpei';
 	private $sleep = 1500000;
-	private $month = [
-		'Janeiro'   => '01',
-		'Fevereiro' => '02',
-		'Março'     => '03',
-		'Abril'     => '04',
-		'Maio'      => '05',
-		'Junho'     => '06',
-		'Julho'     => '07',
-		'Agosto'    => '08',
-		'Setembro'  => '09',
-		'Outubro'   => '10',
-		'Novembro'  => '11',
-		'Dezembro'  => '12',
-	];
 	private $shipping = [
 		0 => 'Correio',
 		1 => 'JadLog'
@@ -65,185 +50,147 @@ class DownloadEventsOrderCommand extends Command
 		
 		foreach ($orders as $key => $order)
 		{
-			$response = Http::get($this->getTransporter($order->shipping_company, $order->object));
+			$response = Http::withHeaders([
+				'Content-Type'  => 'application/json',
+				'Accept'        => 'application/json',
+				'Authorization' => 'Bearer '.$this->token
+			])->post($this->url, [
+				'tracking_code' => $order->object,
+				'carrier_id'    => $this->getTransporter($order->shipping_company),
+				'simplification' => false
+			]);
+			
+			$events = $response->object();
 			
 			if($response->status() != 200)
 			{ 
 				usleep($this->sleep);
 				continue; 
 			}
-			
-			// Getting the response content
-			$html = (string) $response->getBody();
-			
-			// Creating the Crawler object using the obtained HTML
-			$crawler = new Crawler($html);
-		
-			// Finding list with class 'is-hidden-tablet'
-			$lista_de_events = $crawler->filter('ul.is-hidden-tablet')->first();
-			
-			// Iterating over each list item
-			// Posted, send template delivered e concluded order
-			$order_eventos = $lista_de_events->filter('li.columns')->each(function (Crawler $event) {
-				$descriptionHtml = $event->filter('div.column')->html();
-				$positionFirstBr = strpos($descriptionHtml, '<br>');
-				$decription = $this->formatDescription($descriptionHtml, $positionFirstBr);
-				
-				if(stripos($decription, 'ENTREGUE') !== false)
-				{
-					$date_order_event = $event->filter('span')->first()->text();
-					$date_order_event = $this->formatDateTime($date_order_event);
-					
-					$hour = $event->filter('span.has-text-grey-light')->first()->text();
-					
-					return [
-						'decription'      => $decription,
-						'date_order_event'=> $date_order_event,
-						'hour'            => $hour,
-						'status_event'    => 4,
-					];
-				}
-			});
-			
-			if (isset($order_eventos) && !empty($order_eventos) && count($order_eventos) > 0 && isset($order_eventos[0]) && $order_eventos[0]['status_event'] == 4) 
-			{
-				if(OrderEvent::where('date_event', $order_eventos[0]['date_order_event'].' '.$order_eventos[0]['hour'])->where('order_id', $order->id)->exists())
-				{ usleep($this->sleep);continue; }
-				
-				$template = $this->getTemplateByStatus($order->tenant_id, 4);
-				
-				$order_event = OrderEvent::create([
-					'tenant_id'    => $order->tenant_id,
-					'uuid'         => str::uuid(),
-					'order_id'     => $order->id,
-					'template_id'  => $template->id,
-					'date_event'   => $order_eventos[0]['date_order_event'].' '.$order_eventos[0]['hour'],
-					'status_event' => $order_eventos[0]['status_event'],
-					'msg_event'    => $order_eventos[0]['decription'],
-					'status_send'  => 0,
-					'msg_send'     => "",
-				]);
-			
-				$obj_data = (object) array(
-					"order_event_id"          => $order_event->id,
-					"integration_whatsapp_id" => $order->integration_whatsapp_id,
-					"destination"             => $order->destination,
-					"code"                    => $order->code,
-					"shipping"                => $this->shipping[$order->shipping_company],
-					"msg_event"               => $order_eventos[0]['decription'],
-					"whatsapp"                => $order->whatsapp,
-					"object"                  => $order->object,
-					"date_event"              => $order_eventos[0]['date_order_event'].' '.$order_eventos[0]['hour'],
-					"message"                 => $template->message,
-					"filename_1"              => $template->filename_1,
-					"filename_storage_1"      => $template->filename_storage_1,
-					"file_1"                  => $template->file_1,
-					"ext_1"                   => $template->ext_1,
-					"size_1"                  => $template->size_1,
-					"filename_2"              => $template->filename_2,
-					"filename_storage_2"      => $template->filename_storage_2,
-					"file_2"                  => $template->file_2,
-					"ext_2"                   => $template->ext_2,
-					"size_2"                  => $template->size_2,
-					"filename_3"              => $template->filename_3,
-					"filename_storage_3"      => $template->filename_storage_3,
-					"file_3"                  => $template->file_3,
-					"ext_3"                   => $template->ext_3,
-					"size_3"                  => $template->size_3,
-				);
-				
-				SendNotificationOrderWhatsAppJob::dispatch($obj_data);
-				
-				$last_situation_event_order = OrderEvent::where('order_id', $order->id)->orderByDesc('id')->first();
-				
-				if($last_situation_event_order)
-				{
-					Order::where('id' , $order->id)->update(['last_situation' => $last_situation_event_order->status_event]);
-				}
-				
-				usleep($this->sleep);
-				
+
+			if (!isset($events->data->occurrences) || empty($events->data->occurrences)) {
 				continue;
 			}
 			
-			// Iterating over each list item
-			$order_eventos = $lista_de_events->filter('li.columns')->each(function (Crawler $event) {
+			$occurrences = $events->data->occurrences;
+			$occurrences = array_reverse($occurrences);
+			
+			foreach($occurrences as $order_event)
+			{
+				$dataHourOrderEvent = Carbon::createFromFormat('d/m/Y H:i', $order_event->date.' '.$order_event->hour);
+				$dateHourOrderEventFormat = $dataHourOrderEvent->format('Y-m-d H:i:s');
 				
-				// Getting the date, time and description information
-				$date_order_event = $event->filter('span')->first()->text();
-				$date_order_event = $this->formatDateTime($date_order_event);
+				$descriptionOrderEvent = $order_event->action.'. '.$order_event->location;
 				
-				$hour = $event->filter('span.has-text-grey-light')->first()->text();
+				// Filtrando o array "occurrences" para encontrar a palavra "entregue" na chave "action"
+				$result = array_filter($events->data->occurrences, function($occurrence) {
+					return strpos($occurrence->action, 'entregue') !== false;
+				});
 				
-				$descriptionHtml = $event->filter('div.column')->html();
-				$positionFirstBr = strpos($descriptionHtml, '<br>');
-				$decription = $this->formatDescription($descriptionHtml, $positionFirstBr);
+				if ($result == true)
+				{
+					if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists())
+					{ usleep($this->sleep); return; }
+					
+					$template = $this->getTemplateByStatus($order->tenant_id, 4);
+					
+					$order_event = OrderEvent::create([
+						'tenant_id'    => $order->tenant_id,
+						'uuid'         => str::uuid(),
+						'order_id'     => $order->id,
+						'template_id'  => $template->id,
+						'date_event'   => $dateHourOrderEventFormat,
+						'status_event' => 4,
+						'msg_event'    => $descriptionOrderEvent,
+						'status_send'  => 0,
+						'msg_send'     => "",
+					]);
 				
-				if (stripos($decription, 'postado') !== false || stripos($decription, 'EMISSAO') !== false)
+					$obj_data = (object) array(
+						"order_event_id"          => $order_event->id,
+						"integration_whatsapp_id" => $order->integration_whatsapp_id,
+						"destination"             => $order->destination,
+						"code"                    => $order->code,
+						"shipping"                => $this->shipping[$order->shipping_company],
+						"msg_event"               => $descriptionOrderEvent,
+						"whatsapp"                => $order->whatsapp,
+						"object"                  => $order->object,
+						"date_event"              => $dateHourOrderEventFormat,
+						"message"                 => $template->message,
+						"filename_1"              => $template->filename_1,
+						"filename_storage_1"      => $template->filename_storage_1,
+						"file_1"                  => $template->file_1,
+						"ext_1"                   => $template->ext_1,
+						"size_1"                  => $template->size_1,
+						"filename_2"              => $template->filename_2,
+						"filename_storage_2"      => $template->filename_storage_2,
+						"file_2"                  => $template->file_2,
+						"ext_2"                   => $template->ext_2,
+						"size_2"                  => $template->size_2,
+						"filename_3"              => $template->filename_3,
+						"filename_storage_3"      => $template->filename_storage_3,
+						"file_3"                  => $template->file_3,
+						"ext_3"                   => $template->ext_3,
+						"size_3"                  => $template->size_3,
+					);
+					
+					SendNotificationOrderWhatsAppJob::dispatch($obj_data);
+					
+					$last_situation_event_order = OrderEvent::where('order_id', $order->id)->orderByDesc('id')->first();
+					
+					if($last_situation_event_order)
+					{
+						Order::where('id' , $order->id)->update(['last_situation' => $last_situation_event_order->status_event]);
+					}
+					
+					usleep($this->sleep);
+					
+					return;
+				}
+				
+				if (stripos($descriptionOrderEvent, 'postado') !== false || stripos($descriptionOrderEvent, 'Emissao') !== false)
 				{
 					$status_event = '1';
 				}
-				else if(stripos($decription, 'encaminhado') !== false || stripos($decription, 'transferência') !== false ||
-				stripos($decription, 'TRANSFERENCIA') !== false || stripos($decription, 'ENTRADA') !== false || stripos($decription, 'TRANSFERIDO') !== false
+				else if(stripos($descriptionOrderEvent, 'encaminhado') !== false || stripos($descriptionOrderEvent, 'transferência') !== false ||
+				stripos($descriptionOrderEvent, 'Transferido') !== false || stripos($descriptionOrderEvent, 'Transferencia') !== false || stripos($descriptionOrderEvent, 'Entrada') !== false
 				)
 				{
 					$status_event = '2';
 				}
-				else if(stripos($decription, 'entrega') !== false || stripos($decription, 'EM ROTA') !== false)
+				else if(stripos($descriptionOrderEvent, 'entrega') !== false || stripos($descriptionOrderEvent, 'Em rota') !== false)
 				{
 					$status_event = '3';
 				}
-				else if(stripos($decription, 'entregue') !== false || stripos($decription, 'ENTREGUE') !== false) 
+				else if(stripos($descriptionOrderEvent, 'entregue') !== false || stripos($descriptionOrderEvent, 'Entregue') !== false) 
 				{
 					$status_event = '4';
 				}
 				else 
 				{
-					return;
-				}
-				
-				return [
-					'decription'      => $decription,
-					'date_order_event'=> $date_order_event,
-					'hour'            => $hour,
-					'status_event'    => $status_event,
-				];
-			});
-			
-			$order_eventos = array_reverse($order_eventos);
-			
-			if(count($order_eventos) == 0)
-			{
-				continue;
-			}
-			
-			foreach($order_eventos as $item)
-			{
-				if(empty($item))
-				{
 					continue;
 				}
 				
 				$dateNow = Carbon::now()->startOfDay();
-				$dateOrderEvent = Carbon::parse($item['date_order_event'])->startOfDay();
+				$dateOrderEvent = Carbon::parse($dateHourOrderEventFormat)->startOfDay();
 				
 				if ($dateOrderEvent->lessThan($dateNow))
 				{
-					continue;
+					//continue;
 				}
 				
-				if(OrderEvent::where('date_event', $item['date_order_event'].' '.$item['hour'])->where('order_id', $order->id)->exists()){ continue; }
+				if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists()){ continue; }
 				
-				$template = $this->getTemplateByStatus($order->tenant_id, $item['status_event']);
+				$template = $this->getTemplateByStatus($order->tenant_id, $status_event);
 				
 				$order_event = OrderEvent::create([
 					'tenant_id'    => $order->tenant_id,
 					'uuid'         => str::uuid(),
 					'order_id'     => $order->id,
 					'template_id'  => $template->id,
-					'date_event'   => $item['date_order_event'].' '.$item['hour'],
-					'status_event' => $item['status_event'],
-					'msg_event'    => $item['decription'],
+					'date_event'   => $dateHourOrderEventFormat,
+					'status_event' => $status_event,
+					'msg_event'    => $descriptionOrderEvent,
 					'status_send'  => 0,
 					'msg_send'     => "",
 				]);
@@ -254,10 +201,10 @@ class DownloadEventsOrderCommand extends Command
 					"destination"             => $order->destination,
 					"code"                    => $order->code,
 					"shipping"                => $this->shipping[$order->shipping_company],
-					"msg_event"               => $item['decription'],
+					"msg_event"               => $descriptionOrderEvent,
 					"whatsapp"                => $order->whatsapp,
 					"object"                  => $order->object,
-					"date_event"              => $item['date_order_event'].' '.$item['hour'],
+					"date_event"              => $dateHourOrderEventFormat,
 					"message"                 => $template->message,
 					"filename_1"              => $template->filename_1,
 					"filename_storage_1"      => $template->filename_storage_1,
@@ -280,7 +227,7 @@ class DownloadEventsOrderCommand extends Command
 			}
 			
 			$last_situation_event_order = OrderEvent::where('order_id', $order->id)->orderBy('id', 'DESC')->first();
-			
+				
 			if($last_situation_event_order)
 			{
 				Order::where('id' , $order->id)->update(['last_situation' => $last_situation_event_order->status_event]);
@@ -297,50 +244,50 @@ class DownloadEventsOrderCommand extends Command
 									->where('tenant_id', $tenant_id)
 									->first();
 	}
-
-	private function getTransporter($transport, $object)
+ 
+	private function getTransporter($transport)
 	{
 		switch($transport)
 		{
+			// Correios (código de rastreio nacional)
 			case '0':
-				return $this->url.'/'.$object;
+				return '1';
 				break;
+			// JadLog
 			case '1':
-				return $this->url.'/jadlog/'.$object;
+				return '2';
+				break;
+			// Azul Cargo
+			case '2':
+				return '4';
+				break;
+			// Kangu
+			case '3':
+				return '5';
+				break;
+			// Latam Cargo	
+			case '4':
+				return '7';
+				break;
+			// ViaBrasil
+			case '5':
+				return '8';
+				break;
+			// Braspress
+			case '6':
+				return '10';
+				break;
+			// Mandaê
+			case '7':
+				return '12';
+				break;
+			// SmartEnvios
+			case '8':
+				return '16';
 				break;
 			default:
 				return '';
 				break;
-		}
-	}
-	
-	private function formatDateTime($date_order_event)
-	{
-		$parts = explode(' ', $date_order_event);
-		$month_order_event = $this->month[$parts[1]];
-		$date_order_event = $parts[2].'-'.$month_order_event.'-'.Str::padLeft($parts[0], 2, '0');
-		return $date_order_event;
-	}
-
-	private function formatDescription($descriptionHtml, $positionFirstBr)
-	{
-		if ($positionFirstBr !== false)
-		{
-			$decription = trim(substr($descriptionHtml, $positionFirstBr + 4));
-			$decription = str_ireplace(["\n", '"'], "", $decription);
-			$decription = str_ireplace(["\n", '"'], "", $decription);
-			$decription = str_ireplace("Ainda não recebeu o seu pacote? Clique", "", $decription);
-			$decription = str_ireplace("<a href=https://www.rastreadordepacotes.com.br/blog/o-que-fazer/meu-pacote-esta-entregue-mas-nao-recebi.html>AQUI</a>.", "", $decription);
-			$decription = str_ireplace(".", "", $decription);
-			$decription = str_ireplace("AQUI", "", $decription);
-			$decription =  rtrim($decription, "<br>");
-			$decription = preg_replace('/<br\s*\/?>/', "\n", $decription);
-			return $decription;
-		}
-		else
-		{
-			usleep($this->sleep);
-			return false; 
 		}
 	}
 }

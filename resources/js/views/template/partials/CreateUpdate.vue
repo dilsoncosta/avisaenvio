@@ -801,19 +801,10 @@ const handleTemplateSituation = () => {
 		message.value = "🔔 Olá, [DESTINATARIO]!\n\nO pedido *[NUMERO PEDIDO]* está a caminho 🚛\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
 			break;
 		case '3':
-		message.value = "Olá, [DESTINATARIO] , tudo bem? 😉\n\nSeu pedido *[NUMERO PEDIDO]*, está em processo de envio. Em breve avisarei mais detalhes.\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
-			break;
-		case '4':
 		message.value = "Olá [DESTINATARIO], tenho uma ótima notícia! 😍\n\nSeu pedido *[NUMERO PEDIDO]* saiu para ser entregue ✔️";
 			break;
-		case '5':
+		case '4':
 			message.value = "Olá, [DESTINATARIO] , tudo bem?\n\nUuuuhh, seu pedido *[NUMERO PEDIDO]* foi entregue ✔️🙌\n\nAh, não se esqueça de tirar uma foto e marcar a gente nas redes sociais 📸";
-			break;
-		case '6':
-			message.value = "⚠️ Olá, [DESTINATARIO] , tudo bem?,\n\nseu pedido *[NUMERO PEDIDO]* está em alerta ❌\n\nVeja todos os detalhes abaixo, *recomendamos que aguarde novas atualizações*. Qualquer dúvida nos chame lá em nosso site *(Adicione o site da sua loja)*\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
-			break;
-		case '7':
-			message.value = "🚨 Olá, [DESTINATARIO] , tudo bem?,\n\nhouve um problema com seu pedido n° *{numero_pedido}* ❌\n\nVeja todos detalhes abaixo, *se for necessário* nos chame em nosso site *(Adicione o site da sua loja)*.\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*";
 			break;
 		default:
 			message.value = "";
