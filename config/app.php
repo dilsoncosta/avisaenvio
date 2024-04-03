@@ -40,6 +40,8 @@ return [
 
     'api_link_track_user' => env('API_LINK_TRACK_USER', ''),
 
+    'api_rastreio_zap_token' => env('API_RASTREIO_ZAP_TOKEN', ''),
+    
     'timezone' => 'America/Sao_Paulo',
 
     'locale' => 'pt_BR',
