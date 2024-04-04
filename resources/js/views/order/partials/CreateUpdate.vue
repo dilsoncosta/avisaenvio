@@ -28,6 +28,11 @@
 					<select name="type" v-model="shipping_company">
 						<option value="0">Correios</option>
 						<option value="1">Jadlog</option>
+						<!--
+						<option value="2">J&T Express</option>
+						<option value="3">Latam Cargo</option>
+						<option value="4">Loggi</option>
+						-->
 					</select>
 				</div>
 			</div>

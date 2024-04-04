@@ -12,16 +12,19 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
 	protected $signature = 'send:download_events_order';
 	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
-	private $token = config('app.api_rastreio_zap_token');
 	private $sleep = 4000;
 	private $shipping = [
 		0 => 'Correio',
-		1 => 'JadLog'
+		1 => 'JadLog',
+		2 => 'J&T Express',
+		3 => 'Latam Cargo',
+		4 => 'Loggi',
 	];
 	protected $description = 'Comando para efetuar o download dos pedidos de cada rastreio e envia para fila para disparo.';
 	
@@ -53,7 +56,7 @@ class DownloadEventsOrderCommand extends Command
 			$response = Http::withHeaders([
 				'Content-Type'  => 'application/json',
 				'Accept'        => 'application/json',
-				'Authorization' => 'Bearer '.$this->token
+				'Authorization' => 'Bearer '.config('app.api_rastreio_zap_token')
 			])->post($this->url, [
 				'tracking_code' => $order->object,
 				'carrier_id'    => $this->getTransporter($order->shipping_company),
@@ -68,7 +71,8 @@ class DownloadEventsOrderCommand extends Command
 				continue; 
 			}
 
-			if (!isset($events->data->occurrences) || empty($events->data->occurrences)) {
+			if (!isset($events->data->occurrences) || empty($events->data->occurrences))
+			{
 				continue;
 			}
 			
@@ -284,6 +288,18 @@ class DownloadEventsOrderCommand extends Command
 			// SmartEnvios
 			case '8':
 				return '16';
+				break;
+			// Rede Sul
+			case '9':
+				return '19';
+				break;
+			// Loggi (apenas para etiquetas do Melhor Envio)	
+			case '10':
+				return '20';
+				break;
+			// J&T Express
+			case '11':
+				return '20';
 				break;
 			default:
 				return '';
