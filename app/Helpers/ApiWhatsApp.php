@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ApiWhatsApp
 {
@@ -628,6 +629,7 @@ class ApiWhatsApp
 			empty($this->getNumberContact())
 		)
 		{
+			Log::info('ererer');
 			return (object) [
 				'status' => '0',
 				'message' => 'Dados obrigatórios não informados!',
@@ -640,7 +642,7 @@ class ApiWhatsApp
 		])->post($this->getUrl().'/chat/whatsappNumbers/'.$this->getSessionName(), [
 				"numbers" => array( $this->getNumberContact() )
 		]);
-		
+		Log::info($response);
 		$tmp = $response->object();
 		
 		if($response->status() == 201)
