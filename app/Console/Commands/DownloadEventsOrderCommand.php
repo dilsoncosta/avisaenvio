@@ -203,7 +203,7 @@ class DownloadEventsOrderCommand extends Command
 				
 				if ($dateOrderEvent->lessThan($dateNow))
 				{
-					continue;
+					//continue;
 				}
 				
 				if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists()){ continue; }
