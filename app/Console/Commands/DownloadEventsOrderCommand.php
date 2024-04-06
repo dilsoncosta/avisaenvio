@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
@@ -29,6 +30,7 @@ class DownloadEventsOrderCommand extends Command
 	
 	public function handle()
 	{
+		Log::info('ewrfwrfw');
 		$orders = Order::select(
 							'orders.tenant_id as tenant_id',
 							'orders.code as code',
