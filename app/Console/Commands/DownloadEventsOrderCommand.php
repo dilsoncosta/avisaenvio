@@ -30,7 +30,6 @@ class DownloadEventsOrderCommand extends Command
 	
 	public function handle()
 	{
-		Log::info('ewrfwrfw');
 		$orders = Order::select(
 							'orders.tenant_id as tenant_id',
 							'orders.code as code',
@@ -66,7 +65,7 @@ class DownloadEventsOrderCommand extends Command
 				'simplification' => false,
 				'cpf_cnpj'      => $order->shipping_company == 2 ? $order->cpf_cnpj : false,
 			]);
-			
+			Log::info($response);
 			$events = $response->object();
 			
 			if($response->status() != 200)
