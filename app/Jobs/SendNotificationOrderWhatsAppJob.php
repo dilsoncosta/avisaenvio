@@ -111,6 +111,15 @@ class SendNotificationOrderWhatsAppJob implements ShouldQueue
 			$template = str_replace('[DESTINATARIO]',  ucwords(strtolower($this->data->destination)), $this->data->message);
 			$template = str_replace('[SITUACAO EVENTO]', $this->data->msg_event, $template);
 			$template = str_replace('[DATA EVENTO]', Carbon::createFromFormat('Y-m-d H:i:s', $this->data->date_event)->format('d/m/Y H:i:s'), $template);
+
+			if(strlen($this->data->cpf_cnpj) < 12)
+			{
+				$template = str_replace('[CPF_CNPJ]', Helpers::formated_CPF($this->data->cpf_cnpj), $template);
+			}
+			else
+			{
+				$template = str_replace('[CPF_CNPJ]', Helpers::formated_CNPJ($this->data->cpf_cnpj), $template);
+			}
 			$template = str_replace('[TRANSPORTADORA]', $this->data->shipping, $template);
 			$template = str_replace('[NUMERO PEDIDO]', $this->data->code, $template);
 			$template = str_replace('[WHATSAPP]', Helpers::formata_telefone($this->data->whatsapp), $template);

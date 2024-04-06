@@ -16,9 +16,13 @@ class DownloadOrdersBestShipping extends Command
 	private $url   = 'https://www.melhorenvio.com.br/api/v2/me/orders?per_page=700&status=posted';
 	private $sleep = 1500000;
 	private $shippingCompany = [
-		'Correios' => '0',
-		'Jadlog'   => '1'
+		'Correios'    => '0',
+		'Jadlog'      => '1',
+		'JeT'         => '2',
+		'LATAM Cargo' => '3',
+		'Loggi'       => '4'
 	];
+
 	protected $description = 'Comando para efetuar o download dos pedidos de cada cliente no melhor envio.';
 	
 	public function handle()
@@ -60,11 +64,21 @@ class DownloadOrdersBestShipping extends Command
 			{
 				if(Order::where('code', $item->protocol)->where('tenant_id', $integration_best_shipping->tenant_id)->exists())
 				{ continue; }
+
+				if(strlen($item->to->document) <= 11)
+				{
+					$cpf_cnpj = $item->to->document;
+				}
+				else
+				{
+					$cpf_cnpj = $item->to->company_document;
+				}
 				
 				Order::create([
 					'tenant_id'        => $integration_best_shipping->tenant_id,
 					'uuid'             => str::uuid(),
 					'code'             => $item->protocol,
+					'cpf_cnpj'         => $cpf_cnpj,
 					'destination'      => $item->to->name,
 					'whatsapp'         => '55'.$item->to->phone,
 					'object'           => $item->tracking,

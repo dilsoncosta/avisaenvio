@@ -42,15 +42,18 @@
 					<b class="title_tags">Tags:</b>
 					<a @click.prevent="handleEmojiClick($event, '[DESTINATARIO]')" class="tags" role="button"><b>[DESTINATARIO]</b></a>
 					&nbsp;&nbsp; 
+					<a @click.prevent="handleEmojiClick($event, '[CPF_CNPJ]')" class="tags" role="button"><b>[CPF_CNPJ]</b></a>
+					&nbsp;&nbsp;
 					<a @click.prevent="handleEmojiClick($event, '[WHATSAPP]')" class="tags" role="button"><b>[WHATSAPP]</b></a>
 					&nbsp;&nbsp; 
 					<a @click.prevent="handleEmojiClick($event, '[DATA EVENTO]')" class="tags" role="button"><b>[DATA EVENTO]</b></a>
 					&nbsp;&nbsp; 
 					<a @click.prevent="handleEmojiClick($event, '[NUMERO PEDIDO]')" class="tags" role="button"><b>[NUMERO PEDIDO]</b></a>
 					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[SITUACAO EVENTO]')" class="tags" role="button"><b>[SITUACAO EVENTO]</b></a>
 					&nbsp;&nbsp; 
 					<a @click.prevent="handleEmojiClick($event, '[TRANSPORTADORA]')" class="tags" role="button"><b>[TRANSPORTADORA]</b></a>
+					&nbsp;&nbsp;
+					<a @click.prevent="handleEmojiClick($event, '[SITUACAO EVENTO]')" class="tags" role="button"><b>[SITUACAO EVENTO]</b></a>
 					&nbsp;&nbsp;
 					<a @click.prevent="handleEmojiClick($event, '[CODIGO RASTREIO]')" class="tags" role="button"><b>[CODIGO RASTREIO]</b></a>
 					&nbsp;&nbsp;

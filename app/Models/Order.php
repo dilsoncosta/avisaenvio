@@ -16,6 +16,7 @@ class Order extends Model
 		'uuid',
 		'code',
 		'destination',
+		'cpf_cnpj',
 		'whatsapp',
 		'object',
 		'integration',

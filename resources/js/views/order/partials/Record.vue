@@ -17,6 +17,10 @@
 							<td class="td_format">{{ data.destination }}</td>
 						</tr>
 						<tr>
+							<th><b>CPF/CNPJ:</b></th>
+							<td class="td_format">{{ formatarCPFCNPJ(data.cpf_cnpj) }}</td>
+						</tr>
+						<tr>
 							<th><b>WhatsApp:</b></th>
 							<td class="td_format">{{ formatPhoneNumber(data.whatsapp) }}</td>
 						</tr>
@@ -39,10 +43,14 @@
 							<td v-else-if="data.integration == 1" class="td_format">Cadastro Manual</td>
 							<td v-else class="td_format">Importação Planilha</td>
 						</tr>
+						
 						<tr>
 							<th><b>Transportadora:</b></th>
 							<td v-if="data.shipping_company == 0" class="td_format">Correios</td>
-							<td v-else class="td_format">Jadlog</td>
+							<td v-else-if="data.shipping_company == 1" class="td_format">Jadlog</td>
+							<td v-else-if="data.shipping_company == 2" class="td_format">J&T Express</td>
+							<td v-else-if="data.shipping_company == 3" class="td_format">Latam Cargo</td>
+							<td v-else class="td_format">Loggi</td>
 						</tr>
 						<tr>
 							<th><b>Criado em:</b></th>
@@ -249,7 +257,7 @@
 }
 </style>
 <script setup>
-import { formatDateTime, formatPhoneNumber } from '@/helpers/Helpers';
+import { formatDateTime, formatPhoneNumber, formatarCPFCNPJ } from '@/helpers/Helpers';
 import { defineProps, defineEmits } from 'vue';
 
 /* Props */

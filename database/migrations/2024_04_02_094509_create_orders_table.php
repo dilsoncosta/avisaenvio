@@ -14,6 +14,7 @@ return new class extends Migration
 			$table->unsignedBigInteger('tenant_id')->index();
 			$table->string('code', 40);
 			$table->string('destination', 255);
+			$table->string('cpf_cnpj',15)->nullable();
 			$table->string('whatsapp',60);
 			$table->string('object', 60);
 			$table->tinyInteger('integration')->default(0)->comment('0 - Melhor Envio, 1 - Importação Planilha, 2 - Cadastro Manual')->index();

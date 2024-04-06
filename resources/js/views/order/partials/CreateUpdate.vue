@@ -16,6 +16,10 @@
 					<input type="text" name="destination" maxlength="255" v-model="destination" @input="DESTINATIONConvertWordToUppercase()">
 				</div>
 				<div class="form_group">
+					<label><span class="input_required">*</span> CPF/CNPJ:</label>
+					<input type="text" name="cpf_cnpj" maxlength="15" v-model="cpf_cnpj" @input="CPFCNPJOnlyNumbers()">
+				</div>
+				<div class="form_group">
 					<label><span class="input_required">*</span> WhatsApp:</label>
 					<input type="text" name="whatsapp"  maxlength="60" v-model="whatsapp" @keyup="WHATSAPPOnlyNumbers()">
 				</div>
@@ -28,11 +32,9 @@
 					<select name="type" v-model="shipping_company">
 						<option value="0">Correios</option>
 						<option value="1">Jadlog</option>
-						<!--
 						<option value="2">J&T Express</option>
 						<option value="3">Latam Cargo</option>
-						<option value="4">Loggi</option>
-						-->
+						<option value="4">Loggi (apenas para etiquetas do Melhor Envio)</option>
 					</select>
 				</div>
 			</div>
@@ -159,7 +161,7 @@ input:disabled {
 <script setup>
 import { watch, ref, defineProps, defineEmits } from 'vue';
 import { useStore } from 'vuex';
-import { empty, show_msgbox, convertToUpperCase, keepNumbersOnly, validatedPhone } from '@/helpers/Helpers';
+import { empty, show_msgbox, convertToUpperCase, keepNumbersOnly, validatedPhone, validateCPF, validateCNPJ } from '@/helpers/Helpers';
 
 /* Props */
 const props = defineProps({
@@ -188,6 +190,7 @@ const code             = ref('');
 const destination      = ref('');
 const whatsapp         = ref('');
 const object           = ref('');
+const cpf_cnpj         = ref('');
 const shipping_company = ref('0');
 
 /* Events */
@@ -206,6 +209,7 @@ watch(() => props.form, (value) => {
 		whatsapp.value         = data.whatsapp;
 		object.value           = data.object;
 		shipping_company.value = data.shipping_company;
+		cpf_cnpj.value         = data.cpf_cnpj;
 	}
 });
 
@@ -226,6 +230,18 @@ const submit = async () => {
 	if(empty(destination.value))
 	{
 		return show_msgbox('O Campo DESTINATÁRIO é obrigatório!', 'warning');
+	}
+	if(empty(cpf_cnpj.value))
+	{
+		return show_msgbox('O Campo CPF/CNPJ é obrigatório!', 'warning');
+	}
+	if(cpf_cnpj.value.length <= 11 && !validateCPF(cpf_cnpj.value))
+	{
+		return show_msgbox('CPF inválido!', 'warning');
+	}
+	if(cpf_cnpj.value.length > 11 && !validateCNPJ(cpf_cnpj.value))
+	{
+		return show_msgbox('CNPJ inválido!', 'warning');
 	}
 	if(empty(whatsapp.value))
 	{
@@ -252,6 +268,7 @@ const submit = async () => {
 		formData.append('id', id.value);
 		formData.append('code', code.value);
 		formData.append('destination', destination.value);
+		formData.append('cpf_cnpj', cpf_cnpj.value);
 		formData.append('whatsapp', whatsapp.value);
 		formData.append('object', object.value);
 		formData.append('shipping_company', shipping_company.value);
@@ -294,6 +311,7 @@ const clearInputs = () => {
 	destination.value      = '';
 	whatsapp.value         = '';
 	object.value           = '';
+	cpf_cnpj.value         = '';
 	shipping_company.value = '0';
 }
 
@@ -311,5 +329,9 @@ const OBJECTConvertWordToUppercase = () => {
 
 const WHATSAPPOnlyNumbers = () => {
 	whatsapp.value = keepNumbersOnly(whatsapp.value);
+}
+
+const CPFCNPJOnlyNumbers = () => {
+	cpf_cnpj.value = keepNumbersOnly(cpf_cnpj.value);
 }
 </script>

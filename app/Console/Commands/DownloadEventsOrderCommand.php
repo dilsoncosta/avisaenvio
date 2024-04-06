@@ -20,10 +20,10 @@ class DownloadEventsOrderCommand extends Command
 	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
 	private $sleep = 4000;
 	private $shipping = [
-		0 => 'Correio',
+		0 => 'Correios',
 		1 => 'JadLog',
-		2 => 'J&T Express',
-		3 => 'Latam Cargo',
+		2 => 'JeT',
+		3 => 'LATAM Cargo',
 		4 => 'Loggi',
 	];
 	protected $description = 'Comando para efetuar o download dos pedidos de cada rastreio e envia para fila para disparo.';
@@ -33,6 +33,7 @@ class DownloadEventsOrderCommand extends Command
 		$orders = Order::select(
 							'orders.tenant_id as tenant_id',
 							'orders.code as code',
+							'orders.cpf_cnpj as cpf_cnpj',
 							'orders.destination as destination',
 							'orders.id as id',
 							'orders.whatsapp as whatsapp',
@@ -44,6 +45,7 @@ class DownloadEventsOrderCommand extends Command
 						)
 						->join('integration_whatsapp', 'integration_whatsapp.tenant_id', '=', 'orders.tenant_id')
 						->where('orders.last_situation', '<','4')
+						->limit(1)
 						->get();
 		
 		if ($orders->isEmpty())
@@ -60,7 +62,8 @@ class DownloadEventsOrderCommand extends Command
 			])->post($this->url, [
 				'tracking_code' => $order->object,
 				'carrier_id'    => $this->getTransporter($order->shipping_company),
-				'simplification' => false
+				'simplification' => false,
+				'cpf_cnpj'      => $order->shipping_company == 2 ? $order->cpf_cnpj : false,
 			]);
 			
 			$events = $response->object();
@@ -70,7 +73,7 @@ class DownloadEventsOrderCommand extends Command
 				usleep($this->sleep);
 				continue; 
 			}
-
+			
 			if (!isset($events->data->occurrences) || empty($events->data->occurrences))
 			{
 				continue;
@@ -115,6 +118,7 @@ class DownloadEventsOrderCommand extends Command
 						"integration_whatsapp_id" => $order->integration_whatsapp_id,
 						"destination"             => $order->destination,
 						"code"                    => $order->code,
+						"cpf_cnpj"                => $order->cpf_cnpj,
 						"shipping"                => $this->shipping[$order->shipping_company],
 						"msg_event"               => $descriptionOrderEvent,
 						"whatsapp"                => $order->whatsapp,
@@ -152,21 +156,43 @@ class DownloadEventsOrderCommand extends Command
 					return;
 				}
 				
-				if (stripos($descriptionOrderEvent, 'postado') !== false || stripos($descriptionOrderEvent, 'Emissao') !== false)
+				//Log::info(stripos($descriptionOrderEvent, 'desembarque'));
+				if (stripos($descriptionOrderEvent, 'postado') !== false || 
+				stripos($descriptionOrderEvent, 'Emissao') !== false ||
+				stripos($descriptionOrderEvent, 'Objeto coletado') !== false || 
+				stripos($descriptionOrderEvent, 'Postado') !== false
+				)
 				{
 					$status_event = '1';
 				}
-				else if(stripos($descriptionOrderEvent, 'encaminhado') !== false || stripos($descriptionOrderEvent, 'transferência') !== false ||
-				stripos($descriptionOrderEvent, 'Transferido') !== false || stripos($descriptionOrderEvent, 'Transferencia') !== false || stripos($descriptionOrderEvent, 'Entrada') !== false
+				else if(stripos($descriptionOrderEvent, 'encaminhado') !== false || 
+				stripos($descriptionOrderEvent, 'transferência') !== false || 
+				stripos($descriptionOrderEvent, 'Transferido') !== false || 
+				stripos($descriptionOrderEvent, 'Transferencia') !== false || 
+				stripos($descriptionOrderEvent, 'Entrada') !== false || 
+				stripos($descriptionOrderEvent, 'Em trânsferencia') !== false || 
+				stripos($descriptionOrderEvent, 'Chegada em unidade') !== false ||
+				stripos($descriptionOrderEvent, 'Em transferência') !== false || 
+				stripos($descriptionOrderEvent, 'embarque') !== false || 
+				stripos($descriptionOrderEvent, 'embarcou') !== false || 
+				stripos($descriptionOrderEvent, 'desembarque') !== false || 
+				stripos($descriptionOrderEvent, 'chegou na transportadora') !== false 
 				)
 				{
 					$status_event = '2';
 				}
-				else if(stripos($descriptionOrderEvent, 'entrega') !== false || stripos($descriptionOrderEvent, 'Em rota') !== false)
+				else if(stripos($descriptionOrderEvent, 'entrega') !== false || 
+				stripos($descriptionOrderEvent, 'Em rota') !== false || 
+				stripos($descriptionOrderEvent, 'Saiu para entrega') !== false
+				)
 				{
 					$status_event = '3';
 				}
-				else if(stripos($descriptionOrderEvent, 'entregue') !== false || stripos($descriptionOrderEvent, 'Entregue') !== false) 
+				else if(stripos($descriptionOrderEvent, 'entregue') !== false || 
+				stripos($descriptionOrderEvent, 'Entregue') !== false || 
+				stripos($descriptionOrderEvent, 'Pedido entregue') !== false || 
+				stripos($descriptionOrderEvent, 'Entregue ao destinatário') !== false
+				) 
 				{
 					$status_event = '4';
 				}
@@ -204,6 +230,7 @@ class DownloadEventsOrderCommand extends Command
 					"integration_whatsapp_id" => $order->integration_whatsapp_id,
 					"destination"             => $order->destination,
 					"code"                    => $order->code,
+					"cpf_cnpj"                => $order->cpf_cnpj,
 					"shipping"                => $this->shipping[$order->shipping_company],
 					"msg_event"               => $descriptionOrderEvent,
 					"whatsapp"                => $order->whatsapp,
@@ -261,48 +288,17 @@ class DownloadEventsOrderCommand extends Command
 			case '1':
 				return '2';
 				break;
-			// Azul Cargo
+			// J&T Express
 			case '2':
-				return '4';
+				return '21';
 				break;
-			// Kangu
+			// Latam Cargo
 			case '3':
-				return '5';
-				break;
-			// Latam Cargo	
-			case '4':
 				return '7';
 				break;
-			// ViaBrasil
-			case '5':
-				return '8';
-				break;
-			// Braspress
-			case '6':
-				return '10';
-				break;
-			// Mandaê
-			case '7':
-				return '12';
-				break;
-			// SmartEnvios
-			case '8':
-				return '16';
-				break;
-			// Rede Sul
-			case '9':
-				return '19';
-				break;
-			// Loggi (apenas para etiquetas do Melhor Envio)	
-			case '10':
+			// Loggi
+			case '4':
 				return '20';
-				break;
-			// J&T Express
-			case '11':
-				return '20';
-				break;
-			default:
-				return '';
 				break;
 		}
 	}

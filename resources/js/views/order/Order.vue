@@ -64,7 +64,10 @@
 								</td>
 								<td class="td_format">{{ item.destination }}</td>
 								<td v-if="item.shipping_company == 0" class="td_format">Correios</td>
-								<td v-else class="td_format">JadLog</td>
+								<td v-else-if="item.shipping_company == 1" class="td_format">Jadlog</td>
+								<td v-else-if="item.shipping_company == 2" class="td_format">J&T Express</td>
+								<td v-else-if="item.shipping_company == 3" class="td_format">Latam Cargo</td>
+								<td v-else class="td_format">Loggi</td>
 								<td class="td_format">{{ item.code }}</td>
 								<td class="td_format">{{ item.object }}</td>
 								<td v-if="item.last_situation == 0" class="td_format"><b class="pending">Pendente</b></td>

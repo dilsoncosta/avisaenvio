@@ -15,6 +15,7 @@ class OrderResource extends JsonResource
 			'code'             => $this->code,
 			'destination'      => $this->destination,
 			'whatsapp'         => $this->whatsapp,
+			'cpf_cnpj'         => $this->cpf_cnpj,
 			'object'           => $this->object,
 			'situation'        => $this->situation,
 			'integration'      => $this->integration,

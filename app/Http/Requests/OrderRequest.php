@@ -17,6 +17,7 @@ class OrderRequest extends FormRequest
       "code"             => "required",
       "destination"      => "required",
 			"whatsapp"         => "required|regex:/^[1-9]{2}[1-9]{2}[2-9][0-9]{7,8}+$/",
+			'cpf_cnpj'         => 'required_if:shipping_company,2',
       "object"           => "required",
       "shipping_company" => "required",
 		];
@@ -26,6 +27,7 @@ class OrderRequest extends FormRequest
 	{
 		$messages = [
       "code.required"             => "O campo CÓDIGO é obrigatório!",
+			"required_if.required"      => "O campo CPF/CNPJ é obrigatório!",
       "destination.required"      => "O campo DESATINATÁRIO é obrigatório!",
       "whatsapp.required"         => "O campo WHATSAPP é obrigatório!",
 			'whatsapp.regex'            => 'Entre com um WHATSAPP válido! Formato: [Código do País][Código de Área][Número do Celular] Ex.: 5531911112222!',

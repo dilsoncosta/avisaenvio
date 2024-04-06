@@ -50,7 +50,7 @@ class ImportOrderService
 			
 			if($key > 0)
 			{
-				if(empty($item[0]) || empty($item[1]) || empty($item[2]) || empty($item[3]))
+				if(empty($item[0]) || empty($item[1]) || empty($item[2]) || empty($item[3]) || empty($item[4]))
 				{
 					continue;
 				}
@@ -61,11 +61,12 @@ class ImportOrderService
 				}
 				
 				$this->order->create([
-					'code'             => $item[2],
+					'code'             => $item[3],
 					'destination'      => $item[0],
-					'whatsapp'         => $item[1],
-					'object'           => $item[3],
-					'integration'      => 1,
+					'whatsapp'         => $item[2],
+					'cpf_cnpj'         => $item[1],
+					'object'           => $item[4],
+					'integration'      => 2,
 					'shipping_company' => $request->shipping_company,
 					'situation'        => '0', 
 				]);

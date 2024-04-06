@@ -21,9 +21,10 @@
 								Preencha a planilha com os dados: 
 								<ul>
 									<li>Obs. 1: Campo "Destinatário" é obrigatório;</li>
-									<li>Obs. 2: Campo "WhatsApp (DDD + DDI + NÚMERO)" é obrigatório;</li>
-									<li>Obs. 3: Campo "Código Pedido" é obrigatório;</li>
-									<li>Obs. 4: Campo "Objeto" é obrigatório;</li>
+									<li>Obs. 2: Campo "CPF/CNPJ" é obrigatório;</li>
+									<li>Obs. 3: Campo "WhatsApp (DDD + DDI + NÚMERO)" é obrigatório;</li>
+									<li>Obs. 4: Campo "Código Pedido" é obrigatório;</li>
+									<li>Obs. 5: Campo "Objeto" é obrigatório;</li>
 								</ul>
 							</li>
 							<li>Indique a Integração;</li>
@@ -37,6 +38,9 @@
 						<option></option>
 						<option value="0">Correios</option>
 						<option value="1">Jadlog</option>
+						<option value="2">J&T Express</option>
+						<option value="3">Latam Cargo</option>
+						<option value="4">Loggi (apenas para etiquetas do Melhor Envio)</option>
 					</select>
 				</div>
 				<br/>
