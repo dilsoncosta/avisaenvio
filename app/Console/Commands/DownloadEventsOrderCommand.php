@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
@@ -91,7 +90,14 @@ class DownloadEventsOrderCommand extends Command
 				
 				// Filtrando o array "occurrences" para encontrar a palavra "entregue" na chave "action"
 				$result = array_filter($events->data->occurrences, function($occurrence) {
-					return strpos($occurrence->action, 'entregue') !== false;
+					$keywords = ['Entregue', 'Pedido entregue', 'Entregue ao destinatário'];
+					foreach ($keywords as $keyword) {
+						if (strpos($occurrence->action, $keyword) !== false)
+						{
+							return true;
+						}
+					}
+					return false;
 				});
 				
 				if ($result == true)
@@ -156,7 +162,6 @@ class DownloadEventsOrderCommand extends Command
 					return;
 				}
 				
-				//Log::info(stripos($descriptionOrderEvent, 'desembarque'));
 				if (stripos($descriptionOrderEvent, 'postado') !== false || 
 				stripos($descriptionOrderEvent, 'Emissao') !== false ||
 				stripos($descriptionOrderEvent, 'Objeto coletado') !== false || 
@@ -187,14 +192,6 @@ class DownloadEventsOrderCommand extends Command
 				)
 				{
 					$status_event = '3';
-				}
-				else if(stripos($descriptionOrderEvent, 'entregue') !== false || 
-				stripos($descriptionOrderEvent, 'Entregue') !== false || 
-				stripos($descriptionOrderEvent, 'Pedido entregue') !== false || 
-				stripos($descriptionOrderEvent, 'Entregue ao destinatário') !== false
-				) 
-				{
-					$status_event = '4';
 				}
 				else 
 				{
