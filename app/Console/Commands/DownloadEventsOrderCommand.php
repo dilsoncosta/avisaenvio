@@ -65,7 +65,7 @@ class DownloadEventsOrderCommand extends Command
 				'simplification' => false,
 				'cpf_cnpj'      => $order->shipping_company == 2 ? $order->cpf_cnpj : false,
 			]);
-			Log::info($response);
+			
 			$events = $response->object();
 			
 			if($response->status() != 200)
@@ -204,7 +204,7 @@ class DownloadEventsOrderCommand extends Command
 				
 				if ($dateOrderEvent->lessThan($dateNow))
 				{
-					//continue;
+					continue;
 				}
 				
 				if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists()){ continue; }
