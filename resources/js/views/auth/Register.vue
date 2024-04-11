@@ -2,7 +2,7 @@
 	<div id="container">
 		<div id="header">
 			<h2>Criação de Conta</h2>
-			<p>Crie uma conta para acessar a plataforma AVISA ENVIO.</p>
+			<p>Crie uma conta para acessar a plataforma AVISA APP.</p>
 			<p>Campos com um <span style="color:#ff0000;">*</span> são obrigatórios.</p>
 		</div>
 		<div id="form_register">
