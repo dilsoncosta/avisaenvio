@@ -351,6 +351,8 @@ class Helpers
             'period as period',
             'date_start',
             'date_end',
+            'ind_mod_order_tracking',
+            'ind_mod_hotel',
 				);
 		
 		if (config('database.default') == 'sqlite')

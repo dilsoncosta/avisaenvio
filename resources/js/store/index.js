@@ -8,11 +8,13 @@ import generate_options from './modules/generate_options';
 
 import template from './modules/template';
 import order from './modules/order';
+import guest from './modules/guest';
 
 /* Configuration */
 import conf_integration_whatsapp from './modules/conf_integration_whatsapp';
 import config_import_order from './modules/config_import_order';
 import conf_integration_best_shipping from './modules/conf_integration_best_shipping';
+import config_hospitality from './modules/config_hospitality';
 
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
@@ -61,7 +63,9 @@ export default createStore({
 		conf_integration_whatsapp,
 		config_import_order,
 		order,
-		conf_integration_best_shipping
+		conf_integration_best_shipping,
+		config_hospitality,
+		guest
 	},
 	plugins: [
     createPersistedState({

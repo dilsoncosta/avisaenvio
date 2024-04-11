@@ -35,7 +35,7 @@
 									<i class="fas fa-chevron-down"></i>
 								</th>
 								<th>Titulo</th>
-								<th>Tipo</th>
+								<th v-if="ind_mod_order_tracking">Tipo</th>
 								<th>Situação</th>
 							</tr>
 						</thead>
@@ -60,10 +60,10 @@
 									</div>
 								</td>
 								<td class="td_format">{{ item.title }}</td>
-								<td v-if="item.type == 1" class="td_format">Pedido postado</td>
-								<td v-else-if="item.type == 2" class="td_format">Em trânsito</td>
-								<td v-else-if="item.type == 3" class="td_format">Saiu entrega</td>
-								<td v-else class="td_format">Entregue</td>
+								<td v-if="item.type == 1 && ind_mod_order_tracking == 1" class="td_format">Pedido postado</td>
+								<td v-else-if="item.type == 2 && ind_mod_order_tracking == 1" class="td_format">Em trânsito</td>
+								<td v-else-if="item.type == 3 && ind_mod_order_tracking == 1" class="td_format">Saiu entrega</td>
+								<td v-else-if="ind_mod_order_tracking == 1" class="td_format">Entregue</td>
 								<td v-if="item.situation == 1" class="td_format"><b class="active">Ativo</b></td>
 								<td v-else class="td_format"><b class="inactive">Inativo</b></td>
 							</tr>
@@ -412,6 +412,7 @@ const formRecord = ref({});
 const titleModal = ref('');
 const update    = ref(false);
 const items     = ref([]);
+const ind_mod_order_tracking = store.state.auth.me.ind_mod_order_tracking;
 
 /* Events */
 watch(() => store.state.template.data,

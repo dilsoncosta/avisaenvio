@@ -8,7 +8,7 @@
 			<div class="record_container">
 				<table class="record-table">
 					<tbody>
-						<tr>
+						<tr v-if="ind_mod_order_tracking == 1">
 							<th><b>Tipo:</b></th>
 							<td v-if="data.type == 1" class="td_format">Pedido Postado</td>
 							<td v-else-if="data.type == 2" class="td_format">Em Trânsito</td>
@@ -158,6 +158,8 @@ const props = defineProps({
 		required: true
 	}
 });
+
+const ind_mod_order_tracking = store.state.auth.me.ind_mod_order_tracking;
 
 /* Ref or Reactive */
 const path_storage = import.meta.env.VITE_APP_PATH_STORAGE

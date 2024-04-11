@@ -48,6 +48,22 @@
 							<input type="date" name="date_end" v-model="date_end">
 						</div>
 						<div class="form_group" v-if="showInput">
+							<label>Módulo Rastreio de Pedido:</label>
+							<select name="ind_mod_order_tracking" v-model="ind_mod_order_tracking">
+								<option></option>
+								<option value="1">Sim</option>
+								<option value="0">Não</option>
+							</select>
+						</div>
+						<div class="form_group" v-if="showInput">
+							<label>Módulo Hotel:</label>
+							<select name="ind_mod_hotel" v-model="ind_mod_hotel">
+								<option></option>
+								<option value="1">Sim</option>
+								<option value="0">Não</option>
+							</select>
+						</div>
+						<div class="form_group" v-if="showInput">
 							<label>Situação:</label>
 							<select name="situation" v-model="situation">
 								<option></option>
@@ -221,6 +237,8 @@ const type        = ref('');
 const date_end    = ref('');
 const date_start  = ref('');
 const situation   = ref('');
+const ind_mod_order_tracking = ref('');
+const ind_mod_hotel = ref('');
 const showInput   = ref(false);
 
 /* Events */
@@ -269,11 +287,14 @@ const handleClient = async (value) => {
 		type.value        = access.data.type;
 		date_start.value  = access.data.date_start;
 		date_end.value    = access.data.date_end;
-		situation.value   = access.data.situation;
-
+		ind_mod_order_tracking.value = access.data.ind_mod_order_tracking;
+		ind_mod_hotel.value          = access.data.ind_mod_hotel;
+		situation.value              = access.data.situation;
 		showInput.value   = true;
 	}
 	catch(error) {
+
+		console.log(error);
 		return show_msgbox(error.data.message, 'warning');
 	}
 	finally {
@@ -302,6 +323,14 @@ const handleSave = async () => {
 	{
 		return show_msgbox('O Campo DATA FIM é obrigatório!', 'warning');
 	}
+	if(empty(ind_mod_order_tracking.value))
+	{
+		return show_msgbox('O Campo MÓDULO RASTREIO DE PEDIDO é obrigatório!', 'warning');
+	}
+	if(empty(ind_mod_hotel.value))
+	{
+		return show_msgbox('O Campo MÓDULO HOTEL é obrigatório!', 'warning');
+	}
 	if(empty(situation.value))
 	{
 		return show_msgbox('O Campo SITUAÇÃO é obrigatório!', 'warning');
@@ -316,6 +345,8 @@ const handleSave = async () => {
 			type : type.value,
 			date_start : date_start.value,
 			date_end: date_end.value,
+			ind_mod_order_tracking : ind_mod_order_tracking.value,
+			ind_mod_hotel : ind_mod_hotel.value,
 			situation: situation.value
 		});
 		return show_msgbox(response, 'success');

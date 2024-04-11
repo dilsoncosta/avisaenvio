@@ -31,6 +31,15 @@ export default {
 			catch(error) {
 				return Promise.reject(error);
 			}
+		},
+		async generateOptionsTemplates(context, params) {
+			try {
+				const response = await Api.apiPost('/generateOptionsTemplates', params);
+				return Promise.resolve(response.data.data);
+			}
+			catch(error) {
+				return Promise.reject(error);
+			}
 		}
 	}
 }

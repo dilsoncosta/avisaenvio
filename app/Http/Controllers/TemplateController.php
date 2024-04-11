@@ -30,7 +30,7 @@ class TemplateController extends Controller
 	
 	public function store(TemplateRequest $request)
 	{
-		if($this->templateService->getExistedTemplate("", 0, $request->type))
+		if($this->templateService->getExistedTemplate("", 0, $request->type) && $request->ind_mod_order_tracking == 1)
 		{
 			return response()->json(array( "status" => "0", "message" => "Tipo de Template já cadastrado!" ), 400);
 		}
@@ -54,7 +54,7 @@ class TemplateController extends Controller
 			return response()->json(array("status" => "0", "message" => "Incapaz de realizar a listagem. Registro inexistente!"), 404);
 		}
 		
-		if($this->templateService->getExistedTemplate($request->id, 1, $request->type))
+		if($this->templateService->getExistedTemplate($request->id, 1, $request->type) && $request->ind_mod_order_tracking == 1)
 		{
 			return response()->json(array( "status" => "0", "message" => "Tipo de Template já cadastrado!" ), 400);
 		}

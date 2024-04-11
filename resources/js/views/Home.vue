@@ -12,17 +12,23 @@
 					<div></div>
 				</div>
 				<br/>
-				<div class="content">
-					<div v-if="user.category == 'CL' || user.category == 'CLB'">
+				<div :class="{ content_one: ind_mod_order_tracking == 1 || ind_mod_hotel == 1, content_two: ind_mod_order_tracking == 0 && ind_mod_hotel == 0 }">
+					<div v-if="(user.category == 'CL' || user.category == 'CLB') && ind_mod_order_tracking == 1">
 						<p class="title"><b>Pedido:</b></p>
 						<div class="total">{{ order }}</div>
 						<router-link :to="{name : 'order'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
+					</div>
+					<div v-if="(user.category == 'CL' || user.category == 'CLB') && ind_mod_hotel == 1">
+						<p class="title"><b>Hospede:</b></p>
+						<div class="total">{{ config_total_hospitalities }}</div>
+						<router-link :to="{name : 'guest'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
 					</div>
 					<div v-if="user.category == 'CL' || user.category == 'CLB'">
 						<p class="title"><b>Configuração / Colaborador:</b></p>
 						<div class="total">{{ config_total_collaborator }}</div>
 						<router-link :to="{name : 'collaborator'}" ><p class="see_details"><b>+ Detalhes</b></p></router-link>
 					</div>
+					
 					<div v-if="user.category == 'CL' || user.category == 'CLB'">
 						<p class="title"><b>Configuração / Acesso:</b></p>
 						<div class="total access" v-if="access == 'A'">Ativo</div>
@@ -96,25 +102,27 @@ main {
 	border-bottom-right-radius: 5px;
 	color: #000;
 }
-.container_1 {
-	max-width:1400px;
-	margin:0 auto;
-}
-.content {
+.content_one {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 10px;
 	margin-top: 13px;
 }
-.content h2 {
+.content_two {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	margin-top: 13px;
+}
+.content_one h2, .content_two h2 {
 	font-size:16px;
 }
-.content div{
+.content_one div, .content_two div{
 	background: #FFF;
 	border: 1px solid #E4E4E4;
 	border-radius: 5px;
 }
-.content .total{
+.content_one .total, .content_two .total{
 	text-align:center;
 	border:none;
 	font-size: 38px;
@@ -122,15 +130,15 @@ main {
 	line-height: 1.65857;
 	color: #3a3a3aee;
 }
-.content .title{
+.content_one .title, .content_two .title{
 	text-align:center;
 	margin-top: 5px;
 	font-size: 12px;
 }
-.content a {
+.content_one a, .content_two a {
 	text-decoration:none;
 }
-.content .see_details {
+.content_one .see_details, .content_two .see_details  {
 	background-color: #e6e6e6;
 	color: #3a3a3aee;
 	padding:4px 0px;
@@ -179,7 +187,7 @@ main {
 }
 </style>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { show_msgbox } from '@/helpers/Helpers';
 
@@ -187,8 +195,11 @@ import { show_msgbox } from '@/helpers/Helpers';
 const store    = useStore();
 const order = ref(0);
 const config_total_collaborator = ref(0);
+const config_total_hospitalities = ref(0);
 const access   = store.state.auth.me.access;
 const user     = store.state.auth.me;
+const ind_mod_order_tracking = computed(() => store.state.auth.me.ind_mod_order_tracking);
+const ind_mod_hotel = computed(() => store.state.auth.me.ind_mod_hotel);
 
 /* Events */
 onMounted( async () => {
@@ -198,6 +209,7 @@ onMounted( async () => {
 		const response = await store.dispatch('getDatasDashbboard');
 
 		order.value = response.order;
+		config_total_hospitalities.value = response.config_total_hospitalities;
 		config_total_collaborator.value = response.config_total_collaborator;
 	}
 	catch(error) {

@@ -34,7 +34,8 @@
 					<i class="fas fa-chevron-down"></i>
 				</div>
 				<ul class="submenuItems" v-if="menu.type == 1">
-					<li v-for="(submenu, index) in menu.submenus" :key="index" :class="submenu.open ? {'link' :'link', 'active': 'active'} : ''">
+					<li v-for="(submenu, index) in menu.submenus" :key="index" :class="submenu.open ? {'link' :'link', 'active': 'active'} : ''"
+					v-can="submenu.can[0]">
 						<router-link :to="submenu.href"
 						v-if="user_category == 'CL' || user_category == 'MT' || $can(submenu.can[1])"
 						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': '']"
@@ -206,6 +207,15 @@ let menus = ref([
 		submenus : []
 	},
 	{
+		icon: 'fas fa-archway fa-lg',
+		type: 0,
+		title: 'Hospede',
+		open: false,
+		href: '/guest',
+		can: ['show-guest', 'access_guest'],
+		submenus : []
+	},
+	{
 		icon: 'fas fa-cog fa-fw fa-lg',
 		type: 1,
 		title: 'Configuração',
@@ -226,6 +236,11 @@ let menus = ref([
 				title: 'Integração Melhor Envio',
 				href: '/config/integration_best_shipping',
 				can: ['show-config-integration-best-shipping', 'access_config_integration_best_shipping'],
+			},
+			{
+				title: 'Hotelaria',
+				href: '/config/hospitality',
+				can: ['show-config-hospitality', 'access_config_hospitality'],
 			},
 			{
 				title: 'Importação',

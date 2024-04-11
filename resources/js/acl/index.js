@@ -35,11 +35,23 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('show-collaborator', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
+	setRule('show-best-shipping', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-integartion-whatsapp', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-import-order', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
 	setRule('show-help', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-order', () => {
-		return user.value.category == 'CL' || user.value.category == 'CLB';
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;
+	});
+	setRule('show-guest', () => {
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_hotel == 1;
 	});
 	setRule('show-template', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
@@ -51,10 +63,13 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-config-integration-best-shipping', () => {
-		return user.value.category == 'CL' || user.value.category == 'CLB';
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;
+	});
+	setRule('show-config-hospitality', () => {
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_hotel == 1;
 	});
 	setRule('show-config-import', () => {
-		return user.value.category == 'CL' || user.value.category == 'CLB';
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;;
 	});
 	
 	// Start List Permissions
@@ -129,6 +144,30 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('access_config_integration_best_shipping', () => {
 		if(user.value.category == 'CL'){ return true; }
 		return user.value.permissions.find(permission => permission.name === 'access_config_integration_best_shipping');
+	});
+	
+	// Module Config Hospitality
+	setRule('access_config_hospitality', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'access_config_hospitality');
+	});
+	
+	// Module Guest
+	setRule('access_guest', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'access_guest');
+	});
+	setRule('view_guest', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'view_guest');
+	});
+	setRule('edit_guest', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'edit_guest');
+	});
+	setRule('delete_guest', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'delete_guest');
 	});
 	// End List Permissions
 });

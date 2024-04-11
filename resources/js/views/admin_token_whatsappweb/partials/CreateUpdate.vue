@@ -182,7 +182,7 @@ watch(() => props.form, (value) => {
 	{
 		client.value.value  = '';
 		id.value            = '';
-		url.value           = 'https://evolutionapi.avisaenvio.com.br';
+		url.value           = 'https://evolutionapi.avisa.app.br';
 		port.value          = '9000';
 		title.value         = '';
 		whatsapp.value      = '';

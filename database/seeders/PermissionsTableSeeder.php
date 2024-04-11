@@ -106,6 +106,16 @@ class PermissionsTableSeeder extends Seeder
 							 'order' => 2,
 				]
 			);
+
+			Permission::create(
+				[
+									'id' => 7,
+				 'resource_id' => 2,
+								'name' => "edit_order",
+								'uuid' => str::uuid(),
+							 'order' => 3,
+				]
+			);
 			
 			Permission::create(
 				[
@@ -216,7 +226,7 @@ class PermissionsTableSeeder extends Seeder
 				[
 									'id' => 14,
 				 'resource_id' => 5,
-								'name' => "access_config_import",
+								'name' => "access_config_import_order",
 								'uuid' => str::uuid(),
 							 'order' => 1,
 				]
@@ -244,6 +254,86 @@ class PermissionsTableSeeder extends Seeder
 								'name' => "access_config_integration_best_shipping",
 								'uuid' => str::uuid(),
 							 'order' => 1,
+				]
+			);
+		}
+		
+		####
+		# Module Hospitality
+		{
+			Resource::create(
+				[
+								'id'   => 7,
+								'name' => "Hotelaria",
+								'uuid' => str::uuid(),
+							 'order' => 7,
+					 'situation' => 1,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 16,
+				 'resource_id' => 7,
+								'name' => "access_config_hospitality",
+								'uuid' => str::uuid(),
+							 'order' => 1,
+				]
+			);
+		}
+		
+		####
+		# Module Guest
+		{
+			Resource::create(
+				[
+								'id'   => 8,
+								'name' => "Hospede",
+								'uuid' => str::uuid(),
+							 'order' => 8,
+					 'situation' => 1,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 17,
+				 'resource_id' => 8,
+								'name' => "access_guest",
+								'uuid' => str::uuid(),
+							 'order' => 1,
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 18,
+				 'resource_id' => 8,
+								'name' => "view_guest",
+								'uuid' => str::uuid(),
+							 'order' => 2,
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 19,
+				 'resource_id' => 8,
+								'name' => "edit_guest",
+								'uuid' => str::uuid(),
+							 'order' => 3,
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 20,
+				 'resource_id' => 8,
+								'name' => "delete_guest",
+								'uuid' => str::uuid(),
+							 'order' => 4,
 				]
 			);
 		}

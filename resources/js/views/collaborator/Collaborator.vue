@@ -418,6 +418,8 @@ const update     = ref(false);
 const items      = ref([]);
 const resources_general = ref([]);
 const resources_config = ref([]);
+const ind_mod_order_tracking = computed(() => store.state.auth.me.ind_mod_order_tracking);
+const ind_mod_hotel = computed(() => store.state.auth.me.ind_mod_hotel);
 
 /* Events */
 watch(() => store.state.collaborator.data,
@@ -435,7 +437,12 @@ onMounted( async () => {
 		switch (item.id)
 		{
 			case 1:
+			resources_general.value.push(item);
 			case 2:
+				if(ind_mod_order_tracking.value == 0){ return; }
+				resources_general.value.push(item);
+			case 8:
+				if(ind_mod_hotel.value == 0){ return; }
 				resources_general.value.push(item);
 				break;
 			default:
@@ -454,9 +461,15 @@ onMounted( async () => {
 				resources_config.value.push(item);
 				break;
 			case 5:
+				if(ind_mod_order_tracking.value == 0){ return; }
 				resources_config.value.push(item);
 				break;
 			case 6:
+				if(ind_mod_order_tracking.value == 0){ return; }
+				resources_config.value.push(item);
+				break;
+			case 7:
+				if(ind_mod_hotel.value == 0){ return; }
 				resources_config.value.push(item);
 				break;
 			default:

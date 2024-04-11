@@ -1,11 +1,11 @@
 <template>
 	<div class="container_filters">
-		<div class="filters_form_container">
+		<div :class="{ filters_form_container_three_column: ind_mod_order_tracking === 1, filters_form_container_two_column: ind_mod_order_tracking !== 1 }">
 			<div class="form_group">
 				<label>Filtro - Titulo:</label>
 				<input type="text" name="srch_title" @input='emitValue("srch_title", $event.target.value)'>
 			</div>
-			<div class="form_group">
+			<div class="form_group" v-if="ind_mod_order_tracking == 1">
 				<label>Filtro - Tipo:</label>
 				<select name="srch_type" @input='emitValue("srch_type", $event.target.value)'>
 					<option></option>
@@ -27,9 +27,15 @@
 	</div>
 </template>
 <style scoped>
-.filters_form_container {
+.filters_form_container_three_column {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	margin-top: 18px;
+}
+.filters_form_container_two_column {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 	gap: 10px;
 	margin-top: 18px;
 }
@@ -65,13 +71,16 @@ input:disabled {
 </style>
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+import { useStore } from 'vuex';
 
 /* Props */
+const store = useStore();
 const props = defineProps({
 	srch_type: String,
 	srch_title: String,
 	srch_situation: String
 });
+const ind_mod_order_tracking = store.state.auth.me.ind_mod_order_tracking;
 
 /* Emits */
 const emit = defineEmits(['update:srch_title', 'update:srch_situation', 'update:srch_type',]);

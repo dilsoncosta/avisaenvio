@@ -10,50 +10,42 @@
 					<tbody>
 						<tr>
 							<th><b>Nome e Sobrenome:</b></th>
-							<td class="td_name_surname">{{ `${name} ${ surname}`}}</td>
+							<td class="td_format">{{ `${name} ${ surname}`}}</td>
 						</tr>
 						<tr>
 							<th><b>Username:</b></th>
-							<td>{{ username }}</td>
+							<td class="td_format">{{ username }}</td>
 						</tr>
 						<tr>
 							<th><b>Email:</b></th>
-							<td>{{ email }}</td>
+							<td class="td_format">{{ email }}</td>
 						</tr>
 						<tr>
 							<th><b>Celular:</b></th>
-							<td>{{ phone }}</td>
+							<td class="td_format">{{ phone }}</td>
 						</tr>
 						<tr>
 							<th><b>WhatsApp:</b></th>
-							<td>{{ whatsapp }}</td>
+							<td class="td_format">{{ whatsapp }}</td>
 						</tr>
 						<tr>
 							<th><b>Situação:</b></th>
-							<td v-if="situation == 1"><b class="active">Ativo</b></td>
-							<td v-else><b class="inactive">Inativo</b></td>
+							<td v-if="situation == 1" class="td_format"><b class="active">Ativo</b></td>
+							<td v-else class="td_format"><b class="inactive">Inativo</b></td>
 						</tr>
 						<tr>
 							<th><b>Criado em:</b></th>
-							<td>{{ created_at }}</td>
+							<td class="td_format">{{ created_at }}</td>
 						</tr>
 						<tr v-if="created_at != updated_at">
 							<th><b>Atualizado em:</b></th>
-							<td>{{ updated_at }}</td>
+							<td class="td_format">{{ updated_at }}</td>
 						</tr>
 					</tbody>
 				</table>
 				<b id="title_permission">Permissões</b>
 				<table class="acesso-table">
 					<tbody>
-						<!-- Module Portal -->
-						<tr  v-if="resources_general.length > 0">
-							<td colspan="5" align="center">
-								<br/>
-								<p class="title_permission">Portal</p>
-								<br/>
-							</td>
-						</tr>
 						<tr v-for="(item, index) in resources_general" :key="index">
 							<th>{{ item.name }}</th>
 							<td>&nbsp;&nbsp;<i class="fas fa-arrow-right fa-lg" style="color:#000;"></i></td>
@@ -255,11 +247,6 @@
 .inactive {
 	color:#ff0000;
 }
-.td_name_surname {
-	font-size: 11px;
-	padding-top: 15px;
-}
-
 #title_permission {
 	text-align:center;
 	font-size:16px;
@@ -291,6 +278,9 @@
 	display:flex;
 	justify-content:center;
 	align-items:center;
+}
+.td_format {
+	font-size: 10.5px !important;
 }
 </style>
 <script setup>

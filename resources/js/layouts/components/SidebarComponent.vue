@@ -2,7 +2,7 @@
 	<div class="sidebar">
 		<div class="sidebar-avatar">
 			<img :src="`${path_storage}/${logo_portal}`" alt="Avatar" v-if="logo_portal && (categoryProfile == 'FR' || categoryProfile == 'FRCLB')" width="180" height="100">
-			<img src="@/assets/images/logo_header.png" alt="Logo" v-else>
+			<img src="@/assets/images/logo_header.png" alt="Logo" v-else width="140" height="60">
 			<h3>{{ nameProfile }}</h3>
 			<h6 v-if="categoryProfile == 'MT'">Master</h6>
 			<h6 v-if="categoryProfile == 'CL'">Administrator</h6>

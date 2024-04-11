@@ -7,7 +7,7 @@
 		<div class="modal__content">
 			<span class="text_inputs_required">Campos com <span class="input_required">*</span> são obrigatórios</span>
 			<div class="form_container">
-				<div class="form_group">
+				<div class="form_group" v-if="ind_mod_order_tracking == 1">
 					<label><span class="input_required">*</span> Tipo:</label>
 					<select name="type" v-model="type" @change="handleTemplateSituation()">
 						<option></option>
@@ -39,24 +39,35 @@
 						</div>
 					</div>
 					<textarea id="custom-textarea" class="custom-textarea form-control" rows="8" v-model="message"></textarea>
-					<b class="title_tags">Tags:</b>
-					<a @click.prevent="handleEmojiClick($event, '[DESTINATARIO]')" class="tags" role="button"><b>[DESTINATARIO]</b></a>
-					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[CPF_CNPJ]')" class="tags" role="button"><b>[CPF_CNPJ]</b></a>
-					&nbsp;&nbsp;
-					<a @click.prevent="handleEmojiClick($event, '[WHATSAPP]')" class="tags" role="button"><b>[WHATSAPP]</b></a>
-					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[DATA EVENTO]')" class="tags" role="button"><b>[DATA EVENTO]</b></a>
-					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[NUMERO PEDIDO]')" class="tags" role="button"><b>[NUMERO PEDIDO]</b></a>
-					&nbsp;&nbsp; 
-					&nbsp;&nbsp; 
-					<a @click.prevent="handleEmojiClick($event, '[TRANSPORTADORA]')" class="tags" role="button"><b>[TRANSPORTADORA]</b></a>
-					&nbsp;&nbsp;
-					<a @click.prevent="handleEmojiClick($event, '[SITUACAO EVENTO]')" class="tags" role="button"><b>[SITUACAO EVENTO]</b></a>
-					&nbsp;&nbsp;
-					<a @click.prevent="handleEmojiClick($event, '[CODIGO RASTREIO]')" class="tags" role="button"><b>[CODIGO RASTREIO]</b></a>
-					&nbsp;&nbsp;
+					<div v-if="ind_mod_order_tracking == 1">
+						<b class="title_tags">Tags:</b>
+						<a @click.prevent="handleEmojiClick($event, '[DESTINATARIO]')" class="tags" role="button"><b>[DESTINATARIO]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[CPF_CNPJ]')" class="tags" role="button"><b>[CPF_CNPJ]</b></a>
+						&nbsp;&nbsp;
+						<a @click.prevent="handleEmojiClick($event, '[WHATSAPP]')" class="tags" role="button"><b>[WHATSAPP]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[DATA EVENTO]')" class="tags" role="button"><b>[DATA EVENTO]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[NUMERO PEDIDO]')" class="tags" role="button"><b>[NUMERO PEDIDO]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[TRANSPORTADORA]')" class="tags" role="button"><b>[TRANSPORTADORA]</b></a>
+						&nbsp;&nbsp;
+						<a @click.prevent="handleEmojiClick($event, '[SITUACAO EVENTO]')" class="tags" role="button"><b>[SITUACAO EVENTO]</b></a>
+						&nbsp;&nbsp;
+						<a @click.prevent="handleEmojiClick($event, '[CODIGO RASTREIO]')" class="tags" role="button"><b>[CODIGO RASTREIO]</b></a>
+						&nbsp;&nbsp;
+					</div>
+					<div v-if="ind_mod_hotel == 1">
+						<b class="title_tags">Tags:</b>
+						<a @click.prevent="handleEmojiClick($event, '[NOME_SOBRENOME]')" class="tags" role="button"><b>[NOME_SOBRENOME]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[WHATSAPP]')" class="tags" role="button"><b>[WHATSAPP]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[DATA CHECK_IN]')" class="tags" role="button"><b>[DATA CHECK_IN]</b></a>
+						&nbsp;&nbsp; 
+						<a @click.prevent="handleEmojiClick($event, '[DATA CHECK_OUT]')" class="tags" role="button"><b>[DATA CHECK_OUT]</b></a>
+					</div>
 				</div>
 				<div class="form_group">
 					<label><span class="input_required">*</span> Situação:</label>
@@ -360,7 +371,7 @@ const id                   = ref('');
 const type                 = ref('');
 const type_tmp             = ref('');
 const title                = ref('');
-const message              = ref('Olá, [DESTINATARIO],\n\nseu pedido *[NUMERO PEDIDO]* já foi enviado! 😍🙌\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*');
+const message              = ref('');
 const situation   = ref('1');
 const fileList_1  = ref([]);
 const fileItems_1 = ref([]);
@@ -378,6 +389,8 @@ const business = ref({
 	noResultsText: "Nenhum resultado encontrado",
 	noOptionsText: "Nenhum resultado encontrado",
 });
+const ind_mod_order_tracking = store.state.auth.me.ind_mod_order_tracking;
+const ind_mod_hotel = store.state.auth.me.ind_mod_hotel;
 
 /* Events */
 watch(() => props.form, (value) => {
@@ -520,6 +533,7 @@ const submit = async () => {
 		formData.append('id', id.value);
 		formData.append('type', type.value);
 		formData.append('title', title.value);
+		formData.append('ind_mod_order_tracking', ind_mod_order_tracking);
 		formData.append('situation', situation.value);
 		
 		if(!empty(message.value))
@@ -779,11 +793,11 @@ const removeFile_3 = async (index, item, type) => {
 const clearInputs = (flow) => {
 	if(flow == 0){ type.value = '1'; }
 	title.value                = '';
-	if(document.getElementsByClassName("ql-editor")[0] &&
-		document.getElementsByClassName("ql-editor")[1])
+
+	message.value = '';
+	if(ind_mod_order_tracking.value == 1)
 	{
-		document.getElementsByClassName("ql-editor")[0].innerHTML = "";
-		document.getElementsByClassName("ql-editor")[1].innerHTML = "";
+		message.value = 'Olá, [DESTINATARIO],\n\nseu pedido *[NUMERO PEDIDO]* já foi enviado! 😍🙌\n\nCódigo de rastreio: *[CODIGO RASTREIO]*\nTransportadora: *[TRANSPORTADORA]*\n\nLoja: *(Adicione o nome da sua loja)*'
 	}
 	situation.value   = '1';
 	fileList_1.value  = [];

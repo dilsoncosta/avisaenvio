@@ -7,9 +7,10 @@ import ResetPassword from '../views/auth/ResetPassword.vue';
 import Home from '../views/Home.vue';
 import Profile from '../views/profile/Profile.vue';
 
-
 import Template from '../views/template/Template.vue';
 import Order from '../views/order/Order.vue';
+import Hospitality from '../views/config_hospitality/ConfigHospitality.vue';
+import Guest from '../views/guest/Guest.vue';
 
 // Configs
 import ConfigIntegrationWhatsApp from '../views/config_integration_whatsapp/ConfigIntegrationWhatsApp.vue';
@@ -80,7 +81,7 @@ const routes = [
 				component: Template,
 				meta: { 
 					auth: true,
-					can: ['show-validated-access', 'access_template']
+					can: ['show-template', 'show-validated-access', 'access_template']
 				}
 			},
 			{
@@ -90,6 +91,24 @@ const routes = [
 				meta: { 
 					auth: true,
 					can: ['show-order', 'show-validated-access', 'access_order']
+				}
+			},
+			{
+				path: '/guest',
+				name: 'guest',
+				component: Guest,
+				meta: { 
+					auth: true,
+					can: ['show-guest', 'show-validated-access', 'access_guest']
+				}
+			},
+			{
+				path: '/config/hospitality',
+				name: 'hospitality',
+				component: Hospitality,
+				meta: { 
+					auth: true,
+					can: ['show-config-hospitality', 'show-validated-access', 'access_config_hospitality']
 				}
 			},
 			// Configuration
@@ -108,7 +127,7 @@ const routes = [
 				component: ConfigIntegrationWhatsApp,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'access_config_integration_whatsapp']
+					can: ['show-integartion-whatsapp', 'show-validated-access', 'access_config_integration_whatsapp']
 				}
 			},
 			{
@@ -117,7 +136,7 @@ const routes = [
 				component: ConfigIntegrationBestShipping,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'access_config_integration_best_billing']
+					can: ['show-best-shipping', 'show-validated-access', 'access_config_integration_best_shipping']
 				}
 			},
 			{
@@ -126,7 +145,7 @@ const routes = [
 				component: ConfigImportOrder,
 				meta: { 
 					auth: true,
-					can: ['show-collaborator', 'show-validated-access', 'access_config_import_order']
+					can: ['show-import-order', 'show-validated-access', 'access_config_import_order']
 				}
 			},
 			// End Configuration
@@ -139,7 +158,6 @@ const routes = [
 					can: ['show-profile']
 				}
 			},
-			
 			// Administrador
 			{
 				path: '/admin/access',
