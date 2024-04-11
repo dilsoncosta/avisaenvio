@@ -33,15 +33,15 @@ class SendMsgSixGuest extends Command
 						->where('hospitalities.ind_msg_6', '!=' ,'0')
 						->whereRaw('
 								CASE
-									WHEN hospitalities.ind_msg_6 = 1 THEN DATE_ADD(guests.date_checkin, INTERVAL 1 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 2 THEN DATE_ADD(guests.date_checkin, INTERVAL 2 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 3 THEN DATE_ADD(guests.date_checkin, INTERVAL 3 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 4 THEN DATE_ADD(guests.date_checkin, INTERVAL 4 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 5 THEN DATE_ADD(guests.date_checkin, INTERVAL 5 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 6 THEN DATE_ADD(guests.date_checkin, INTERVAL 6 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 7 THEN DATE_ADD(guests.date_checkin, INTERVAL 7 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 8 THEN DATE_ADD(guests.date_checkin, INTERVAL 15 DAY) = DATE(NOW())
-									WHEN hospitalities.ind_msg_6 = 9 THEN DATE_ADD(guests.date_checkin, INTERVAL 1 MONTH) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 1 THEN DATE_ADD(guests.date_checkout, INTERVAL 1 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 2 THEN DATE_ADD(guests.date_checkout, INTERVAL 2 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 3 THEN DATE_ADD(guests.date_checkout, INTERVAL 3 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 4 THEN DATE_ADD(guests.date_checkout, INTERVAL 4 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 5 THEN DATE_ADD(guests.date_checkout, INTERVAL 5 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 6 THEN DATE_ADD(guests.date_checkout, INTERVAL 6 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 7 THEN DATE_ADD(guests.date_checkout, INTERVAL 7 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 8 THEN DATE_ADD(guests.date_checkout, INTERVAL 15 DAY) = DATE(NOW())
+									WHEN hospitalities.ind_msg_6 = 9 THEN DATE_ADD(guests.date_checkout, INTERVAL 1 MONTH) = DATE(NOW())
 									ELSE FALSE
 								END
 						')
