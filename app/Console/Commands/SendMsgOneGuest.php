@@ -8,6 +8,7 @@ use App\Models\{
 	Template
 };
 use App\Jobs\SendNotificationGuestWhatsAppJob;
+use Illuminate\Support\Facades\DB;
 
 class SendMsgOneGuest extends Command
 {
@@ -25,7 +26,8 @@ class SendMsgOneGuest extends Command
 							'guests.date_checkout as date_checkout',
 							'hospitalities.ind_msg_1 as ind_msg_1',
 							'hospitalities.msg_1_template_id as msg_1_template_id',
-							'integration_whatsapp.id as integration_whatsapp_id'
+							'integration_whatsapp.id as integration_whatsapp_id',
+							DB::raw('DATE(NOW()) as date_now') 
 						)
 						->join('hospitalities', 'hospitalities.id', '=', 'guests.hospitality_id')
 						->join('integration_whatsapp', 'integration_whatsapp.tenant_id', '=', 'guests.tenant_id')

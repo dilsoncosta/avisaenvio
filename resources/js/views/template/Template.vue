@@ -91,7 +91,7 @@
 			transition="vfm"
 			overlay-transition="vfm"
 		>
-			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :optionsBusiness="optionsBusiness" :update="update" :titleModal="titleModal"/>
+			<CreateUpdate :form="form" @hideModalCreateUpdate="hideModalCreateUpdate" :update="update" :titleModal="titleModal"/>
 		</vue-final-modal>
 		<!-- End Modal Create e Update -->
 		<!--Modal View -->

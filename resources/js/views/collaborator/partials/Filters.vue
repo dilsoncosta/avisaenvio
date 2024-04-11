@@ -55,7 +55,6 @@ input:disabled {
 }
 </style>
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 
 /* Props */
 defineProps({

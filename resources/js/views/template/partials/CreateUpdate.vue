@@ -333,7 +333,7 @@ border-radius: 10px;
 
 </style>
 <script setup>
-import { watch, ref, defineProps, defineEmits, computed, onMounted, toRaw } from 'vue';
+import { watch, ref, computed, onMounted, toRaw } from 'vue';
 import { useStore } from 'vuex';
 import { empty, show_msgbox, convertToUpperCase } from '@/helpers/Helpers';
 import { emojis } from '@/helpers/Emojis';
@@ -383,7 +383,6 @@ const business = ref({
 	mode: 'single',
 	value: null,
 	closeOnSelect: true,
-	options: props.optionsBusiness,
 	searchable: true,
 	createOption: true,
 	noResultsText: "Nenhum resultado encontrado",

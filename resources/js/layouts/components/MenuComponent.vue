@@ -15,7 +15,7 @@
 				</router-link>
 				<router-link :to="menu.href" v-if="menu.type == 0 && !$can(menu.can[1])" >
 					<div class="dropdown" 
-						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': 'color: #c8c8c8; cursor: pointer;']"
+						:style="[itemMenuHover === i ? 'background-color:#05314A;color:#fff;': 'color: #c8c8c8; cursor: pointer;']"
 						@mouseover="itemMenuHover = i"
 						@mouseleave="itemMenuHover = null"
 						>

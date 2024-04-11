@@ -110,7 +110,6 @@
 </style>
 <script setup>
 import { formatDateTime, convertWordToUppercase, formatPhoneNumber } from '@/helpers/Helpers';
-import { defineProps, defineEmits } from 'vue';
 
 /* Props */
 defineProps({

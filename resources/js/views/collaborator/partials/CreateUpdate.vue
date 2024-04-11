@@ -306,7 +306,7 @@ input[name=name], input[name=surname] {
 }
 </style>
 <script setup>
-import { watch, ref, defineProps, defineEmits } from 'vue';
+import { watch, ref } from 'vue';
 import { useStore } from 'vuex';
 import { empty, show_msgbox, validatedEmail, validatedPhone, keepNumbersOnly } from '@/helpers/Helpers';
 

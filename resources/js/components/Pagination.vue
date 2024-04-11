@@ -40,7 +40,7 @@
 }
 </style>
 <script setup>
-import { computed, ref, watch, defineProps, defineEmits } from "vue";
+import { computed, ref, watch } from "vue";
 
 /* Ref or Reactive */
 const pagesArray = ref([]);

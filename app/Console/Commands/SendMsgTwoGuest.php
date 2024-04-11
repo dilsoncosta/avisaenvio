@@ -8,6 +8,7 @@ use App\Models\{
 	Template
 };
 use App\Jobs\SendNotificationGuestWhatsAppJob;
+use Illuminate\Support\Facades\Log;
 
 class SendMsgTwoGuest extends Command
 {

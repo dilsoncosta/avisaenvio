@@ -258,7 +258,6 @@
 </style>
 <script setup>
 import { formatDateTime, formatPhoneNumber, formatarCPFCNPJ } from '@/helpers/Helpers';
-import { defineProps, defineEmits } from 'vue';
 
 /* Props */
 defineProps({

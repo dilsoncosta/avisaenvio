@@ -70,7 +70,6 @@ input:disabled {
 }
 </style>
 <script setup>
-import { defineProps, defineEmits } from 'vue';
 import { useStore } from 'vuex';
 
 /* Props */

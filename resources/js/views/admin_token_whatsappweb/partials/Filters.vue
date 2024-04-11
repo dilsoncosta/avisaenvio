@@ -59,7 +59,7 @@ input:disabled {
 }
 </style>
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 
 /* Props */
 const props = defineProps({

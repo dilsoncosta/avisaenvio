@@ -17,11 +17,11 @@
 				</div>
 				<div class="form_group">
 					<label><span class="input_required">*</span> Data do Check-In:</label>
-					<input type="date" name="date_checkin" maxlength="60" v-model="date_checkin" :min="minDate()">
+					<input type="date" name="date_checkin" maxlength="60" v-model="date_checkin" :min="getCurrentDate()">
 				</div>
 				<div class="form_group">
 					<label><span class="input_required">*</span> Data do Check-Out:</label>
-					<input type="date" name="date_checkout" maxlength="60" v-model="date_checkout" :min="minDate()">
+					<input type="date" name="date_checkout" maxlength="60" v-model="date_checkout" :min="getCurrentDate()">
 				</div>
 				<div class="form_group">
 					<label><span class="input_required">*</span> Situação:</label>
@@ -153,7 +153,7 @@ input:disabled {
 /* End Button */
 </style>
 <script setup>
-import { watch, ref, defineProps, defineEmits } from 'vue';
+import { watch, ref } from 'vue';
 import { useStore } from 'vuex';
 import { empty, show_msgbox, convertToUpperCase, keepNumbersOnly, validatedPhone, dateStartAndDateEndInferiorCurrent } from '@/helpers/Helpers';
 
@@ -231,9 +231,17 @@ const submit = async () => {
 	{
 		return show_msgbox('O Campo DATA DO CHECK-IN é obrigatório!', 'warning');
 	}
+	if(validateDate(date_checkin.value))
+	{
+		return show_msgbox('DATA DE CHECK-IN deve ser superior à DATA ATUAL!', 'warning');
+	}
 	if(empty(date_checkout.value))
 	{
 		return show_msgbox('O Campo DATA DO CHECKOUT é obrigatório!', 'warning');
+	}
+	if(validateDate(date_checkout.value))
+	{
+		return show_msgbox('DATA DE CHECK-OUT deve ser superior à DATA ATUAL!', 'warning');
 	}
 	if(dateStartAndDateEndInferiorCurrent(date_checkin.value, date_checkout.value))
 	{
@@ -293,8 +301,8 @@ const clearInputs = () => {
 	id.value            = '';
 	name_surname.value  = '';
 	whatsapp.value      = '';
-	date_checkin.value  = '';
-	date_checkout.value = '';
+	date_checkin.value  = getCurrentDate(); 
+	date_checkout.value = getCurrentDate(); 
 	situation.value     = '1';
 }
 
@@ -306,11 +314,21 @@ const WHATSAPPOnlyNumbers = () => {
 	whatsapp.value = keepNumbersOnly(whatsapp.value);
 }
 
-const minDate = () => {
+const getCurrentDate = () => {
 	const now = new Date();
 	const year = now.getFullYear();
 	const month = (now.getMonth() + 1).toString().padStart(2, '0');
 	const day = now.getDate().toString().padStart(2, '0');
 	return `${year}-${month}-${day}`;
+}
+
+const validateDate = (date) => {
+	const selectedDate = new Date(date);
+	const currentDate = new Date();
+	
+	const selectedDateString = selectedDate.toISOString().slice(0, 10);
+	const currentDateString = currentDate.toISOString().slice(0, 10);
+
+	return selectedDateString < currentDateString;
 }
 </script>
