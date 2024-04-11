@@ -1,10 +1,10 @@
 name: CI-CD
 
-on:
-  push:
-    branches: [hmg]
-  pull_request:
-    branches: [hmg]
+#on:
+#  push:
+#    branches: [hmg]
+#  pull_request:
+#    branches: [hmg]
 
 jobs:
  build-controlei-hmg:
