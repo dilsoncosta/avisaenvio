@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
@@ -79,8 +78,8 @@ class DownloadEventsOrderCommand extends Command
 				continue;
 			}
 			
-			$occurrences = $events->data->occurrences;
-			$occurrences = array_reverse($occurrences);
+			$occurrences         = $events->data->occurrences;
+			$occurrences         = array_reverse($occurrences);
 			
 			foreach($occurrences as $order_event)
 			{
@@ -90,24 +89,22 @@ class DownloadEventsOrderCommand extends Command
 				$descriptionOrderEvent = $order_event->action.'. '.$order_event->location;
 				
 				// Filtrando o array "occurrences" para encontrar a palavra "entregue" na chave "action"
-				$result = array_filter($events->data->occurrences, function($occurrence) {
-					$keywords = ['Entregue', 'Pedido entregue', 'Entregue ao destinatário'];
-					foreach ($keywords as $keyword) {
-						if (strpos($occurrence->action, $keyword) !== false)
-						{
-							return true;
-						}
-					}
-					return false;
-				});
+				$result = $this->getStatusEventDeliveredOrder($occurrences);
 				
 				if ($result == true)
 				{
-					if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists())
+					$descriptionOrderEvent = $occurrences[$events->data->update -1]->action.'. '.$occurrences[$events->data->update -1]->location;
+					
+					if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('status_event', 4)->where('order_id', $order->id)->exists())
 					{ usleep($this->sleep); return; }
 					
 					$template = $this->getTemplateByStatus($order->tenant_id, 4);
 					
+					if(!$template)
+					{
+						continue;
+					}
+
 					$order_event = OrderEvent::create([
 						'tenant_id'    => $order->tenant_id,
 						'uuid'         => str::uuid(),
@@ -163,38 +160,33 @@ class DownloadEventsOrderCommand extends Command
 					return;
 				}
 				
-				if (stripos($descriptionOrderEvent, 'postado') !== false || 
-				stripos($descriptionOrderEvent, 'Emissao') !== false ||
-				stripos($descriptionOrderEvent, 'Objeto coletado') !== false || 
-				stripos($descriptionOrderEvent, 'Postado') !== false
-				)
+				switch($order->shipping_company)
 				{
-					$status_event = '1';
+					// Correios
+					case '0':
+						$status_event = $this->getStatusEventCorreios($order_event->action);
+						break;
+					// JadLog
+					case '1':
+						$status_event = $this->getStatusEventJadLog($order_event->action);
+						break;
+					// Jet Express
+					case '2':
+						$status_event = $this->getStatusEventJetExpress($order_event->action);
+						break;
+					// Latam Cargo
+					case '3':
+						$status_event = $this->getStatusEventLatamCargo($order_event->action);
+						break;
+					// Loggi
+					case '4':
+						$status_event = $this->getStatusEventLoggi($order_event->action);
+						break;
+					default:
+						break;
 				}
-				else if(stripos($descriptionOrderEvent, 'encaminhado') !== false || 
-				stripos($descriptionOrderEvent, 'transferência') !== false || 
-				stripos($descriptionOrderEvent, 'Transferido') !== false || 
-				stripos($descriptionOrderEvent, 'Transferencia') !== false || 
-				stripos($descriptionOrderEvent, 'Entrada') !== false || 
-				stripos($descriptionOrderEvent, 'Em trânsferencia') !== false || 
-				stripos($descriptionOrderEvent, 'Chegada em unidade') !== false ||
-				stripos($descriptionOrderEvent, 'Em transferência') !== false || 
-				stripos($descriptionOrderEvent, 'embarque') !== false || 
-				stripos($descriptionOrderEvent, 'embarcou') !== false || 
-				stripos($descriptionOrderEvent, 'desembarque') !== false || 
-				stripos($descriptionOrderEvent, 'chegou na transportadora') !== false 
-				)
-				{
-					$status_event = '2';
-				}
-				else if(stripos($descriptionOrderEvent, 'entrega') !== false || 
-				stripos($descriptionOrderEvent, 'Em rota') !== false || 
-				stripos($descriptionOrderEvent, 'Saiu para entrega') !== false
-				)
-				{
-					$status_event = '3';
-				}
-				else 
+				
+				if(is_null($status_event))
 				{
 					continue;
 				}
@@ -207,9 +199,14 @@ class DownloadEventsOrderCommand extends Command
 					continue;
 				}
 				
-				if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('order_id', $order->id)->exists()){ continue; }
+				if(OrderEvent::where('date_event', $dateHourOrderEventFormat)->where('status_event', $status_event)->where('order_id', $order->id)->exists()){ continue; }
 				
 				$template = $this->getTemplateByStatus($order->tenant_id, $status_event);
+				
+				if(!$template)
+				{
+					continue;
+				}
 				
 				$order_event = OrderEvent::create([
 					'tenant_id'    => $order->tenant_id,
@@ -299,5 +296,118 @@ class DownloadEventsOrderCommand extends Command
 				return '20';
 				break;
 		}
+	}
+	
+	private function getStatusEventCorreios($action)
+	{
+		$events =  array(
+			'Objeto postado'                           => '1',
+			'Objeto em trânsito - por favor aguarde'   => '2',
+			'Objeto saiu para entrega ao destinatário' => '3',
+			'Objeto entregue ao destinatário'          => '4'
+		);
+		
+		if (array_key_exists(trim($action), $events))
+		{
+			return $events[$action];
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	private function getStatusEventJetExpress($action)
+	{
+		$events =  array(
+			'Objeto coletado'    => '1',
+			'Em trânsferencia'   => '2',
+			'Chegada em unidade' => '2',
+			'Saiu para entrega'  => '3',
+		);
+		
+		if (array_key_exists(trim($action), $events))
+		{
+			return $events[$action];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private function getStatusEventJadLog($action)
+	{
+		$events =  array(
+			'Emissao'       => '1',
+			'Transferencia' => '2',
+			'Entrada'       => '2',
+			'Em rota'       => '3',
+		);
+		
+		if (array_key_exists(trim($action), $events))
+		{
+			return $events[$action];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private function getStatusEventLoggi($action)
+	{
+		$events =  array(
+			'CT-e emitido'       => '1',
+			'Em transferência'   => '2',
+			'Objeto coletado'    => '2',
+			'Saiu para entrega'  => '3',
+		);
+		
+		if (array_key_exists(trim($action), $events))
+		{
+			return $events[$action];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private function getStatusEventLatamCargo($action)
+	{
+		$events =  array(
+			'Postado'                                => '1',
+			'Seu pacote está aguardando desembarque' => '2',
+			'Seu pacote embarcou no veículo'         => '2',
+			'Seu pacote está separado para embarque' => '2',
+			'CTe do pacote emitido'                  => '2',
+			'Seu pacote chegou na transportadora'    => '3',
+		);
+		
+		if (array_key_exists(trim($action), $events))
+		{
+			return $events[$action];
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	private function getStatusEventDeliveredOrder($occurrences)
+	{
+		$result = array_filter($occurrences, function($occurrence) {
+			$keywords = ['Objeto entregue ao destinatário', 'Pedido entregue', 'Entregue ao destinatário', 'Entregue', 'Seu pacote foi entregue'];
+			foreach ($keywords as $keyword) {
+				if (strpos($occurrence->action, $keyword) !== false)
+				{
+					return true;
+				}
+			}
+			return false;
+		});
+		
+		return $result;
 	}
 }
