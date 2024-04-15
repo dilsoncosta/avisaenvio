@@ -74,6 +74,11 @@ class DownloadOrdersBestShipping extends Command
 					$cpf_cnpj = $item->to->company_document;
 				}
 				
+				if(!in_array($item->service->company->name, $this->shippingCompany))
+				{
+					continue;
+				}
+				
 				Order::create([
 					'tenant_id'        => $integration_best_shipping->tenant_id,
 					'uuid'             => str::uuid(),
