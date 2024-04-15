@@ -18,7 +18,7 @@ class DownloadEventsOrderCommand extends Command
 {
 	protected $signature = 'send:download_events_order';
 	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
-	private $sleep = 4000;
+	private $sleep = 2000;
 	private $shipping = [
 		0 => 'Correios',
 		1 => 'JadLog',
