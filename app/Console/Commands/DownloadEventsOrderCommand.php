@@ -18,7 +18,7 @@ class DownloadEventsOrderCommand extends Command
 {
 	protected $signature = 'send:download_events_order';
 	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
-	private $sleep = 4000;
+	private $sleep = 2000;
 	private $shipping = [
 		0 => 'Correios',
 		1 => 'JadLog',
@@ -26,10 +26,14 @@ class DownloadEventsOrderCommand extends Command
 		3 => 'LATAM Cargo',
 		4 => 'Loggi',
 	];
+	private $currentTokenIndex = 0;
+	private $tokenAPI = [ '83|hSwufL8k5VdvdehXEVnNv8Cgn3Sc7ltvcnwA5ph0', '81|Ol7K0aZipHglgaxDCmWM98CBrXo6GCxCzWxKjPFt', '82|1kEgnK59ekR47o1riBVlYb90WiNBkKbExCmKiC7I'];
 	protected $description = 'Comando para efetuar o download dos pedidos de cada rastreio e envia para fila para disparo.';
 	
 	public function handle()
 	{
+		$this->currentTokenIndex = ($this->currentTokenIndex + 1) % count($this->tokenAPI);
+		
 		$orders = Order::select(
 							'orders.tenant_id as tenant_id',
 							'orders.code as code',
@@ -64,6 +68,8 @@ class DownloadEventsOrderCommand extends Command
 				'simplification' => false,
 				'cpf_cnpj'      => $order->shipping_company == 2 ? $order->cpf_cnpj : false,
 			]);
+			
+			$this->currentTokenIndex = ($this->currentTokenIndex + 1) % count($this->tokenAPI);
 			
 			$events = $response->object();
 			
