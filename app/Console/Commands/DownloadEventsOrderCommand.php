@@ -18,7 +18,7 @@ class DownloadEventsOrderCommand extends Command
 {
 	protected $signature = 'send:download_events_order';
 	private $url   = 'https://app.rastreiozap.com/api/external/v1/order/tracking';
-	private $sleep = 2000;
+	private $sleep = 4000;
 	private $shipping = [
 		0 => 'Correios',
 		1 => 'JadLog',
@@ -61,7 +61,7 @@ class DownloadEventsOrderCommand extends Command
 			$response = Http::withHeaders([
 				'Content-Type'  => 'application/json',
 				'Accept'        => 'application/json',
-				'Authorization' => 'Bearer '.config('app.api_rastreio_zap_token')
+				'Authorization' => 'Bearer '.$this->tokenAPI[$this->currentTokenIndex]
 			])->post($this->url, [
 				'tracking_code' => $order->object,
 				'carrier_id'    => $this->getTransporter($order->shipping_company),
