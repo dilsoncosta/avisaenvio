@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
@@ -44,7 +45,6 @@ class DownloadEventsOrderCommand extends Command
 						)
 						->join('integration_whatsapp', 'integration_whatsapp.tenant_id', '=', 'orders.tenant_id')
 						->where('orders.last_situation', '<','4')
-						->limit(1)
 						->get();
 		
 		if ($orders->isEmpty())
@@ -68,7 +68,7 @@ class DownloadEventsOrderCommand extends Command
 			$events = $response->object();
 			
 			if($response->status() != 200)
-			{ 
+			{
 				usleep($this->sleep);
 				continue; 
 			}
@@ -339,10 +339,11 @@ class DownloadEventsOrderCommand extends Command
 	private function getStatusEventJadLog($action)
 	{
 		$events =  array(
-			'Emissao'       => '1',
-			'Transferencia' => '2',
-			'Entrada'       => '2',
-			'Em rota'       => '3',
+			'Emissao'                  => '1',
+			'Transferencia'            => '2',
+			'Entrada'                  => '2',
+			'Transferido para unidade' => '2',
+			'Em rota'                  => '3',
 		);
 		
 		if (array_key_exists(trim($action), $events))

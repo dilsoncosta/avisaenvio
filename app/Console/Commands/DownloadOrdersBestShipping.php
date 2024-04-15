@@ -74,7 +74,8 @@ class DownloadOrdersBestShipping extends Command
 					$cpf_cnpj = $item->to->company_document;
 				}
 				
-				if(!in_array($item->service->company->name, $this->shippingCompany))
+				$companyName = $item->service->company->name;
+				if (!array_key_exists($companyName, $this->shippingCompany))
 				{
 					continue;
 				}
