@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
