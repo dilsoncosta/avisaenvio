@@ -308,6 +308,8 @@ class DownloadEventsOrderCommand extends Command
 		$events =  array(
 			'Objeto postado'                           => '1',
 			'Objeto em trânsito - por favor aguarde'   => '2',
+			'Objeto coletado'                          => '2',
+			'Objeto recebido pelos Correios do Brasil' => '2',
 			'Objeto saiu para entrega ao destinatário' => '3',
 			'Objeto entregue ao destinatário'          => '4'
 		);
