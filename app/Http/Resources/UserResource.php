@@ -24,6 +24,7 @@ class UserResource extends JsonResource
 			'category'               => $this->category,
 			'access'                 => $this->access,
 			'access'                 => $this->access,
+			'date_end'               => $this->date_end,
 			'ind_mod_order_tracking' => $this->ind_mod_order_tracking,
 			'ind_mod_hotel'          => $this->ind_mod_hotel,
 			'permissions'            => isset($this->permissions) && count($this->permissions) > 0 ? UserPermissionResource::collection($this->permissions) : [],

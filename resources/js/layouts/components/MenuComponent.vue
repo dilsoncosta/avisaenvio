@@ -246,6 +246,11 @@ let menus = ref([
 				title: 'Importação',
 				href: '/config/import_order',
 				can: ['show-config-import', 'access_config_import_order'],
+			},
+			{
+				title: 'Financeiro',
+				href: '/config/financial',
+				can: ['show-config-import', 'access_config_import_order'],
 			}
 		]
 	},

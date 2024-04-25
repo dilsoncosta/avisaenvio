@@ -18,6 +18,9 @@ return [
 
     'path_relat' => env('APP_PATH_RELAT', ''),
 
+    'api_asaas_url' => env('API_ASSAS_URL', ''),
+    'api_asaas_token' => env('API_ASSAS_TOKEN', ''),
+
     'api_whatsapp_ambiente'  => env('API_WHATSAPP_AMBIENTE', 'hmg'),
     'api_whatsapp_filename1' => env('API_WHATSAPP_FILENAME_1', ''),
     'api_whatsapp_file1'     => env('API_WHATSAPP_FILE_1', ''),

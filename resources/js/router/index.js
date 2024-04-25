@@ -16,6 +16,7 @@ import Guest from '../views/guest/Guest.vue';
 import ConfigIntegrationWhatsApp from '../views/config_integration_whatsapp/ConfigIntegrationWhatsApp.vue';
 import ConfigImportOrder from '../views/config_import_order/ConfigImportOrder.vue';
 import ConfigIntegrationBestShipping from '../views/config_integration_best_shipping/ConfigIntegrationBestShipping.vue';
+import ConfigFinancial from '../views/config_financial/ConfigFinancial.vue';
 
 // Configuration
 import Collaborator from '../views/collaborator/Collaborator.vue';
@@ -143,6 +144,15 @@ const routes = [
 				path: '/config/import_order',
 				name: 'config.import_order',
 				component: ConfigImportOrder,
+				meta: { 
+					auth: true,
+					can: ['show-import-order', 'show-validated-access', 'access_config_import_order']
+				}
+			},
+			{
+				path: '/config/financial',
+				name: 'config.financial',
+				component: ConfigFinancial,
 				meta: { 
 					auth: true,
 					can: ['show-import-order', 'show-validated-access', 'access_config_import_order']

@@ -15,6 +15,7 @@ import conf_integration_whatsapp from './modules/conf_integration_whatsapp';
 import config_import_order from './modules/config_import_order';
 import conf_integration_best_shipping from './modules/conf_integration_best_shipping';
 import config_hospitality from './modules/config_hospitality';
+import config_financial from './modules/config_financial';
 
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
@@ -65,6 +66,7 @@ export default createStore({
 		order,
 		conf_integration_best_shipping,
 		config_hospitality,
+		config_financial,
 		guest
 	},
 	plugins: [

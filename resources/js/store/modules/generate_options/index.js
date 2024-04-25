@@ -40,6 +40,33 @@ export default {
 			catch(error) {
 				return Promise.reject(error);
 			}
+		},
+		async generateOptionsStates(context, params) {
+			try {
+				const response = await Api.apiPost('/generateOptionsStates', params);
+				return Promise.resolve(response.data.data);
+			}
+			catch(error) {
+				return Promise.reject(error);
+			}
+		},
+		async generateOptionsCep(context, params) {
+			try {
+				const response = await Api.apiPost('/generateOptionsCep', params);
+				return Promise.resolve(response.data.data);
+			}
+			catch(error) {
+				return Promise.reject(error);
+			}
+		},
+		async generateOptionsCities(context, params) {
+			try {
+				const response = await Api.apiPost('/generateOptionsCities', params);
+				return Promise.resolve(response.data.data);
+			}
+			catch(error) {
+				return Promise.reject(error);
+			}
 		}
 	}
 }

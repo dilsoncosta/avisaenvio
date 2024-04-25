@@ -386,3 +386,10 @@ export const dateStartAndDateEndInferiorCurrent = (date_start, date_end) => {
 	
 	return false;
 }
+
+export const formatMoneyBRL = (value) => {
+	return parseInt(value).toLocaleString('pt-BR', {
+		style: 'currency',
+		currency: 'BRL'
+	})
+}
