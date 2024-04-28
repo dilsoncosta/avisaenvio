@@ -8,13 +8,11 @@ const user = computed(() => toRaw(store.state.auth.me));
 
 let onDeniedRoute = '/';
 
-/*
+
 if(store.state.auth.authenticated == true && user.value.category != 'MT' && user.value.access != 'A')
 {
-	//onDeniedRoute = '/access-expiration';
-	onDeniedRoute = '/';
+	onDeniedRoute = '/config/financial';
 }
-*/
 
 const rules = () => defineAclRules((setRule) => {
 	setRule('show-home', () => {
@@ -42,6 +40,9 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-import-order', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
+	});
+	setRule('show-financial', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	setRule('show-help', () => {
@@ -150,6 +151,13 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('access_config_hospitality', () => {
 		if(user.value.category == 'CL'){ return true; }
 		return user.value.permissions.find(permission => permission.name === 'access_config_hospitality');
+	});
+
+	// Module Config Financial
+	setRule('access_config_financial', () => {
+		return true;
+		//if(user.value.category == 'CL'){ return true; }
+		//return user.value.permissions.find(permission => permission.name === 'access_config_financial');
 	});
 	
 	// Module Guest

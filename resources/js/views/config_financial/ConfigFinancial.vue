@@ -21,7 +21,7 @@
 						<p class="title"><b>Acesso até:</b></p>
 						<div class="total">{{ formatDate(access_date_end, 1)}}</div>
 					</div>
-					<div class="item_total" v-if="access_ind_hotel == 1">
+					<div class="item_total" v-if="access_ind_mod_hotel == 1">
 						<p class="title"><b>Módulo Hotelaria:</b></p>
 						<div class="total">Ativo</div>
 					</div>

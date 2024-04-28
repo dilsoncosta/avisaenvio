@@ -155,7 +155,7 @@ const routes = [
 				component: ConfigFinancial,
 				meta: { 
 					auth: true,
-					can: ['show-import-order', 'show-validated-access', 'access_config_import_order']
+					can: ['show-financial', 'access_config_financial']
 				}
 			},
 			// End Configuration

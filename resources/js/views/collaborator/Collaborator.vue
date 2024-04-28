@@ -472,6 +472,9 @@ onMounted( async () => {
 				if(ind_mod_hotel.value == 0){ return; }
 				resources_config.value.push(item);
 				break;
+			case 9:
+				resources_config.value.push(item);
+				break;
 			default:
 				break;
 		}

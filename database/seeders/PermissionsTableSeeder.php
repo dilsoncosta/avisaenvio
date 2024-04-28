@@ -337,5 +337,30 @@ class PermissionsTableSeeder extends Seeder
 				]
 			);
 		}
+
+		####
+		# Module Financial
+		{
+			Resource::create(
+				[
+								'id'   => 9,
+								'name' => "Financeiro",
+								'uuid' => str::uuid(),
+							 'order' => 9,
+					 'situation' => 1,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 21,
+				 'resource_id' => 9,
+								'name' => "access_config_financial",
+								'uuid' => str::uuid(),
+							 'order' => 1,
+				]
+			);
+		}
 	}
 }

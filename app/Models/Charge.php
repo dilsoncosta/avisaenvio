@@ -22,6 +22,8 @@ class Charge extends Authenticatable
 		'venc',
 		'situation',
 		'total',
+		'ind_mod_order_tracking',
+		'ind_mod_hotel',
 		'asaas_charge_id',
 		'asaas_invoice_number',
 		'asaas_transition_receipt_url',

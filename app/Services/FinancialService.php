@@ -32,14 +32,14 @@ class FinancialService
 
 	public function getCharge()
 	{
-		return $this->charge->get();
+		return $this->charge->orderBy('id', 'DESC')->get();
 	}
 	
 	public function storeSignature($request)
 	{
 		if(isset($request->cpf) && strlen($request->cpf) < 12)
 		{
-			$nameClient = strtoupper($request->name).' '.strtoupper($request->surname);
+			$nameClient = $request->name.' '.$request->surname;
 			$document = $request->cpf;
 		}
 		else
@@ -75,7 +75,7 @@ class FinancialService
 		
 		if($response->status() != 200)
 		{
-			return (object) array('status' => 0, 'message' => "Incapaz de cadastrar o cliente!");
+			return (object) array('status' => 0, 'message' => 'Incapaz de processar o cadastro do cliente!');
 		}
 		
 		$response = Http::withHeaders([
@@ -181,6 +181,8 @@ class FinancialService
 			'venc'                          => $charge->data[0]->originalDueDate,
 			'situation'                     => $statusPayment,
 			'total'                         => $charge->data[0]->value,
+			'ind_mod_order_tracking'        => $request->ind_mod == 0 ? 1 : 0,
+			'ind_mod_hotel'                 => $request->ind_mod == 1 ? 1 : 0,
 			'asaas_charge_id'               => $charge->data[0]->id,
 			'asaas_invoice_number'          => $charge->data[0]->invoiceNumber,
 			'asaas_transition_receipt_url'  => $charge->data[0]->transactionReceiptUrl,
@@ -194,7 +196,9 @@ class FinancialService
 		{
 			$this->access->where('tenant_id', auth()->user()->tenant_id)->update([
 				'date_start' => Carbon::now()->format('Y-m-d'),
-				'date_end'   => $this->addThirtyDays()
+				'date_end'   => $this->addThirtyDays(),
+				'ind_mod_order_tracking'     => $request->ind_mod == 0 ? 1 : 0,
+				'ind_mod_hotel'              => $request->ind_mod == 1 ? 1 : 0,
 			]);
 		}
 		

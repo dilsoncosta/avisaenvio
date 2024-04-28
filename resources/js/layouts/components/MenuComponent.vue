@@ -250,7 +250,7 @@ let menus = ref([
 			{
 				title: 'Financeiro',
 				href: '/config/financial',
-				can: ['show-config-import', 'access_config_import_order'],
+				can: ['show-config-import', 'access_config_financial'],
 			}
 		]
 	},

@@ -604,6 +604,7 @@ const handleChangePrice = (event) => {
 }
 
 const clearInputs = () => {
+	total_signature.value = 0;
 	ind_mod.value      = '';
 	type.value         = '1';
 	cnpj.value         = '';

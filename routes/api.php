@@ -10,6 +10,8 @@ Route::middleware('auth:sanctum')->group(function (){
 	
 	Route::group([], base_path("routes/api-dashboard.php"));
 
+	Route::group([], base_path("routes/api-webhook.php"));
+
 	Route::group([], base_path("routes/api-account.php"));
 	Route::group([], base_path("routes/api-template.php"));
 	Route::group([], base_path("routes/api-collaborator.php"));
