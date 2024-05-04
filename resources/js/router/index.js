@@ -149,7 +149,7 @@ const routes = [
 				component: ConfigIntegrationNuvemShop,
 				meta: { 
 					auth: true,
-					can: ['show-best-shipping', 'show-validated-access', 'access_config_integration_best_shipping']
+					can: ['show-best-shipping', 'show-validated-access', 'access_config_integration_nuvem_shop']
 				}
 			},
 			{

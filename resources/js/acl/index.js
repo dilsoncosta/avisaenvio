@@ -66,6 +66,9 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('show-config-integration-best-shipping', () => {
 		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;
 	});
+	setRule('show-config-integration-nuvem-shop', () => {
+		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;
+	});
 	setRule('show-config-hospitality', () => {
 		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_hotel == 1;
 	});
@@ -147,6 +150,12 @@ const rules = () => defineAclRules((setRule) => {
 		return user.value.permissions.find(permission => permission.name === 'access_config_integration_best_shipping');
 	});
 	
+	// Module Config Integration Nuvem Shop
+	setRule('access_config_integration_nuvem_shop', () => {
+		if(user.value.category == 'CL'){ return true; }
+		return user.value.permissions.find(permission => permission.name === 'access_config_integration_nuvem_shop');
+	});
+	
 	// Module Config Hospitality
 	setRule('access_config_hospitality', () => {
 		if(user.value.category == 'CL'){ return true; }
@@ -156,8 +165,6 @@ const rules = () => defineAclRules((setRule) => {
 	// Module Config Financial
 	setRule('access_config_financial', () => {
 		return true;
-		//if(user.value.category == 'CL'){ return true; }
-		//return user.value.permissions.find(permission => permission.name === 'access_config_financial');
 	});
 	
 	// Module Guest

@@ -475,6 +475,10 @@ onMounted( async () => {
 			case 9:
 				resources_config.value.push(item);
 				break;
+			case 10:
+				if(ind_mod_order_tracking.value == 0){ return; }
+				resources_config.value.push(item);
+				break;
 			default:
 				break;
 		}

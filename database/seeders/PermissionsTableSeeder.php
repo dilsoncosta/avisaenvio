@@ -362,5 +362,30 @@ class PermissionsTableSeeder extends Seeder
 				]
 			);
 		}
+
+		####
+		# Module Integration Nuvem Shop
+		{
+			Resource::create(
+				[
+								'id'   => 10,
+								'name' => "Integração Nuvem Shop",
+								'uuid' => str::uuid(),
+							 'order' => 10,
+					 'situation' => 1,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+				]
+			);
+			
+			Permission::create(
+				[
+									'id' => 22,
+				 'resource_id' => 10,
+								'name' => "access_config_integration_nuvem_shop",
+								'uuid' => str::uuid(),
+							 'order' => 1,
+				]
+			);
+		}
 	}
 }

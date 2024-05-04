@@ -240,7 +240,7 @@ let menus = ref([
 			{
 				title: 'Integração Nuvem Shop',
 				href: '/config/integration_nuvem_shop',
-				can: ['show-config-integration-best-shipping', 'access_config_integration_best_shipping'],
+				can: ['show-config-integration-nuvem-shop', 'access_config_integration_nuvem_shop'],
 			},
 			{
 				title: 'Hotelaria',
