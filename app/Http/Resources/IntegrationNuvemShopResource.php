@@ -12,7 +12,7 @@ class IntegrationNuvemShopResource extends JsonResource
 		return [
 			'id'         => $this->id,
 			'uuid'       => $this->uuid,
-			'idApp'      => $this->user_id,
+			'idApp'      => $this->idapp,
 			'code'       => $this->code,
 			'situation'  => $this->situation,
 			'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
