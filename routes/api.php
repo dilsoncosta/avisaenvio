@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function (){
 	Route::group([], base_path("routes/api-cfg-integration-whatsapp.php"));
 	Route::group([], base_path("routes/api-cfg-import-order.php"));
 	Route::group([], base_path("routes/api-cfg-integration-best-shipping.php")); 
+	Route::group([], base_path("routes/api-cfg-integration-nuvem-shop.php"));
 	Route::group([], base_path("routes/api-cfg-hospitality.php")); 
 	
 	// Administrator

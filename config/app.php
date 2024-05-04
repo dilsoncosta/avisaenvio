@@ -18,32 +18,7 @@ return [
 
     'path_relat' => env('APP_PATH_RELAT', ''),
 
-    'api_asaas_url' => env('API_ASSAS_URL', ''),
-    'api_asaas_token' => env('API_ASSAS_TOKEN', ''),
-
-    'api_whatsapp_ambiente'  => env('API_WHATSAPP_AMBIENTE', 'hmg'),
-    'api_whatsapp_filename1' => env('API_WHATSAPP_FILENAME_1', ''),
-    'api_whatsapp_file1'     => env('API_WHATSAPP_FILE_1', ''),
-    'api_whatsapp_filename2' => env('API_WHATSAPP_FILENAME_2', ''),
-    'api_whatsapp_file2'     => env('API_WHATSAPP_FILE_2', ''),
-    'api_whatsapp_filename3' => env('API_WHATSAPP_FILENAME_3', ''),
-    'api_whatsapp_file3'      => env('API_WHATSAPP_FILE_3', ''),
-
-    'api_whatsapp_webhook_prd'      => env('API_WHATSAPP_WEBHOOK_PRD', ''),
-
-    'api_whatsapp_webhook_hmg'      => env('API_WHATSAPP_WEBHOOK_HMG', ''),
-
     'asset_url' => env('ASSET_URL'),
-
-    'api_whatsapp_path_main' => env('API_WHATSAPP_URL_MAIN', ''),
-
-    'api_whatsapp_secret_key' => env('API_WHATSAPP_SECRET_KEY', ''),
-
-    'api_link_track_secret_key' => env('API_LINK_TRACK_SECRET_KEY', ''),
-
-    'api_link_track_user' => env('API_LINK_TRACK_USER', ''),
-
-    'api_rastreio_zap_token' => env('API_RASTREIO_ZAP_TOKEN', ''),
     
     'timezone' => 'America/Sao_Paulo',
 
@@ -109,4 +84,30 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /* Credentials Apis */
+    'api_asaas_url' => env('API_ASSAS_URL', ''),
+    'api_asaas_token' => env('API_ASSAS_TOKEN', ''),
+
+    'api_whatsapp_ambiente'  => env('API_WHATSAPP_AMBIENTE', 'hmg'),
+    'api_whatsapp_filename1' => env('API_WHATSAPP_FILENAME_1', ''),
+    'api_whatsapp_file1'     => env('API_WHATSAPP_FILE_1', ''),
+    'api_whatsapp_filename2' => env('API_WHATSAPP_FILENAME_2', ''),
+    'api_whatsapp_file2'     => env('API_WHATSAPP_FILE_2', ''),
+    'api_whatsapp_filename3' => env('API_WHATSAPP_FILENAME_3', ''),
+    'api_whatsapp_file3'     => env('API_WHATSAPP_FILE_3', ''),
+
+    'api_whatsapp_webhook_prd' => env('API_WHATSAPP_WEBHOOK_PRD', ''),
+    'api_whatsapp_webhook_hmg' => env('API_WHATSAPP_WEBHOOK_HMG', ''),
+    'api_whatsapp_path_main' => env('API_WHATSAPP_URL_MAIN', ''),
+    'api_whatsapp_secret_key' => env('API_WHATSAPP_SECRET_KEY', ''),
+
+    'api_link_track_secret_key' => env('API_LINK_TRACK_SECRET_KEY', ''),
+    'api_link_track_user' => env('API_LINK_TRACK_USER', ''),
+
+    'api_rastreio_zap_token' => env('API_RASTREIO_ZAP_TOKEN', ''),
+
+    'api_nuvem_shop_url' => env('API_NUVEM_SHOP_URL', ''),
+    'api_nuvem_shop_user_agent' => env('API_NUVEM_SHOP_USER_AGENT', ''),
+    'api_nuvem_shop_client_id' => env('API_NUVEM_SHOP_CLIENT_ID', ''),
+    'api_nuvem_shop_secret' => env('API_NUVEM_SHOP_SECRET', ''),
 ];

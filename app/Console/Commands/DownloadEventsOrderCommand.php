@@ -64,7 +64,7 @@ class DownloadEventsOrderCommand extends Command
 			])->post($this->url, [
 				'tracking_code' => $order->object,
 				'carrier_id'    => $this->getTransporter($order->shipping_company),
-				'simplification' => false,
+				'simplification' => true,
 				'cpf_cnpj'      => $order->shipping_company == 2 ? $order->cpf_cnpj : false,
 			]);
 			

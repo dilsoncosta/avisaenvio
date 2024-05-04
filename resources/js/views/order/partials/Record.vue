@@ -41,7 +41,8 @@
 							<th><b>Integração:</b></th>
 							<td v-if="data.integration == 0" class="td_format">Melhor Envio</td>
 							<td v-else-if="data.integration == 1" class="td_format">Cadastro Manual</td>
-							<td v-else class="td_format">Importação Planilha</td>
+							<td v-else-if="data.integration == 2" class="td_format">Importação Planilha</td>
+							<td v-else class="td_format">Nuvem Shop</td>
 						</tr>
 						
 						<tr>

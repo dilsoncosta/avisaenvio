@@ -62,9 +62,9 @@ class DownloadOrdersBestShipping extends Command
 			
 			foreach($orders->data as $item)
 			{
-				if(Order::where('code', $item->protocol)->where('tenant_id', $integration_best_shipping->tenant_id)->exists())
+				if(Order::where('code', $item->protocol)->where('tenant_id', $integration_best_shipping->tenant_id)->where('integration', 0)->exists())
 				{ continue; }
-
+       
 				if(strlen($item->to->document) <= 11)
 				{
 					$cpf_cnpj = $item->to->document;

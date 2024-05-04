@@ -18,6 +18,9 @@ import ConfigImportOrder from '../views/config_import_order/ConfigImportOrder.vu
 import ConfigIntegrationBestShipping from '../views/config_integration_best_shipping/ConfigIntegrationBestShipping.vue';
 import ConfigFinancial from '../views/config_financial/ConfigFinancial.vue';
 
+import ConfigAuthenticationNuvemShop from '../views/config_integration_nuvem_shop/AuthenticationNuvemShop.vue';
+import ConfigIntegrationNuvemShop from '../views/config_integration_nuvem_shop/ConfigIntegrationNuvemShop.vue';
+
 // Configuration
 import Collaborator from '../views/collaborator/Collaborator.vue';
 
@@ -141,6 +144,15 @@ const routes = [
 				}
 			},
 			{
+				path: '/config/integration_nuvem_shop',
+				name: 'config.integration_nuvem_shop',
+				component: ConfigIntegrationNuvemShop,
+				meta: { 
+					auth: true,
+					can: ['show-best-shipping', 'show-validated-access', 'access_config_integration_best_shipping']
+				}
+			},
+			{
 				path: '/config/import_order',
 				name: 'config.import_order',
 				component: ConfigImportOrder,
@@ -229,6 +241,13 @@ const routes = [
 		name: 'error404',
 		component: () => import('../views/NotFound.vue'),
 		meta: { auth: false },
+	},
+	{
+		path: '/authentication_nuvem_shop/:id',
+		name: 'authentication-nuveme-shop',
+		component: ConfigAuthenticationNuvemShop,
+    beforeEnter: requireDomainExists,
+		meta: { auth: false }
 	},
 	{
 		path: '/:catchAll(.*)',
