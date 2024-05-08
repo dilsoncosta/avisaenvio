@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendNotificationOrderWhatsAppJob;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class DownloadEventsOrderCommand extends Command
 {
@@ -31,6 +32,7 @@ class DownloadEventsOrderCommand extends Command
 	
 	public function handle()
 	{
+		Log::info('dfqwdfqwdqwdqwdqw');
 		$this->currentTokenIndex = ($this->currentTokenIndex + 1) % count($this->tokenAPI);
 		
 		$orders = Order::select(
