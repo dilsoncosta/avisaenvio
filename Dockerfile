@@ -1,11 +1,10 @@
-# Use PHP 8.2 FPM base image
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
-# Defina o nome de usuário e ID do usuário
-ARG user=avisoenvia
+# set your user name, ex: user=carlos
+ARG user=yourusername
 ARG uid=1000
 
-# Instale as dependências do sistema
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -13,38 +12,34 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    gnupg \
-    cron \
-    nano \
-    sudo \
-    procps \
-    zlib1g-dev \
-    libzip-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    unzip
 
-# Instale o Node.js 18
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instale as extensões do PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets pdo zip
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
 
-# Instale o redis
-RUN pecl install -o -f redis \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis
-
-# Obtenha o Composer mais recente
+# Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Crie um usuário do sistema para executar comandos do Composer e Artisan
-RUN useradd -m -u $uid $user && \
-    mkdir -p /home/$user/.composer && \
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Copie as configurações PHP personalizadas
+# Install redis
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
+
+# Set working directory
+WORKDIR /var/www
+
+# Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Configure o diretório de trabalho
-WORKDIR /var/www
+# Change permissions for storage directory
+RUN chmod -R 755 /var/www/storage
+
+USER $user
