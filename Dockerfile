@@ -39,7 +39,4 @@ WORKDIR /var/www
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Change permissions for storage directory
-RUN chmod -R 755 /var/www/storage
-
 USER $user
