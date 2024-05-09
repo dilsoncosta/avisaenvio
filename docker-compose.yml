@@ -74,6 +74,23 @@ services:
         image: redis:latest
         networks:
             - laravel
+
+    letsencrypt-cloudflare:
+        image: certbot/dns-cloudflare
+        
+        # Dry Run
+        command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /root/cloudflare/credentials --agree-tos -d dilsonlana.com.br --server https://acme-v02.api.letsencrypt.org/directory --dry-run
+    
+        # Issue certificate
+        # command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos -d test.example.com --server https://acme-v02.api.letsencrypt.org/directory
+        
+        # Renew certificate
+        # command: renew --non-interactive --no-self-upgrade --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --server https://acme-v02.api.letsencrypt.org/directory
+        
+        volumes:
+          - ./cloudflare:/opt/cloudflare
+          - ./letsencrypt:/etc/letsencrypt
+          - ./letsencrypt/log:/var/log/letsencrypt
 networks:
     laravel:
         driver: bridge
