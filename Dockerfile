@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     gnupg \
     cron \
+    nano \
     sudo \
     procps \
     zlib1g-dev \
