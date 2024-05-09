@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    vim
 
 # Install Node.js 18
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -42,5 +43,8 @@ WORKDIR /var/www
 
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
+
+# Change ownership of the directory
+RUN chown -R $user:$user /var/www/public/build/assets
 
 USER $user
