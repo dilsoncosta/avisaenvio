@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y \
     cron \
     sudo \
     procps \
+    zlib1g-dev \
+    libzip-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instale o Node.js 18
@@ -25,7 +27,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Instale as extensões do PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets pdo
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets pdo zip
 
 # Instale o redis
 RUN pecl install -o -f redis \
