@@ -32,7 +32,6 @@ class DownloadEventsOrderCommand extends Command
 	
 	public function handle()
 	{
-		Log::info('dfqwdfqwdqwdqwdqw');
 		$this->currentTokenIndex = ($this->currentTokenIndex + 1) % count($this->tokenAPI);
 		
 		$orders = Order::select(
