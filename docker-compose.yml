@@ -79,7 +79,7 @@ services:
         image: certbot/dns-cloudflare
         
         # Dry Run
-        command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /root/cloudflare/credentials --agree-tos -d dilsonlana.com.br --server https://acme-v02.api.letsencrypt.org/directory --dry-run
+        command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials NS4ZC3Y6MTJD0IXPIM4QJ3L8BCF-BRDYX7JZ0VQW2M --agree-tos -d dilsonlana.com.br --server https://acme-v02.api.letsencrypt.org/directory --dry-run
     
         # Issue certificate
         # command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos -d test.example.com --server https://acme-v02.api.letsencrypt.org/directory
