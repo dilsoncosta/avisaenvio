@@ -44,7 +44,4 @@ WORKDIR /var/www
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Change ownership of the directory
-RUN chown -R $user:$user /var/www/public/build/assets
-
 USER $user
