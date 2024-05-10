@@ -264,14 +264,9 @@ let menus = ref([
 		type: 1,
 		title: 'Ajuda',
 		open: false,
-		href: '/portal/manager',
+		href: '/',
 		can: ['show-help'],
 		submenus : [
-			{
-				title: 'Suporte',
-				href: '/',
-				can: ['show-home', 'show-home'],
-			},
 			{
 				title: 'Tutoriais',
 				href: '/',
