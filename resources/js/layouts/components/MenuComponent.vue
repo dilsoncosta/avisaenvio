@@ -37,7 +37,7 @@
 					<li v-for="(submenu, index) in menu.submenus" :key="index" :class="submenu.open ? {'link' :'link', 'active': 'active'} : ''"
 					v-can="submenu.can[0]">
 						<router-link :to="submenu.href"
-						v-if="user_category == 'CL' || user_category == 'MT' || $can(submenu.can[1])"
+						v-if="(user_category == 'CL' || user_category == 'MT' || $can(submenu.can[1])) && !submenu.target"
 						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': '']"
 						@mouseover="itemSubmenuHover = index"
 						@mouseleave="itemSubmenuHover = null"
@@ -52,12 +52,18 @@
 							</div>
 						</router-link>
 						<router-link :to="submenu.href"
-						v-else
+						v-else-if="!submenu.target"
 						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': 'color: #c8c8c8; cursor: not-allowed;']"
 						@mouseover="itemSubmenuHover = index"
 						@mouseleave="itemSubmenuHover = null"
 						> {{ submenu.title}} </router-link>
-						
+						<!-- Submenu target-->
+						<a v-else @click.prevent="openInNewTab(submenu.href)" :href="submenu.href"
+						:style="[itemSubmenuHover === index ? 'background-color:#05314A;color:#fff;': '']"
+						@mouseover="itemSubmenuHover = index"
+						@mouseleave="itemSubmenuHover = null"
+						>{{ submenu.title }}</a>
+						<!-- Submenu of Submenu-->
 						<ul class="subSubmenuItems" v-if="submenu.type == 1 && submenu.open">
 							<li v-for="(subSubmenu, index) in submenu.submenus" :key="index" >
 								<router-link :to="subSubmenu.href"
@@ -255,7 +261,7 @@ let menus = ref([
 			{
 				title: 'Financeiro',
 				href: '/config/financial',
-				can: ['show-config-import', 'access_config_financial'],
+				can: ['show-config-financial', 'access_config_financial'],
 			}
 		]
 	},
@@ -264,22 +270,19 @@ let menus = ref([
 		type: 1,
 		title: 'Ajuda',
 		open: false,
-		href: '/portal/manager',
+		href: '/',
 		can: ['show-help'],
 		submenus : [
 			{
-				title: 'Suporte',
-				href: '/',
-				can: ['show-home', 'show-home'],
-			},
-			{
 				title: 'Tutoriais',
-				href: '/',
+				href: 'https://avisaapp.tawk.help',
+				target: true,
 				can: ['show-home', 'show-home'],
 			},
 			{
-				title: 'O que há de novo?',
-				href: '/',
+				title: 'Changelog',
+				target: true,
+				href: 'https://avisaapp.tawk.help/article/avisapp-changelog',
 				can: ['show-home', 'show-home'],
 			}
 		]
@@ -344,5 +347,10 @@ const toggleSubSubMenu = (index_menu, indexsubmenu) => {
 			item.open = false;
 		}
 	});
+};
+
+const openInNewTab = (url) => {
+	const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+	if (newWindow) newWindow.opener = null;
 };
 </script>
