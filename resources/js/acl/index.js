@@ -42,9 +42,6 @@ const rules = () => defineAclRules((setRule) => {
 	setRule('show-import-order', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
-	setRule('show-financial', () => {
-		return user.value.category == 'CL' || user.value.category == 'CLB';
-	});
 	setRule('show-help', () => {
 		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
@@ -74,6 +71,9 @@ const rules = () => defineAclRules((setRule) => {
 	});
 	setRule('show-config-import', () => {
 		return (user.value.category == 'CL' || user.value.category == 'CLB') && user.value.ind_mod_order_tracking == 1;;
+	});
+	setRule('show-config-financial', () => {
+		return user.value.category == 'CL' || user.value.category == 'CLB';
 	});
 	
 	// Start List Permissions
