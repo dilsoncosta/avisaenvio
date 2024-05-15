@@ -604,22 +604,6 @@ const submit = async () => {
 	{
 		return show_msgbox('O Campo Escolha o Template Mensagem Mensagem de Oferta!', 'warning');
 	}
-	if((ind_msg_1.value > 0 && ind_msg_2.value > 0) && ind_msg_1.value > ind_msg_2.value)
-	{
-		return show_msgbox('O campo ENVIO da mensagem de informações do check-in deve ser maior ou igual ao ENVIO da mensagem de boas-vindas!', 'warning');
-	}
-	if((ind_msg_2.value > 0 && ind_msg_4.value > 0) && ind_msg_2.value > ind_msg_4.value)
-	{
-		return show_msgbox('O campo ENVIO da mensagem de agradecimento do Checkout deve ser maior ou igual ao ENVIO da mensagem de informações do Check-in!', 'warning');
-	}
-	if((ind_msg_4.value > 0 && ind_msg_5.value > 0) && ind_msg_4.value > ind_msg_5.value)
-	{
-		return show_msgbox('O campo ENVIO da Mensagem Pesquisa de Sastifação deve ser maior ou igual ao ENVIO da mensagem de agradecimento do Checkout!', 'warning');
-	}
-	if((ind_msg_5.value > 0 && ind_msg_6.value > 0) > 0 && ind_msg_5.value > ind_msg_6.value)
-	{
-		return show_msgbox('O campo ENVIO da mensagem de oferta deve ser maior ou igual ao ENVIO da mensagem pesquisa de sastifação!', 'warning');
-	}
 	
 	store.commit('CHANGE_LOADING', true);
 	
