@@ -16,4 +16,5 @@ jobs:
         username: ${{ secrets.SSH_USER_PRD }}
         host: ${{ secrets.SSH_IP_PRD }}
         password: ${{ secrets.SSH_PASSWORD_PRD }}
+        #script: 'su - dilson && cd /home/dilson/avisapp && docker-compose exec app bash && chmod +x deploy.sh & sh server_deploy_prd.sh'
         script: 'su - dilson && cd /home/dilson/avisapp && ls -la'
