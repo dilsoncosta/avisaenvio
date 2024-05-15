@@ -41,7 +41,7 @@
 						<label>Envio:</label>
 						<select name="ind_msg_2" v-model="ind_msg_2">
 							<option value="0">Desativado</option>
-							<option value="1">1 Dia do Check-in</option>
+							<option value="1">1 Dia Antes do Check-in</option>
 							<option value="2">2 Dias Antes do Check-in</option>
 							<option value="3">3 Dias Antes do Check-in</option>
 							<option value="4">4 Dias Antes do Check-in</option>
