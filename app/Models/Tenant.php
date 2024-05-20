@@ -35,9 +35,4 @@ class Tenant extends Model
 	{
 		return $this->hasOne(IntegrationWhatsApp::class, 'tenant_id', 'id');
 	}
-	
-	public function configWhatsAppBot()
-	{
-		return $this->hasOne(CrmBot::class, 'tenant_id', 'id');
-	}
 }
