@@ -52,12 +52,14 @@
 									</div>
 								</td>
 								<td>
+									
 									<div class="options">
 										<a><i class="fas fa-pen-square fa-lg fa-fw" @click.prevent="btnEditTokenWhatsAppWeb(item)"></i></a>
 										<a><i class="fas fa-file-alt fa-lg fa-fw" @click.prevent="btnRecordTokenWhatsAppWeb(item)"></i></a>
 									</div>
 								</td>
-								<td class="td_size" v-if="item.people == 'F'">{{ `${item.client && convertWordToUppercase(item.client.name)} ${item.client && convertWordToUppercase(item.client.surname)}`}}</td>
+								
+								<td class="td_size" v-if="item.client.people == 'F'">{{ `${item.client && convertWordToUppercase(item.client.name)} ${item.client && convertWordToUppercase(item.client.surname)}`}}</td>
 								<td class="td_size" v-else>{{ `${item.client && convertWordToUppercase(item.client.corporate_name)}` }}</td>
 								<td class="td_size">{{ `${item.url}` }}</td>
 								<td class="td_size" v-if="item.whatsapp">{{ `${ formatPhoneNumber(item.whatsapp) }` }}</td>
@@ -397,6 +399,8 @@ watch(() => store.state.admin_token_whatsappweb.data,
 });
 
 onMounted( async () => {
+	store.commit('CHANGE_LOADING', false);
+
 	try {
 		const response = await store.dispatch('genereateOptionsTenants');
 		
@@ -453,9 +457,7 @@ const btnSearch = async () => {
 	catch(error) {
 		return show_msgbox(error.data.message, 'warning');
 	}
-	finally {
-		store.commit('CHANGE_LOADING', false);
-	}
+	store.commit('CHANGE_LOADING', false);
 }
 
 const refreshTableOfDatas = async (value = '') => {

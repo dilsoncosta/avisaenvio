@@ -115,7 +115,7 @@ class RegisterController extends Controller
 						 'type'      => 'T',
 				'situation'      => 'A',
 			 'date_start'      => Carbon::now()->format('Y-m-d'),
-				 'date_end'      => Carbon::parse(Carbon::now())->addDays(3)
+				 'date_end'      => Carbon::parse(Carbon::now())->addDays(7)
 			];
 			
 			$this->model_access->create($dataAccess);

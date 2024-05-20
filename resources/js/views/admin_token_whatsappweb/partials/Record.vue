@@ -10,7 +10,8 @@
 					<tbody>
 						<tr>
 							<th><b>Cliente:</b></th>
-							<td>{{ data.client ? convertWordToUppercase(`${data.client.name} ${data.client.surname}`) : '' }}</td>
+							<td v-if="data.client && data.client.people == 'F'">{{ data.client ? convertWordToUppercase(`${data.client.name} ${data.client.surname}`) : '' }}</td>
+							<td v-else>{{ data.client ? convertWordToUppercase(`${data.client.corporate_name}`) : '' }}</td>
 						</tr>
 						<tr>
 							<th><b>TÍtulo:</b></th>
