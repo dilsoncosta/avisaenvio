@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
 		$schedule->command('send:send_msg_three_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_four_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_five_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
-		$schedule->command('send:send_msg_six_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
+		$schedule->command('send:send_msg_six_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping(); 
 	}
 	
 	protected function commands()
