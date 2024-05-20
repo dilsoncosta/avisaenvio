@@ -58,7 +58,7 @@
 									</div>
 								</td>
 								<td class="td_size" v-if="item.people == 'F'">{{ `${item.client && convertWordToUppercase(item.client.name)} ${item.client && convertWordToUppercase(item.client.surname)}`}}</td>
-								<td class="td_size" v-else>{{ `${item.client && convertWordToUppercase(item.client.corporate_name)} }`}}</td>
+								<td class="td_size" v-else>{{ `${item.client && convertWordToUppercase(item.client.corporate_name)}` }}</td>
 								<td class="td_size">{{ `${item.url}` }}</td>
 								<td class="td_size" v-if="item.whatsapp">{{ `${ formatPhoneNumber(item.whatsapp) }` }}</td>
 								<td class="td_size not_defined" v-else>Não definido</td>
