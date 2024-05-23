@@ -16,4 +16,4 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SSH_IP }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: 'su - dilson && cd /home/dilson/avisapp && ls -la'
+        script: 'cd /home/dilson/avisapp && sh server_deploy_hmg.sh'
