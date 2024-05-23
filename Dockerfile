@@ -14,7 +14,17 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     vim \
+    cron \
     libzip-dev  # Install libzip-dev for zip extension
+
+# Copy cronjob
+COPY docker/php/cronjob /etc/cron.d/cronjob
+
+# Ensure that the new line is present at the end of the cronjob file
+RUN echo >> /etc/cron.d/cronjob
+
+# Ensure proper permissions for the cronjob file
+RUN chmod 0644 /etc/cron.d/cronjob
 
 # Install Node.js 18
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -47,7 +57,8 @@ RUN pecl install -o -f redis \
 # Set working directory
 WORKDIR /var/www
 
-# Copy custom configurations PHP
+# Copy custom PHP configurations
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
+# Switch to non-root user
 USER $user
