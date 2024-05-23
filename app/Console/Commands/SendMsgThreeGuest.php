@@ -48,6 +48,8 @@ class SendMsgThreeGuest extends Command
 		{
 			$template = $this->getTemplateById($item->msg_3_template_id);
 
+			if(!$template){ continue; }
+			
 			$obj_data = (object) array(
 				"type_send"               => 3,
 				"ind_msg"                 => $item->ind_msg_3,

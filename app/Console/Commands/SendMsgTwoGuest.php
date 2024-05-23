@@ -57,6 +57,8 @@ class SendMsgTwoGuest extends Command
 		{
 			$template = $this->getTemplateById($item->msg_2_template_id);
 
+			if(!$template){ continue; }
+			
 			$obj_data = (object) array(
 				"type_send"               => 2,
 				"ind_msg"                 => $item->ind_msg_2,

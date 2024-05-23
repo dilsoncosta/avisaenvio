@@ -57,7 +57,9 @@ class SendMsgOneGuest extends Command
 		foreach ($guests as $key => $item)
 		{
 			$template = $this->getTemplateById($item->msg_1_template_id);
-
+			
+			if(!$template){ continue; }
+			
 			$obj_data = (object) array(
 				"type_send"               => 1,
 				"ind_msg"                 => $item->ind_msg_1,
