@@ -5,7 +5,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\Helpers;
 use App\Models\{
-	Template
+	Template,
+	Hospitality
 };
 use App\Jobs\{
 	SendNotificationTrackingWhatsAppJob
@@ -14,11 +15,13 @@ use App\Jobs\{
 class TemplateService
 {
 	private $template;
+	private $hospitality;
 	private $perPage = 20;
 	
-	public function __construct(Template $template)
+	public function __construct(Template $template, Hospitality $hospitality)
 	{
 		$this->template = $template;
+		$this->hospitality = $hospitality;
 	}
 	
 	public function getAllTemplates($request)
@@ -272,5 +275,23 @@ class TemplateService
 								$query->where('id', "!=",$id);
 							}
 		return $query->exists();
+	}
+	
+	public function checkTemplateDefined($ids)
+	{
+		$ids = explode(",",$ids);
+		
+		foreach($ids as $id)
+		{
+			$checkConfigTemplate = $this->hospitality->where('msg_1_template_id', $id)
+			->orWhere('msg_2_template_id', $id)
+			->orWhere('msg_3_template_id', $id)
+			->orWhere('msg_4_template_id', $id)
+			->orWhere('msg_5_template_id', $id)
+			->orWhere('msg_6_template_id', $id)
+			->exists();
+
+			if($checkConfigTemplate){ return true; }
+		}
 	}
 }

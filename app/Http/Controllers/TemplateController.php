@@ -78,6 +78,11 @@ class TemplateController extends Controller
 	
 	public function destroy(Request $request)
 	{
+		if($this->checkTemplateDefined($request->ids))
+		{
+			return response()->json(["status" => "0", "message" => "O Template não pode ser deletado, pois está sendo utilizado na configuração do módulo."], 400);
+		}
+		
 		$this->templateService->deleteTemplates($request->ids);
 		return response()->json(["status" => "1", "message" => "Registro deletado com sucesso!"], 200);
 	}
