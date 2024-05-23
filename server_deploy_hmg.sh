@@ -2,48 +2,49 @@
 
 set -e
 
+APP_NAME='avisapp_app_1'
+
 echo "Deploying application..."
 
-# Enter maintenance mode with a custom message 
-php artisan down --render="deploy"
 
-# Update codebase 
-git stash
-git pull origin hmg
+# Enter maintenance mode
+(docker exec ${APP_NAME} php artisan down --render="deploy") || true
 
+#Update codebase
+git fetch origin hmg
+git reset --hard origin/hmg
 
 # Install dependencies based on lock file
-composer install --no-interaction --prefer-dist --optimize-autoloader
+docker exec ${APP_NAME} composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Migrate database
-php artisan migrate --force
+docker exec ${APP_NAME} php artisan migrate --force
 
 # Note: If you're using queue workers, this is the place to restart them.
-php artisan queue:restart
-
+docker exec ${APP_NAME} php artisan queue:restart
 
 # Register Permissions
-php artisan db:seed --class=PermissionsTableSeeder
+docker exec ${APP_NAME} php artisan db:seed --class=PermissionsTableSeeder
 
 # Clear cache config
-php artisan config:clear
-php artisan cache:clear
-php artisan route:clear
-php artisan view:clear
+docker exec ${APP_NAME} php artisan config:clear
+docker exec ${APP_NAME} php artisan cache:clear
+docker exec ${APP_NAME} php artisan route:clear
+docker exec ${APP_NAME} php artisan view:clear
 
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+docker exec ${APP_NAME} php artisan config:cache
+docker exec ${APP_NAME} php artisan route:cache
+docker exec ${APP_NAME} php artisan view:cache
 
 # Clear cache
-php artisan optimize:clear
+docker exec ${APP_NAME} php artisan optimize:clear
 
 # Build frontend
-npm install
+docker exec ${APP_NAME} npm install
 
-npm run build
+docker exec ${APP_NAME} npm run build
 
 # Exit maintenance mode
-php artisan up
+docker exec ${APP_NAME} php artisan up
 
 echo "Application deployed!"
