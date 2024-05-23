@@ -9,7 +9,6 @@ use App\Models\{
 };
 use App\Jobs\SendNotificationGuestWhatsAppJob;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class SendMsgOneGuest extends Command
 {
