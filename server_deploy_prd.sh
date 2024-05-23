@@ -9,7 +9,7 @@ git stash
 git pull origin main
 
 # Executar comandos dentro do contêiner Docker
-docker exec -d avisapp_app_1 bash -c '
+docker exec -it  avisapp_app_1 bash -c '
   # Enter maintenance mode with a custom message 
   php artisan down --render="deploy"
 
@@ -45,5 +45,6 @@ docker exec -d avisapp_app_1 bash -c '
   # Exit maintenance mode 
   php artisan up
 '
+
 
 echo "Application deployed!"
