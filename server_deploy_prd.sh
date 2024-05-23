@@ -10,8 +10,8 @@ echo "Deploying application..."
 (docker exec ${APP_NAME} php artisan down --render="deploy") || true
 
 #Update codebase
-git fetch origin hmg
-git reset --hard origin/hmg
+git fetch origin main
+git reset --hard origin/main
 
 # Install dependencies based on lock file
 docker exec ${APP_NAME} composer install --no-interaction --prefer-dist --optimize-autoloader
