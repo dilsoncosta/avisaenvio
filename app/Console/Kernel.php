@@ -13,12 +13,18 @@ class Kernel extends ConsoleKernel
 		$schedule->command('send:download_order_nuvem_shop')->everyMinute()->withoutOverlapping();
 		$schedule->command('send:download_events_order')->everyMinute()->withoutOverlapping();
 		
-		$schedule->command('send:send_msg_one_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
+		$schedule->command('send:send_msg_one_guest') ->weekends()
+    ->hourly()
+		->timezone('America/Sao_Paulo')
+    ->between('08:00', '18:00')
+		->withoutOverlapping();
+		/*
 		$schedule->command('send:send_msg_two_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_three_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_four_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_five_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping();
 		$schedule->command('send:send_msg_six_guest')->hours([8, 9, 10, 11, 12])->withoutOverlapping(); 
+		*/
 	}
 	
 	protected function commands()
