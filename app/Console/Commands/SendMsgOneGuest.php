@@ -17,6 +17,7 @@ class SendMsgOneGuest extends Command
 	
 	public function handle()
 	{
+		
 		$guests = Guest::select(
 							'guests.id as id',
 							'guests.tenant_id as tenant_id',
