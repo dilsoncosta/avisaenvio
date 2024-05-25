@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 		$schedule->command('send:download_order_best_shipping')->everyThirtyMinutes()->withoutOverlapping();
 		$schedule->command('send:download_order_nuvem_shop')->everyThirtyMinutes()->withoutOverlapping();
 		$schedule->command('send:download_events_order')->everyFifteenMinutes()->withoutOverlapping();
-		$schedule->command('send:send_msg_one_guest')->hourly()->between('08:00', '18:00')->withoutOverlapping();
+		$schedule->command('send:send_msg_one_guest')->hourly()->between('08:00', '12:00')->withoutOverlapping();
 		$schedule->command('send:send_msg_two_guest')->hourly()->between('08:00', '12:00')->withoutOverlapping();
 		$schedule->command('send:send_msg_three_guest')->hourly()->between('08:00', '12:00')->withoutOverlapping();
 		$schedule->command('send:send_msg_four_guest')->hourly()->between('08:00', '12:00')->withoutOverlapping();
