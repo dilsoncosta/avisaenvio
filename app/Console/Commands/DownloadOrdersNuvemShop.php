@@ -27,7 +27,6 @@ class DownloadOrdersNuvemShop extends Command
 	
 	public function handle()
 	{
-		Log::info('wwfwefwe');exit;
 		$integration_nuvem_shops = IntegrationNuvemShop::select(
 							'integration_nuvem_shops.tenant_id as tenant_id',
 							'integration_nuvem_shops.access_token as access_token',
