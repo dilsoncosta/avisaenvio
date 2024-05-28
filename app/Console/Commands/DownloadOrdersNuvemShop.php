@@ -44,7 +44,6 @@ class DownloadOrdersNuvemShop extends Command
 		foreach ($integration_nuvem_shops as $key => $integration_nuvem_shop)
 		{
 			$startDate = Carbon::now()->format('Y-m-d').'T00:00:01+0000';
-			$endDate = Carbon::now()->format('Y-m-d').'T00:23:59+0000';
 			
 			$headers = [
 				'Accept'         => 'application/json',
@@ -56,7 +55,6 @@ class DownloadOrdersNuvemShop extends Command
 			$queryParams = [
 				'payment_status'  => 'paid',
 				'updated_at_min'  => $startDate,
-				'updated_at_max'  => $endDate,
 				'shipping_status' => 'fulfilled',
 				'fields'          => 'number,contact_name,contact_phone,shipping_tracking_number,shipping_option_code,contact_identification'
 			];
