@@ -43,8 +43,8 @@ class DownloadOrdersNuvemShop extends Command
 		
 		foreach ($integration_nuvem_shops as $key => $integration_nuvem_shop)
 		{
-			$startDate = Carbon::now()->format('Y-m-d').'T00:00:39+0000';
-			$endDate = Carbon::now()->format('Y-m-d').'T23:59:59+0000';
+			$startDate = Carbon::now()->format('Y-m-d').'T00:00:01+0000';
+			$endDate = Carbon::now()->format('Y-m-d').'T00:23:59+0000';
 			
 			$headers = [
 				'Accept'         => 'application/json',
