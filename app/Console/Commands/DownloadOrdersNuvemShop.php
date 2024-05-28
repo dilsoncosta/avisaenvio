@@ -17,12 +17,13 @@ class DownloadOrdersNuvemShop extends Command
 	private $sleep = 1500000;
 	private $shippingCompany = [
 		'ne-correios-sedex' => '0',
+		'ne-correios-pac'   => '0',
 		'Jadlog'            => '1',
 		'JeT'               => '2',
 		'LATAM Cargo'       => '3',
 		'Loggi'             => '4'
 	];
-
+	
 	protected $description = 'Comando para efetuar o download dos pedidos de cada cliente na nuvem shop.';
 	
 	public function handle()
@@ -43,7 +44,7 @@ class DownloadOrdersNuvemShop extends Command
 		
 		foreach ($integration_nuvem_shops as $key => $integration_nuvem_shop)
 		{
-			$startDate = Carbon::now()->format('Y-m-d').'T00:00:01+0000';
+			$startDate = Carbon::now()->format('Y-m-d').'T00:04:38+0000';
 			
 			$headers = [
 				'Accept'         => 'application/json',
