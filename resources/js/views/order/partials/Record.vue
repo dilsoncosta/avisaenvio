@@ -42,7 +42,8 @@
 							<td v-if="data.integration == 0" class="td_format">Melhor Envio</td>
 							<td v-else-if="data.integration == 1" class="td_format">Cadastro Manual</td>
 							<td v-else-if="data.integration == 2" class="td_format">Importação Planilha</td>
-							<td v-else class="td_format">Nuvem Shop</td>
+							<td v-else-if="data.integration == 3" class="td_format">Nuvem Shop</td>
+							<td v-else class="td_format">Tray</td>
 						</tr>
 						
 						<tr>
@@ -72,7 +73,7 @@
 								<div>
 									<table class="table_event">
 										<tbody v-if="data.order_events && data.order_events.length > 0">
-											<tr v-for="(item_event, index_event) in data.order_events" :key="index_annotation" class="table_event_tr">
+											<tr v-for="(item_event, index_event) in data.order_events" :key="index_event" class="table_event_tr">
 												<th colspan="2" class="event-info">
 													<br/>
 													<table class="table_event_internal">

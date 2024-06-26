@@ -110,4 +110,7 @@ return [
     'api_nuvem_shop_user_agent' => env('API_NUVEM_SHOP_USER_AGENT', ''),
     'api_nuvem_shop_client_id' => env('API_NUVEM_SHOP_CLIENT_ID', ''),
     'api_nuvem_shop_secret' => env('API_NUVEM_SHOP_SECRET', ''),
+
+    'api_consumer_secret' => env('API_CONSUMER_SECRET', ''),
+    'api_consumer_key' => env('API_CONSUMER_KEY', ''),
 ];

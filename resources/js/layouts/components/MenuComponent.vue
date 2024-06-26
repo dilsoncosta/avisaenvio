@@ -249,6 +249,11 @@ let menus = ref([
 				can: ['show-config-integration-nuvem-shop', 'access_config_integration_nuvem_shop'],
 			},
 			{
+				title: 'Integração Tray',
+				href: '/config/integration_tray',
+				can: ['show-config-integration-nuvem-shop', 'access_config_integration_nuvem_shop'],
+			},
+			{
 				title: 'Hotelaria',
 				href: '/config/hospitality',
 				can: ['show-config-hospitality', 'access_config_hospitality'],

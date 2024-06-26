@@ -15,6 +15,7 @@ import conf_integration_whatsapp from './modules/conf_integration_whatsapp';
 import config_import_order from './modules/config_import_order';
 import conf_integration_best_shipping from './modules/conf_integration_best_shipping';
 import conf_integration_nuvem_shop from './modules/conf_integration_nuvem_shop';
+import conf_integration_tray from './modules/conf_integration_tray';
 import config_hospitality from './modules/config_hospitality';
 import config_financial from './modules/config_financial';
 
@@ -69,6 +70,7 @@ export default createStore({
 		conf_integration_nuvem_shop,
 		config_hospitality,
 		config_financial,
+		conf_integration_tray,
 		guest
 	},
 	plugins: [

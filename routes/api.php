@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function (){
 	Route::group([], base_path("routes/api-cfg-integration-best-shipping.php")); 
 	Route::group([], base_path("routes/api-cfg-integration-nuvem-shop.php"));
 	Route::group([], base_path("routes/api-cfg-hospitality.php")); 
+	Route::group([], base_path("routes/api-cfg-integration-tray.php")); 
 	
 	// Administrator
 	Route::group(['prefix'=>'admin'], function(){
