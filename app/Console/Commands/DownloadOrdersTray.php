@@ -16,7 +16,6 @@ class DownloadOrdersTray extends Command
 	protected $signature = 'send:download_order_tray';
 	private $sleep = 1500000;
 	private $shippingCompany = [
-		'Total'             => '0',
 		'correios'          => '0',
 		'Correios'          => '0',
 		'CORREIOS'          => '0',
