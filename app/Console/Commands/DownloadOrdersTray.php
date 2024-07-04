@@ -52,34 +52,7 @@ class DownloadOrdersTray extends Command
 		
 		foreach ($integration_trays as $key => $integration_tray)
 		{
-			if($integration_tray->date_expiration_access_token)
-			{
-				$expirationAccessTimeDateTime = Carbon::parse($integration_tray->date_expiration_access_token);
-				
-				if ($expirationAccessTimeDateTime->isPast())
-				{
-					$response = Http::get($integration_tray->api_address.'/auth?refresh_token='.$integration_tray->refresh_token);
-					
-					if($response->status() != 200)
-					{ 
-						usleep($this->sleep);
-						continue; 
-					}
-					
-					$dataExpAccessTokenTray = $response->object();
-					
-					$this->updateIntegrationTray($integration_tray->id, [
-						'access_token'                  => $dataExpAccessTokenTray->access_token,
-						'refresh_token'                 => $dataExpAccessTokenTray->refresh_token,
-						'date_expiration_refresh_token' => $dataExpAccessTokenTray->date_expiration_refresh_token,
-						'date_expiration_access_token'  => $dataExpAccessTokenTray->date_expiration_access_token,
-						'date_activated'                => $dataExpAccessTokenTray->date_activated,
-					]);
-					
-					$integration_tray->access_token  = $dataExpAccessTokenTray->access_token;
-					$integration_tray->refresh_token = $dataExpAccessTokenTray->refresh_token;
-				}
-			}
+
       
 			if($integration_tray->date_expiration_refresh_token)
 			{
@@ -113,6 +86,35 @@ class DownloadOrdersTray extends Command
 					
 					$integration_tray->access_token  = $dataExpRefreshTokenTray->access_token;
 					$integration_tray->refresh_token = $dataExpRefreshTokenTray->refresh_token;
+				}
+			}
+			
+			if($integration_tray->date_expiration_access_token)
+			{
+				$expirationAccessTimeDateTime = Carbon::parse($integration_tray->date_expiration_access_token);
+				
+				if ($expirationAccessTimeDateTime->isPast())
+				{
+					$response = Http::get($integration_tray->api_address.'/auth?refresh_token='.$integration_tray->refresh_token);
+					
+					if($response->status() != 200)
+					{ 
+						usleep($this->sleep);
+						continue; 
+					}
+					
+					$dataExpAccessTokenTray = $response->object();
+					
+					$this->updateIntegrationTray($integration_tray->id, [
+						'access_token'                  => $dataExpAccessTokenTray->access_token,
+						'refresh_token'                 => $dataExpAccessTokenTray->refresh_token,
+						'date_expiration_refresh_token' => $dataExpAccessTokenTray->date_expiration_refresh_token,
+						'date_expiration_access_token'  => $dataExpAccessTokenTray->date_expiration_access_token,
+						'date_activated'                => $dataExpAccessTokenTray->date_activated,
+					]);
+					
+					$integration_tray->access_token  = $dataExpAccessTokenTray->access_token;
+					$integration_tray->refresh_token = $dataExpAccessTokenTray->refresh_token;
 				}
 			}
 			
