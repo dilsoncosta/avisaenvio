@@ -286,6 +286,10 @@ const activeIntegrationWhatsApp = async () => {
 	{
 		return show_msgbox('O Campo URL DA LOJA é obrigatório!', 'warning');
 	}
+	if(empty(code.value))
+	{
+		return show_msgbox('O Campo CÓDIGO DA LOJA é obrigatório!', 'warning');
+	}
 	
 	statusIntegration.value = 0;
 
