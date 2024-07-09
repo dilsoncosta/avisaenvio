@@ -35,7 +35,6 @@ class DownloadOrdersTray extends Command
 							'integration_trays.tenant_id as tenant_id',
 							'integration_trays.access_token as access_token',
 							'integration_trays.api_address as api_address',
-							'integration_trays.api_address as api_address',
 							'integration_trays.date_expiration_access_token as date_expiration_access_token',
 							'integration_trays.date_expiration_refresh_token as date_expiration_refresh_token',
 							'integration_trays.code as code',

@@ -16,17 +16,11 @@ class IntegrationTray extends Model
 		'tenant_id',
 		'access_token',
 		'url_store',
-		'api_address',
 		'code',
-		'adm_user',
-		'store_plan',
-		'user_id',
-		'store',
-		'store_host',
-		'store_id',
 		'date_expiration_access_token',
 		'date_expiration_refresh_token',
 		'date_activated',
 		'refresh_token',
+		'situation',
 	];
 }

@@ -16,30 +16,18 @@
 			<div class="container">
 				<div class="instructions">
 					<ol>
-						<li>Após adicionar a URL da Loja e Ativar a Integração, Clique em instalar Aplicativo;</li>
-						<li>Clique em Instalar para iniciar o processo de instalação do aplicativo Avisa APP na sua loja Tray.</li>
+						<li>Faça login no Painel da Loja;</li>
+						<li>Acesse o menu Aplicativos;</li>
+						<li>No campo de pesquisa, digite "Avisa Envio";</li>
+						<li>Ao encontrar o aplicativo "Avisa Envio", clique no botão "Acessar";</li>
+						<li>Copie a URL e o Código e cole no campo na Integração Tray no Avisa App;</li>
+						<li>Ative a Integração;</li>
 					</ol>
 				</div>
 				<table class="info_table_integration_best_shipping">
 					<tbody>
-						<tr v-if="situation == 1">
-							<th class="td_token">
-								Aplicativo:
-							</th>
-							<td>
-								<table>
-									<tbody>
-										<tr>
-											<td>
-												<a :href="installerApp" target="_black" class="btn_installer_app">Instalar</a>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
 						<tr>
-							<th class="td_token">
+							<th class="td">
 								Url da Loja:
 							</th>
 							<td>
@@ -48,6 +36,22 @@
 										<tr>
 											<td>
 												<input type="text" v-model="url" maxlength="250" :disabled="situation == 1">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<th class="td">
+								Código:
+							</th>
+							<td>
+								<table>
+									<tbody>
+										<tr>
+											<td>
+												<input type="text" v-model="code" maxlength="250" :disabled="situation == 1">
 											</td>
 										</tr>
 									</tbody>
@@ -228,7 +232,7 @@ input:disabled {
 img{
 	margin-top:10px;
 }
-.td_token {
+.td {
 	vertical-align: top !important;
 }
 .instructions{
@@ -248,13 +252,10 @@ import { show_msgbox, empty } from '@/helpers/Helpers';
 
 /* Ref or Reactive */
 const store             = useStore();
-const API_CONSUMER_KEY  = import.meta.env.VITE_API_CONSUMER_KEY;
-const VITE_APP_PATH     = import.meta.env.VITE_APP_PATH;
-const subdomain         = ref(store.state.auth.me.subdomain);
 const statusIntegration = ref(3);
+const code              = ref('');
 const url               = ref('');
 const uuid              = ref('');
-const installerApp      = ref('');
 const situation         = ref('');
 
 onMounted( async () => {
@@ -263,9 +264,9 @@ onMounted( async () => {
 	try {
 		const response = await store.dispatch('getStatusIntegrationTrayConfigIntegrationTray');
 		url.value = response.data.url_store;
-		installerApp.value = response.data.url_store+'/auth.php?response_type=code&consumer_key='+API_CONSUMER_KEY+'&callback='+VITE_APP_PATH.replace("-subdomain-", subdomain.value)+'/authentication_tray';
 		uuid.value = response.data.uuid;
 		situation.value = response.data.situation;
+		code.value = response.data.code;
 	}
 	catch(error)
 	{
@@ -294,10 +295,10 @@ const activeIntegrationWhatsApp = async () => {
 	{
 		await store.dispatch('activeConfigIntegrationTray', {
 			url: url.value,
+			code: code.value,
 			situation: 1,
 			uuid: uuid.value
 		});
-		installerApp.value = url.value+'/auth.php?response_type=code&consumer_key='+API_CONSUMER_KEY+'&callback='+VITE_APP_PATH.replace("-subdomain-", subdomain.value)+'/authentication_tray';
 		situation.value = 1;
 	}
 	catch(error) {
@@ -315,6 +316,7 @@ const disabledIntegrationWhatsApp = async () => {
 	{
 		await store.dispatch('disabledConfigIntegrationTray', {
 			url: url.value,
+			code: code.value,
 			situation: 0,
 			uuid: uuid.value
 		});

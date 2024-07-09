@@ -21,7 +21,6 @@ import ConfigFinancial from '../views/config_financial/ConfigFinancial.vue';
 import ConfigAuthenticationNuvemShop from '../views/config_integration_nuvem_shop/AuthenticationNuvemShop.vue';
 import ConfigIntegrationNuvemShop from '../views/config_integration_nuvem_shop/ConfigIntegrationNuvemShop.vue';
 
-import ConfigAuthenticationTray from '../views/config_integration_tray/AuthenticationTray.vue';
 import ConfigIntegrationTray from '../views/config_integration_tray/ConfigIntegrationTray.vue';
 
 // Configuration
@@ -258,13 +257,6 @@ const routes = [
 		path: '/authentication_nuvem_shop/:id',
 		name: 'authentication-nuveme-shop',
 		component: ConfigAuthenticationNuvemShop,
-    beforeEnter: requireDomainExists,
-		meta: { auth: false }
-	},
-	{
-		path: '/authentication_tray',
-		name: 'authentication-tray',
-		component: ConfigAuthenticationTray,
     beforeEnter: requireDomainExists,
 		meta: { auth: false }
 	},
