@@ -14,7 +14,8 @@ class IntegrationTrayRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			"url" => "required",
+			"url"  => "required",
+			"code" => "required",
 		];
 	}
 	
@@ -22,6 +23,7 @@ class IntegrationTrayRequest extends FormRequest
 	{
 		$messages = [
       "url.required" => "O campo URL DA LOJA é obrigatório",
+			"code.required" => "O campo CÓDIGO DA LOJA é obrigatório",
 		];
 		
 		return $messages;
