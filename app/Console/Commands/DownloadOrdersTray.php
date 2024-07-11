@@ -10,6 +10,7 @@ use App\Models\{
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DownloadOrdersTray extends Command
 {
@@ -24,7 +25,8 @@ class DownloadOrdersTray extends Command
 		'JADLOG'            => '1',
 		'JeT'               => '2',
 		'LATAM Cargo'       => '3',
-		'Loggi'             => '4'
+		'Loggi'             => '4',
+		'Economic'          => '4'
 	];
 	
 	protected $description = 'Comando para efetuar o download dos pedidos de cada cliente na tray.';
@@ -34,7 +36,7 @@ class DownloadOrdersTray extends Command
 		$integration_trays = IntegrationTray::select(
 							'integration_trays.tenant_id as tenant_id',
 							'integration_trays.access_token as access_token',
-							'integration_trays.api_address as api_address',
+							'integration_trays.url_store as url_store',
 							'integration_trays.date_expiration_access_token as date_expiration_access_token',
 							'integration_trays.date_expiration_refresh_token as date_expiration_refresh_token',
 							'integration_trays.code as code',
@@ -51,8 +53,6 @@ class DownloadOrdersTray extends Command
 		
 		foreach ($integration_trays as $key => $integration_tray)
 		{
-
-      
 			if($integration_tray->date_expiration_refresh_token)
 			{
 				$expirationRefreshtokenDateTime = Carbon::parse($integration_tray->date_expiration_refresh_token);
@@ -65,7 +65,7 @@ class DownloadOrdersTray extends Command
 						'code'             => $integration_tray->code,
 					];
 
-					$response = Http::post($integration_tray->api_address.'/auth', $queryParams);
+					$response = Http::post($integration_tray->url_store.'/auth', $queryParams);
 					
 					if($response->status() != 200)
 					{ 
@@ -94,7 +94,7 @@ class DownloadOrdersTray extends Command
 				
 				if ($expirationAccessTimeDateTime->isPast())
 				{
-					$response = Http::get($integration_tray->api_address.'/auth?refresh_token='.$integration_tray->refresh_token);
+					$response = Http::get($integration_tray->url_store.'/auth?refresh_token='.$integration_tray->refresh_token);
 					
 					if($response->status() != 200)
 					{ 
@@ -124,11 +124,10 @@ class DownloadOrdersTray extends Command
 				'sort'         => 'id_desc',
 				'page'         => '1',
 				'limit'        => '1000',
-				'status'       => 'ENVIADO',
 				'modified'     => $startDate
 			];
 			
-			$response = Http::get($integration_tray->api_address.'/orders', $queryParams);
+			$response = Http::get($integration_tray->url_store.'/orders', $queryParams);
 			
 			$orders = $response->object();
 			
@@ -140,12 +139,14 @@ class DownloadOrdersTray extends Command
 			
 			foreach($orders->Orders as $item)
 			{
+				if($item->Order->has_shipment != 1){ continue; }
+				
 				if(Order::where('code', $item->Order->id)
 							->where('tenant_id', $integration_tray->tenant_id)
 							->where('integration', 4)
 							->exists()){ continue; }
 				
-				$response = Http::get($integration_tray->api_address.'/customers/'.$item->Order->customer_id.'?access_token='.$integration_tray->access_token);
+				$response = Http::get($integration_tray->url_store.'/customers/'.$item->Order->customer_id.'?access_token='.$integration_tray->access_token);
 				
 				$client = $response->object();
 				
